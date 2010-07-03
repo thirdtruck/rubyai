@@ -11,7 +11,9 @@ Then /^calling `([^`]*)` should return that character$/ do |command|
 end
 
 Given /^a character named "([^"]*)"$/ do |character_name|
-  pending # express the regexp above with the code you wish you had
+  for_characters do
+    add :lucy, "Lucy"
+  end
 end
 
 When /^I call `([^`]*)`$/ do |command, string|
