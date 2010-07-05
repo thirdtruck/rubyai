@@ -10,7 +10,8 @@ Feature: add characters
 		Then the list of characters should include "Lucy"
 
 	Scenario: add an alias for a character
-		Given a character named "Lucy"
+		Given an empty script
+		And a character named "Lucy"
 		When I give them an alias of "Hidden Voice"
 		Then the character "Hidden Voice" should be the same as "Lucy"
 
