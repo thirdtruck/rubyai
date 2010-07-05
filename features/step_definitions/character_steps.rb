@@ -1,5 +1,4 @@
 Given /^an empty script$/ do
-  require "lib/RubyAi"
   @engine = RubyAi.new
   @results = []
 end
@@ -32,4 +31,12 @@ end
 
 Then /^I should see "([^"]*)"$/ do |output|
   @results.include?(output)
+end
+
+When /^I give them an alias of "([^"]*)"$/ do |arg1|
+  pending # express the regexp above with the code you wish you had
+end
+
+Then /^the character "([^"]*)" should be the same as "([^"]*)"$/ do |arg1, arg2|
+  pending # express the regexp above with the code you wish you had
 end
