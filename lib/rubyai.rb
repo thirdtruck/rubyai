@@ -1,8 +1,9 @@
 module RubyAi
 	class Game
-		attr_reader :characters, :scenes
+		attr_reader :characters, :stages, :scenes
 		def initialize(output)
 			@characters = { }
+			@stages = { }
 			@scenes = { }
 			@output = output
 		end
@@ -59,6 +60,14 @@ module RubyAi
 		def for_characters
 			def add(character_alias, character_name)
 				@characters[character_alias] = character_name
+			end
+			
+			yield if block_given?
+		end
+		
+		def for_stages
+			def add(stage_alias, stage_name)
+				@stages[stage_alias] = stage_name
 			end
 			
 			yield if block_given?
