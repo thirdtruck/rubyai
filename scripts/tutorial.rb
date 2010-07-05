@@ -68,8 +68,8 @@ add_scene :opening do
 	fairy "But you must!  We fairies only last as long as you believe in us!"
 	
 	choice do
-		option "Believe in the #{fairy}" { to_scene :believe }
-		option "Disbelieve in the #{fairy}" { to_scene :disbelieve }
+		option "Believe in the #{fairy}" do to_scene :believe end
+		option "Disbelieve in the #{fairy}" do to_scene :disbelieve end
 	end
 end
 
@@ -84,7 +84,7 @@ add_scene :disbelieve do
 	hide fairy
 	show lucy :terrified
 	
-	narrate "With a horrible scream, the #{fairy} vanishes in a cloud of sparkles.",
+	narrate "With a horrible scream, the #{fairy} vanishes in a cloud of sparkles."
 	lucy "spends the rest of the night researching \"Hallucinations\" and local folklore on AltMed and Wikipedia, respectively, instead of finishing her homework.  Exhausted, she sleeps in fails the class."
 	
 	gave_over :fail
