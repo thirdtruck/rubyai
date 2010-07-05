@@ -1,5 +1,6 @@
 Given /^an empty script$/ do
-  @game = RubyAi::Game.new
+  @output = output
+  @game = RubyAi::Game.new(@output)
   @results = []
 end
 
@@ -24,13 +25,13 @@ Given /^a character named "([^"]*)"$/ do |character_name|
 end
 
 When /^I call `([^`]*)`$/ do |command|
-  @results << @game.parse_script do
+  @output.puts @game.parse_script do
     eval(command)
   end
 end
 
-Then /^I should see "([^"]*)"$/ do |output|
-  @results.include?(output)
+Then /^I should see "([^"]*)"$/ do |results|
+  @output.messages.include?(results)
 end
 
 When /^I give them an alias of "([^"]*)"$/ do |arg1|

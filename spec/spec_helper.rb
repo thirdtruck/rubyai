@@ -1,1 +1,1 @@
-require 'lib/rubyai'
+require 'lib/RubyAi'

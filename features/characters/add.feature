@@ -15,4 +15,3 @@ Feature: add characters
 		When I give them an alias of "Hidden Voice"
 		Then the character "Hidden Voice" should be the same as "Lucy"
 
-
