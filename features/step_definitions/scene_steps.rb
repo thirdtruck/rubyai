@@ -1,8 +1,10 @@
-When /^I add a scene called "([^"]*)"$/ do |scene_name|
-  pending # express the regexp above with the code you wish you had
+When /^I add a scene with alias :(.*)$/ do |scene_name|
+  @game.parse_script do
+    add_scene scene_name.to_sym
+  end
 end
 
-Then /^the list of scenes should include "([^"]*)"$/ do |scene|
-  pending # express the regexp above with the code you wish you had
+Then /^the list of scenes should include :(.*)$/ do |scene|
+  @game.scenes.include?(scene.downcase.to_sym)
 end
 

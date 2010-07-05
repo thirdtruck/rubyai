@@ -6,6 +6,6 @@ Feature: add scenes
 	
 	Scenario: add a scene
 		Given an empty script
-		When I add a scene called "bedroom"
-		Then the list of scenes should include "bedroom"
+		When I add a scene with alias :intro
+		Then the list of scenes should include :intro
 

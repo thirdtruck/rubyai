@@ -3,6 +3,7 @@ module RubyAi
 		attr_reader :characters, :scenes
 		def initialize(output)
 			@characters = { }
+			@scenes = { }
 			@output = output
 		end
 		
@@ -61,6 +62,10 @@ module RubyAi
 			end
 			
 			yield if block_given?
+		end
+		
+		def add_scene(scene_alias, &block)
+			@scenes[scene_alias] = block
 		end
 	end
 end
