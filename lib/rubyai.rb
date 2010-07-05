@@ -1,4 +1,12 @@
 module RubyAi
+	class Stage
+		attr_reader :name, :description
+		
+		def initialize(name, description="")
+			@name = name
+			@description = description
+		end
+	end
 	class Game
 		attr_reader :characters, :stages, :scenes
 		def initialize(output)
@@ -67,7 +75,15 @@ module RubyAi
 		
 		def for_stages
 			def add(stage_alias, stage_name)
-				@stages[stage_alias] = stage_name
+				@current_description = ""
+				
+				def describe_as(new_description)
+					@current_description = new_description
+				end
+				
+				yield if block_given?
+				
+				@stages[stage_alias] = Stage.new(stage_name, @current_description)
 			end
 			
 			yield if block_given?
