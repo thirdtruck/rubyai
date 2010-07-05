@@ -20,7 +20,7 @@ When /^I add a character named "([^"]*)"$/ do |character_name|
   pending # express the regexp above with the code you wish you had
 end
 
-Then /^calling `([^`]*)` should return that character$/ do |command|
+Then /^the list of characters should include "([^`]*)"$/ do |character_name|
   pending # express the regexp above with the code you wish you had
 end
 
