@@ -30,11 +30,11 @@ add_scene :opening do
 	lucy "Phew!  Gym class sucks!  At least I lasted all the way through."
 	lucy "sighs as she tosses her backpack aside."
 	
-	# Use `<character> says "statement"` or `character then "does something"` if you need explicit 
+	# Use `<character> says "statement"` or `character thusly "does something"` if you need explicit 
 	# commands
 	show lucy :excited
 	lucy says "Now for my homework, then sleep!"
-	lucy then "flops onto her chair."
+	lucy thusly "flops onto her chair."
 	
 	narrate "The hours fly by as she types, the essays practically pouring out of her fingers and into the keyboard.",
 		"Hitting Ctrl-P just as the sun finishes setting, #{lucy} starts nodding off as the churning of the printer serenades her."
