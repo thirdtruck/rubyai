@@ -3,10 +3,12 @@ require 'spec'
 require 'lib/rubyai'
 
 class Output
-  attr_reader :messages
-  
   def initialize
     @messages = []
+  end
+  
+  def messages
+    @messages ||= []
   end
   
   def puts(message)
@@ -15,6 +17,6 @@ class Output
 end
 
 def output
-  output ||= Output.new
+  @output ||= Output.new
 end
 
