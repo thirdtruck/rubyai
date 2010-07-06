@@ -20,3 +20,6 @@ def output
   @output ||= Output.new
 end
 
+def game
+  @game ||= RubyAi::Game.new(output)
+end

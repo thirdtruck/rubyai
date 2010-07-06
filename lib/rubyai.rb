@@ -7,6 +7,13 @@ module RubyAi
 			@description = description
 		end
 	end
+	class Scene
+		attr_accessor :contents
+		
+		def initialize(contents)
+			@contents = contents
+		end
+	end
 	class Game
 		attr_reader :characters, :stages, :scenes
 		def initialize(output)
@@ -54,16 +61,20 @@ module RubyAi
 				end
 				
 				character = @characters[method]
-				if not character
-					raise NoMethodError.new "No such character: #{method}"
-				end
+				stage = @stages[method]
 				
-				if command.command_type == :statement
-					@output.puts speak(character, command)
-				elsif command.command_type == :action
-					@output.puts action(character, command)
+				if character	
+					if command.command_type == :statement
+						@output.puts speak(character, command)
+					elsif command.command_type == :action
+						@output.puts action(character, command)
+					else
+						raise NoMethodError.new "No such method: #{method} for character #{character}"
+					end
+				elsif stage
+					@output.puts stage.description
 				else
-					raise NoMethodError.new "No such method: #{method} for character #{character}"
+					raise NoMethodError.new "No such character or stage: #{method}"
 				end
 			end
 			instance_eval(&block) if block_given?
@@ -95,6 +106,16 @@ module RubyAi
 		
 		def add_scene(scene_alias, &block)
 			@scenes[scene_alias] = block
+		end
+		
+		def run_scene(scene_alias)
+			def show(element)
+				if @stages[element]
+					@output.puts @stages[element].description
+				end
+			end
+			
+			@scenes[scene_alias].call
 		end
 	end
 end

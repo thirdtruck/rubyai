@@ -68,8 +68,8 @@ add_scene :opening do
 	fairy "But you must!  We fairies only last as long as you believe in us!"
 	
 	choice do
-		option "Believe in the #{fairy}" do to_scene :believe end
-		option "Disbelieve in the #{fairy}" do to_scene :disbelieve end
+		option "Believe in the #{fairy}" do run_scene :believe end
+		option "Disbelieve in the #{fairy}" do run_scene :disbelieve end
 	end
 end
 
@@ -103,3 +103,6 @@ add_scene :believe do
 	
 	# And more stuff happens...
 end
+
+run_scene :intro
+

@@ -1,5 +1,5 @@
 When /^I add a character named "([^"]*)"$/ do |character_name|
-  @game.parse_script do
+  game.parse_script do
     for_characters do
       add character_name.downcase.to_sym, character_name
     end
@@ -7,11 +7,11 @@ When /^I add a character named "([^"]*)"$/ do |character_name|
 end
 
 Then /^the list of characters should include "([^`]*)"$/ do |character_name|
-  @game.characters.should include character_name.downcase.to_sym
+  game.characters.should include character_name.downcase.to_sym
 end
 
 Given /^a character named "([^"]*)"$/ do |character_name|
-  @game.parse_script do
+  game.parse_script do
     for_characters do
       add character_name.downcase.to_sym, character_name
     end

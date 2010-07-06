@@ -5,9 +5,16 @@ Feature: scene events
 	So that interesting things happen
 	
 	Scenario: show a stage
-		Given an empty script
-		And a scene with alias :intro
+		Given a scene with alias :intro and contents `show bedroom`
 		And a stage called "Bedroom" and described as "A messy bedroom."
-		When I call `show bedroom` in the scene
+		When I run a scene called :intro
 		Then I should see "A messy bedroom."
+
+	Scenario: show two stages
+		Given a scene with alias :intro
+		And a stage called "Bedroom" and described as "A messy bedroom."
+		And a stage called "Kitchen" and described as "My den of culinary iniquity."
+		When I run a scene called :intro
+		Then I should see "A messy bedroom."
+		And I should see "My den of culinary iniquity."
 
