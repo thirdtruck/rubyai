@@ -14,7 +14,9 @@ Feature: scene events
 		Given a scene with alias :intro
 		And a stage called "Bedroom" and described as "A messy bedroom."
 		And a stage called "Kitchen" and described as "My den of culinary iniquity."
-		When I run a scene called :intro
+		When I add `show bedroom` to scene :intro
+		And I add `show kitchen` to scene :intro
+		And I run a scene called :intro
 		Then I should see "A messy bedroom."
 		And I should see "My den of culinary iniquity."
 

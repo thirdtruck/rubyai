@@ -10,8 +10,19 @@ module RubyAi
 	class Scene
 		attr_accessor :contents
 		
-		def initialize(contents)
-			@contents = contents
+		def initialize(&block)
+			@contents = []
+			@contents << block if block
+		end
+		
+		def append(&block)
+			@contents << block
+		end
+		
+		def run
+			for block in @contents
+				block.call
+			end
 		end
 	end
 	class Game
@@ -47,6 +58,10 @@ module RubyAi
 					:action
 				end
 				does_thing
+			end
+			
+			def _append_to_scene(scene, &block)
+				@scenes[scene].append(&block)
 			end
 			
 			def method_missing(method, *args)
@@ -105,7 +120,7 @@ module RubyAi
 		end
 		
 		def add_scene(scene_alias, &block)
-			@scenes[scene_alias] = block
+			@scenes[scene_alias] = Scene.new(&block)
 		end
 		
 		def run_scene(scene_alias)
@@ -115,7 +130,7 @@ module RubyAi
 				end
 			end
 			
-			@scenes[scene_alias].call
+			@scenes[scene_alias].run
 		end
 	end
 end
