@@ -5,18 +5,18 @@ Feature: scene events
 	So that interesting things happen
 	
 	Scenario: show a stage
-		Given a scene with alias :intro and contents `show bedroom`
-		And a stage called "Bedroom" and described as "A messy bedroom."
-		When I run a scene called :intro
+		Given an :intro scene with contents `show bedroom`
+		And a :bedroom stage named "Bedroom" and described as "A messy bedroom."
+		And I run scene :intro
 		Then I should see "A messy bedroom."
 
 	Scenario: show two stages
-		Given a scene with alias :intro
-		And a stage called "Bedroom" and described as "A messy bedroom."
-		And a stage called "Kitchen" and described as "My den of culinary iniquity."
+		Given an :intro scene
+		And a :bedroom stage named "Bedroom" and described as "A messy bedroom."
+		And a :kitchen stage named "Kitchen" and described as "My den of culinary iniquity."
 		When I add `show bedroom` to scene :intro
 		And I add `show kitchen` to scene :intro
-		And I run a scene called :intro
+		And I run scene :intro
 		Then I should see "A messy bedroom."
 		And I should see "My den of culinary iniquity."
 

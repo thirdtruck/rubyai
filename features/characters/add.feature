@@ -6,12 +6,12 @@ Feature: add characters
 	
 	Scenario: add a character
 		Given an empty script
-		When I add a character named "Lucy"
-		Then the list of characters should include "Lucy"
+		When I add a :lucy character named "Lucy"
+		Then the list of characters should include :lucy
 
-	Scenario: add an alias for a character
+	Scenario: add a pseudonym for a character
 		Given an empty script
-		And a character named "Lucy"
-		When I give them an alias of "Hidden Voice"
-		Then the character "Hidden Voice" should be the same as "Lucy"
+		When I add a :lucy character named "Lucy"
+		When I give them a pseudonym of :hidden_voice with name "Hidden Voice"
+		Then the character :hidden_voice should be the same as :lucy
 

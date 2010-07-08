@@ -6,11 +6,11 @@ Feature: add stages
 	
 	Scenario: add a stage
 		Given an empty script
-		When I add a stage named "Bedroom"
-		Then the list of stages should include "Bedroom"
+		When I add a :bedroom stage named "Bedroom"
+		Then the list of stages should include a :bedroom stage named "Bedroom"
 	
 	Scenario: add a stage with a description
 		Given an empty script
-		When I add a stage named "Bedroom" with a description of "The place where I sleep."
-		Then the list of stages should include "Bedroom"
-		And the stage "Bedroom" should have a description of "The place where I sleep."
+		When I add a :bedroom stage named "Bedroom" and described as "The place where I sleep."
+		Then the list of stages should include a :bedroom stage named "Bedroom"
+		And the :bedroom stage should have a description of "The place where I sleep."

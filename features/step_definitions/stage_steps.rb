@@ -1,33 +1,33 @@
-When /^I add a stage named "([^"]*)" with a description of "([^"]*)"$/ do |stage_name, description|
+When /^I add an? :(.*) stage named "([^"]*)" and described as "([^"]*)"$/ do |stage_id, stage_name, description|
   game.parse_script do
     for_stages do
-      add stage_name.downcase.to_sym, stage_name do
+      add stage_id.to_sym, stage_name do
         describe_as description
       end
     end
   end
 end
 
-When /^I add a stage named "([^"]*)"$/ do |stage_name|
+When /^I add an? :(.*) stage named "([^"]*)"$/ do |stage_id, stage_name|
   game.parse_script do
     for_stages do
-      add stage_name.downcase.to_sym, stage_name
+      add stage_id.to_sym, stage_name
     end
   end
 end
 
-Then /^the list of stages should include "([^"]*)"$/ do |stage_name|
-  game.stages.should include stage_name.downcase.to_sym
+Then /^the list of stages should include a :(.*) stage named "([^"]*)"$/ do |stage_id, stage_name|
+  game.stages[stage_id.to_sym].name.should == stage_name
 end
 
-Then /^the stage "([^"]*)" should have a description of "([^"]*)"$/ do |stage_name, description|
-  game.stages[stage_name.downcase.to_sym].description.should == description
+Then /^the :(.*) stage should have a description of "([^"]*)"$/ do |stage_id, description|
+  game.stages[stage_id.to_sym].description.should == description
 end
 
-Given /^a stage called "([^"]*)" and described as "([^"]*)"$/ do |stage_name, description|
+Given /^an? :(.*) stage named "([^"]*)" and described as "([^"]*)"$/ do |stage_id, stage_name, description|
   game.parse_script do
     for_stages do
-      add stage_name.downcase.to_sym, stage_name do
+      add stage_id.to_sym, stage_name do
         describe_as description
       end
     end
