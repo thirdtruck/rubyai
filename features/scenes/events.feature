@@ -20,3 +20,9 @@ Feature: scene events
 		Then I should see "A messy bedroom."
 		And I should see "My den of culinary iniquity."
 
+	Scenario: play a sound
+		Given an :intro scene
+		And a sound :click named "Click"
+		When I add `sound click` to scene :intro
+		And I run scene :intro
+		Then I should see "*Click*"
