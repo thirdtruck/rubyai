@@ -7,6 +7,18 @@ module RubyAi
 			@description = description
 		end
 	end
+	class Sound
+		attr_reader :name, :description
+		
+		def initialize(name, description="")
+			@name = name
+			@description = description || name
+		end
+		
+		def show_as
+			"*#{@name}*"
+		end
+	end
 	class Scene
 		attr_accessor :contents
 		
@@ -30,6 +42,7 @@ module RubyAi
 		def initialize(output)
 			@characters = { }
 			@stages = { }
+			@sounds = { }
 			@scenes = { }
 			@output = output
 		end
@@ -77,6 +90,7 @@ module RubyAi
 				
 				character = @characters[method]
 				stage = @stages[method]
+				sound = @sounds[method]
 				
 				if character	
 					if command.command_type == :statement
@@ -88,6 +102,8 @@ module RubyAi
 					end
 				elsif stage
 					@output.puts stage.description
+				elsif sound
+					sound
 				else
 					raise NoMethodError.new "No such character or stage: #{method}"
 				end
@@ -98,6 +114,14 @@ module RubyAi
 		def for_characters
 			def add(character_alias, character_name)
 				@characters[character_alias] = character_name
+			end
+			
+			yield if block_given?
+		end
+		
+		def for_sounds
+			def add(sound_id, sound_name)
+				@sounds[sound_id] = Sound.new(sound_name)
 			end
 			
 			yield if block_given?
@@ -125,9 +149,14 @@ module RubyAi
 		
 		def run_scene(scene_alias)
 			def show(element)
-				if @stages[element]
+				if element.respond_to? :show_as
+					@output.puts element.show_as
+				elsif @stages[element]
 					@output.puts @stages[element].description
 				end
+			end
+			def sound(sound_element)
+				@output.puts sound_element.show_as
 			end
 			
 			@scenes[scene_alias].run
