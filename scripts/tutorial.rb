@@ -1,10 +1,13 @@
 for_characters do
 	add :lucy, "Lucy"
 	add :fairy, "Ruby'Ai Fairy" do
-		# Aliases let you refer to this character by other names both in commands and with 
+		# Pseudonyms let you refer to this character by other names both in commands and with 
 		# different names in the novel text
-		add_alias :hidden_fairy, "????"
+		# TODO: Consider adding this feature back in when it offers a real benefit beyond 
+		# just add a new character
+		# pseudonym :hidden_fairy, "????"
 	end
+	add :hidden_fairy, "????"
 end
 
 for_stages do
