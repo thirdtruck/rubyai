@@ -10,6 +10,11 @@ for_characters do
 	add :hidden_fairy, "????"
 end
 
+for_sounds do
+	add :click, "Click"
+	add :poof, "Poof"
+end
+
 for_stages do
 	add :bedroom do
 		describe_as "Somewhere underneath piles of clothes and stuffed animals lies a bed, or so my mom keeps telling me.  If not for the closet and my computer desk, you might not realize that you were in my bedroom."
@@ -24,8 +29,8 @@ end
 add_scene :opening do
 	show bedroom
 	
-	# Sounds will play an audio file and display the text as "*<sound>*" by default
-	sound click, "Click"
+	# By default, `sound <id>` will try to play an audio file named "<id>.ogg" and display the text as "*<sound.name>*"
+	sound click
 	
 	# The command `<character> "string"` makes the character say or do something, depending on the
 	# capitalization of the first letter (uppercase -> statement, lowercase -> action).
