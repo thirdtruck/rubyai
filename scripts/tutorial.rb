@@ -88,7 +88,7 @@ add_scene :disbelieve do
 	show lucy :terrified
 	
 	narrate "With a horrible scream, the #{fairy} vanishes in a cloud of sparkles."
-	lucy "spends the rest of the night researching \"Hallucinations\" and local folklore on AltMed and Wikipedia, respectively, instead of finishing her homework.  Exhausted, she sleeps in fails the class."
+        lucy "spends the rest of the night researching \"Hallucinations\" and local folklore on AltMed and Wikipedia instead of finishing her homework.  Exhausted, she sleeps in late, missing the class entirely and forced into another year of classes and student loans."
 	
 	gave_over :fail
 end
