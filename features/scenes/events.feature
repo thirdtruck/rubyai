@@ -33,3 +33,18 @@ Feature: scene events
 		When I add `sound click` to scene :intro
 		And I run scene :intro
 		Then I should see "*Click*"
+	
+	Scenario: narration
+		Given an :intro scene
+		And a :lucy character named "Lucy"
+		When I add `narrate "And then the sun set."` to scene :intro
+		And I run scene :intro
+		Then I should see "And then the sun set."
+		
+	Scenario: narration with references
+		Given an :intro scene
+		And a :lucy character named "Lucy"
+		When I add `narrate "And then the sun set as #{lucy} watched on."` to scene :intro
+		And I run scene :intro
+		Then I should see "And then the sun set as Lucy watched on."
+		
