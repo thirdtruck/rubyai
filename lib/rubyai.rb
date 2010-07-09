@@ -5,6 +5,10 @@ module RubyAi
 		def initialize(name)
 			@name =  name
 		end
+		
+		def to_s
+			@name
+		end
 	end
 	class Stage
 		attr_reader :name, :description
@@ -60,9 +64,14 @@ module RubyAi
 		end
 		
 		def parse_script(&block)
+			def narrate(statement)
+				@output.puts statement	
+			end
+			
 			def speak(character, statement)
 				"#{character.name}: #{statement}"
 			end
+			
 			def action(character, does_thing)
 				"#{character.name} #{does_thing}"
 			end
@@ -158,7 +167,6 @@ module RubyAi
 		
 		def run_scene(scene_alias)
 			def show(element, image_name=nil)
-				puts "Element name: #{element && element.name}"
 				case
 					when image_name then @output.puts "[#{element.name} #{image_name.to_s}]"
 					when element.respond_to?(:show_as)then @output.puts element.show_as
