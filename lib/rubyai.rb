@@ -1,4 +1,11 @@
 module RubyAi
+	class Character
+		attr_reader :name
+		
+		def initialize(name)
+			@name =  name
+		end
+	end
 	class Stage
 		attr_reader :name, :description
 		
@@ -54,10 +61,10 @@ module RubyAi
 		
 		def parse_script(&block)
 			def speak(character, statement)
-				"#{character}: #{statement}"
+				"#{character.name}: #{statement}"
 			end
 			def action(character, does_thing)
-				"#{character} #{does_thing}"
+				"#{character.name} #{does_thing}"
 			end
 			
 			def says(statement)
@@ -98,12 +105,14 @@ module RubyAi
 					elsif command.command_type == :action
 						@output.puts action(character, command)
 					else
-						raise NoMethodError.new "No such method: #{method} for character #{character}"
+						raise NoMethodError.new "No such method: #{method} for character #{character.name}"
 					end
+					return character
 				elsif stage
 					@output.puts stage.description
+					return stage
 				elsif sound
-					sound
+					return sound
 				else
 					raise NoMethodError.new "No such character or stage: #{method}"
 				end
@@ -113,7 +122,7 @@ module RubyAi
 		
 		def for_characters
 			def add(character_alias, character_name)
-				@characters[character_alias] = character_name
+				@characters[character_alias] = Character.new(character_name)
 			end
 			
 			yield if block_given?
@@ -148,11 +157,12 @@ module RubyAi
 		end
 		
 		def run_scene(scene_alias)
-			def show(element)
-				if element.respond_to? :show_as
-					@output.puts element.show_as
-				elsif @stages[element]
-					@output.puts @stages[element].description
+			def show(element, image_name=nil)
+				puts "Element name: #{element && element.name}"
+				case
+					when image_name then @output.puts "[#{element.name} #{image_name.to_s}]"
+					when element.respond_to?(:show_as)then @output.puts element.show_as
+					when @stages[element] then @output.puts @stages[element].description
 				end
 			end
 			def sound(sound_element)

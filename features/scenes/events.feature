@@ -4,10 +4,17 @@ Feature: scene events
 	I want to add events to my scenes
 	So that interesting things happen
 	
+	Scenario: show a character
+		Given an :intro scene
+		And a :lucy character named "Lucy"
+		When I add `show lucy, :smiling` to scene :intro
+		And I run scene :intro
+		Then I should see "[Lucy smiling]"
+
 	Scenario: show a stage
 		Given an :intro scene with contents `show bedroom`
 		And a :bedroom stage named "Bedroom" and described as "A messy bedroom."
-		And I run scene :intro
+		When I run scene :intro
 		Then I should see "A messy bedroom."
 
 	Scenario: show two stages
