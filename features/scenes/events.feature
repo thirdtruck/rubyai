@@ -48,3 +48,11 @@ Feature: scene events
 		And I run scene :intro
 		Then I should see "And then the sun set as Lucy watched on."
 		
+	Scenario: multi-part narration
+		Given an :intro scene
+		And a :lucy character named "Lucy"
+		When I add `narrate "And then the sun set.", "But that next morning..."` to scene :intro
+		And I run scene :intro
+		Then I should see "And then the sun set."
+		And I should see "But that next morning..."
+		

@@ -50,22 +50,26 @@ module RubyAi
 	end
 	class Game
 		attr_reader :characters, :stages, :scenes
-		def initialize(output)
+		def initialize(output, source_filename=nil)
 			@characters = { }
 			@stages = { }
 			@sounds = { }
 			@scenes = { }
 			@output = output
+			@source_file = source_filename ? File.open(source_filename).read : nil
 		end
 		
 		def start
 			@output.puts "Welcome to Ruby'Ai!"
 			@output.puts "Begin? [y/n]:"
+			eval(@source_file) if @source_file
 		end
 		
 		def parse_script(&block)
-			def narrate(statement)
-				@output.puts statement	
+			def narrate(*statements)
+				statements.each do | statement |
+					@output.puts statement	
+				end
 			end
 			
 			def speak(character, statement)
@@ -93,15 +97,15 @@ module RubyAi
 				@scenes[scene].append(&block)
 			end
 			
-			def method_missing(method, *args)
-				command = args[0]
-				
-				if command.respond_to? :command_type
-					# it's already a command
-				elsif command =~ /^[a-z]/
-					thusly(command)
-				else
-					says(command)
+			def method_missing(method, *commands)
+				commands.each do |command|
+					if command.respond_to? :command_type
+						# it's already a command
+					elsif command =~ /^[a-z]/
+						thusly(command)
+					else
+						says(command)
+					end
 				end
 				
 				character = @characters[method]
@@ -109,12 +113,14 @@ module RubyAi
 				sound = @sounds[method]
 				
 				if character	
-					if command.command_type == :statement
-						@output.puts speak(character, command)
-					elsif command.command_type == :action
-						@output.puts action(character, command)
-					else
-						raise NoMethodError.new "No such method: #{method} for character #{character.name}"
+					commands.each do |command|
+						if command.command_type == :statement
+							@output.puts speak(character, command)
+						elsif command.command_type == :action
+							@output.puts action(character, command)
+						else
+							raise NoMethodError.new "No such method: #{method} for character #{character.name}"
+						end
 					end
 					return character
 				elsif stage
@@ -177,7 +183,7 @@ module RubyAi
 				@output.puts sound_element.show_as
 			end
 			
-			@scenes[scene_alias].run
+			parse_script { @scenes[scene_alias].run }
 		end
 	end
 end

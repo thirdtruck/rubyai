@@ -28,3 +28,10 @@ Feature: character actions
 		When I call `lucy thusly "does something."`
 		Then I should see "Lucy does something."
 
+	Scenario: character speaks implicitly across multiple lines
+		Given an empty script
+		And a :lucy character named "Lucy"
+		When I call `lucy "Hello, World!", "How are you today?"`
+		Then I should see "Lucy: Hello, World!"
+		And I should see "Lucy: How are you today?"
+
