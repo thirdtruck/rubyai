@@ -44,3 +44,8 @@ When /^I add `([^`]*)` to scene :(.*)$/ do |command, scene_id|
     end
   end
 end
+
+When /^I choose option "([^"]*)"$/ do |choice|
+  input.add_message(choice)
+end
+

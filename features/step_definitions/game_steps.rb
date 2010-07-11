@@ -3,14 +3,16 @@ end
 
 Given /^an empty script$/ do
   @output = output
-  game = RubyAi::Game.new(@output)
+  @input = input
+  game = RubyAi::Game.new(@input, @output)
   
   game.start
 end
 
 When /^I start a game$/ do
   @output = output
-  game = RubyAi::Game.new(@output)
+  @input = input
+  game = RubyAi::Game.new(@input, @output)
   
   game.start
 end

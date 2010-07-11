@@ -48,14 +48,53 @@ module RubyAi
 			end
 		end
 	end
+	class Choice
+		class Option
+			attr_accessor :description, :block
+			
+			def initialize(description, &block)
+				@description = description
+				@block = block
+			end
+		end
+		
+		attr_accessor :options
+		
+		def option(description, &block)
+			@options << Option.new(description, &block)
+		end
+		
+		def initialize(&block)
+			@options = []
+			@stringified = ""
+			instance_eval(&block) if block
+			
+			option_index = 1
+			@options.each do |option|
+				@stringified << "[#{option_index}] #{option.description}\n"
+				option_index = option_index + 1
+			end
+			
+			@stringified << "Choose one [1#{option_index > 1 ? "-"+option_index.to_s : ""}]: "
+		end
+		
+		def to_s
+			@stringified
+		end
+		
+		def user_chooses(choice)
+			@options[choice.to_i-1].block
+		end
+	end
 	class Game
 		attr_reader :characters, :stages, :scenes
-		def initialize(output, source_filename=nil)
+		def initialize(input, output, source_filename=nil)
 			@characters = { }
 			@stages = { }
 			@sounds = { }
 			@scenes = { }
 			@output = output
+			@input = input
 			@source_file = source_filename ? File.open(source_filename).read : nil
 		end
 		
@@ -66,6 +105,12 @@ module RubyAi
 		end
 		
 		def parse_script(&block)
+			def choice(&block)
+				current_choice = Choice.new(&block)
+				@output.puts current_choice
+				result = current_choice.user_chooses(@input.gets)
+				instance_eval &result
+			end
 			def narrate(*statements)
 				statements.each do | statement |
 					@output.puts statement	
