@@ -109,7 +109,9 @@ add_scene :believe do
 	show lucy, :terrified
 	lucy "Riiight."
 	
-	# And more stuff happens...
+	narrate "Over the course of the night, the dynamic duo crafts a creative masterpiece!  #{lucy} graduates and goes to a fulfulling career in education!"
+	
+	game_over :success
 end
 
 run_scene :opening
