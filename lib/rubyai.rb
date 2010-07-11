@@ -75,13 +75,13 @@ module RubyAi
 			@stringified = ""
 			instance_eval(&block) if block
 			
-			option_index = 1
+			total_questions = 0
 			@options.each do |option|
-				@stringified << "[#{option_index}] #{option.description}\n"
-				option_index = option_index + 1
+				@stringified << "[#{total_questions+1}] #{option.description}\n"
+				total_questions = total_questions + 1
 			end
 			
-			@stringified << "Choose one [1#{option_index-1 > 1 ? "-"+option_index.to_s : ""}]: "
+			@stringified << "Choose one [1#{total_questions > 1 ? "-"+total_questions.to_s : ""}]: "
 		end
 		
 		def to_s
