@@ -27,6 +27,20 @@ Feature: scene events
 		Then I should see "A messy bedroom."
 		And I should see "My den of culinary iniquity."
 
+	Scenario: hide a character
+		Given an :intro scene
+		And a :lucy character named "Lucy"
+		When I add `hide lucy` to scene :intro
+		And I run scene :intro
+		Then I should see "[Hide Lucy]"
+
+	Scenario: hide a stage
+		Given an :intro scene
+		And a :bedroom stage named "Bedroom" and described as "A messy bedroom."
+		When I add `hide bedroom` to scene :intro
+		And I run scene :intro
+		Then I should see "[Hide Bedroom]"
+
 	Scenario: play a sound
 		Given an :intro scene
 		And a sound :click named "Click"

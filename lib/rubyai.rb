@@ -230,6 +230,9 @@ module RubyAi
 					when @stages[element] then @output.puts @stages[element].description
 				end
 			end
+			def hide(element)
+				@output.puts "[Hide #{element.name}]"
+			end
 			def sound(sound_element)
 				@output.puts sound_element.show_as
 			end
