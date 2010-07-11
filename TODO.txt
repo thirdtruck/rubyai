@@ -1,3 +1,6 @@
 Refactor the features to take "Given a scene called :<scene_name> with contents `<contents>` so that I can initialize it properly for tests.  That, or some ability to append more procs.
 
 Replace the "game" singleton object with better pre-feature code support instead, if actually preferable.
+
+Refactor the features and steps to expect *only* certain content so as to avoid unexpected content.
+

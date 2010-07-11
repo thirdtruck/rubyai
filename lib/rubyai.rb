@@ -59,7 +59,7 @@ module RubyAi
 		end
 		
 		def method_missing(method, *args, &block)
-			@game.send(method, args, block)
+			@game.send(method, *args, &block)
 		end
 		
 		attr_accessor :options
@@ -156,7 +156,7 @@ module RubyAi
 				@scenes[scene].append(&block)
 			end
 			
-			def method_missing(method, *commands)
+			def method_missing(method, *commands, &block)
 				commands.each do |command|
 					if command.respond_to? :command_type
 						# it's already a command
