@@ -70,3 +70,23 @@ Feature: scene events
 		Then I should see "And then the sun set."
 		And I should see "But that next morning..."
 		
+	Scenario: gave over, generic
+		Given an :intro scene
+		When I add `game_over` to scene :intro
+		And I run scene :intro
+		Then I should see "Game Over!"
+		And I should see "Please play again!"
+		
+	Scenario: gave over, success
+		Given an :intro scene
+		When I add `game_over :success` to scene :intro
+		And I run scene :intro
+		Then I should see "Game Over!"
+		And I should see "You win!"
+		
+	Scenario: gave over, failure
+		Given an :intro scene
+		When I add `game_over :failure` to scene :intro
+		And I run scene :intro
+		Then I should see "Game Over!"
+		And I should see "You lose!"

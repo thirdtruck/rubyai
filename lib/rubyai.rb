@@ -111,6 +111,14 @@ module RubyAi
 		end
 		
 		def parse_script(&block)
+			def game_over(type=nil)
+				@output.puts "Game Over!"
+				case type
+					when :success then @output.puts "You win!"
+					when :failure then @output.puts "You lose!"
+					else @output.puts "Please play again!"
+				end
+			end
 			def choice(&block)
 				current_choice = Choice.new(self, &block)
 				@output.puts current_choice
