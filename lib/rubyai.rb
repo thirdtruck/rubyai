@@ -58,13 +58,19 @@ module RubyAi
 			end
 		end
 		
+		def method_missing(method, *args, &block)
+			@game.send(method, args, block)
+		end
+		
 		attr_accessor :options
+		attr_reader :game
 		
 		def option(description, &block)
 			@options << Option.new(description, &block)
 		end
 		
-		def initialize(&block)
+		def initialize(game, &block)
+			@game = game
 			@options = []
 			@stringified = ""
 			instance_eval(&block) if block
@@ -75,7 +81,7 @@ module RubyAi
 				option_index = option_index + 1
 			end
 			
-			@stringified << "Choose one [1#{option_index > 1 ? "-"+option_index.to_s : ""}]: "
+			@stringified << "Choose one [1#{option_index-1 > 1 ? "-"+option_index.to_s : ""}]: "
 		end
 		
 		def to_s
@@ -106,7 +112,7 @@ module RubyAi
 		
 		def parse_script(&block)
 			def choice(&block)
-				current_choice = Choice.new(&block)
+				current_choice = Choice.new(self, &block)
 				@output.puts current_choice
 				result = current_choice.user_chooses(@input.gets)
 				instance_eval &result
