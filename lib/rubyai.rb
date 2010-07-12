@@ -94,6 +94,7 @@ module RubyAi
 	end
 	class Game
 		attr_reader :characters, :stages, :scenes
+		
 		def initialize(input, output, source_filename=nil)
 			@characters = { }
 			@stages = { }
@@ -110,104 +111,113 @@ module RubyAi
 			eval(@source_file) if @source_file
 		end
 		
+		def game_over(type=nil)
+			@output.puts "Game Over!"
+			case type
+				when :success then @output.puts "You win!"
+				when :failure then @output.puts "You lose!"
+				else @output.puts "Please play again!"
+			end
+		end
+		def choice(&block)
+			current_choice = Choice.new(self, &block)
+			@output.puts current_choice
+			result = current_choice.user_chooses(@input.gets)
+			instance_eval &result
+		end
+		def narrate(*statements)
+			statements.each do | statement |
+				@output.puts statement	
+			end
+		end
+		
+		def speak(character, statement)
+			"#{character.name}: #{statement}"
+		end
+		
+		def action(character, does_thing)
+			"#{character.name} #{does_thing}"
+		end
+		
+		def says(statement)
+			def statement.command_type
+				:statement
+			end
+			statement
+		end
+		def thusly(does_thing)
+			def does_thing.command_type
+				:action
+			end
+			does_thing
+		end
+		
+		def _append_to_scene(scene, &block)
+			@scenes[scene].append(&block)
+		end
+		
 		def parse_script(&block)
-			def game_over(type=nil)
-				@output.puts "Game Over!"
-				case type
-					when :success then @output.puts "You win!"
-					when :failure then @output.puts "You lose!"
-					else @output.puts "Please play again!"
-				end
-			end
-			def choice(&block)
-				current_choice = Choice.new(self, &block)
-				@output.puts current_choice
-				result = current_choice.user_chooses(@input.gets)
-				instance_eval &result
-			end
-			def narrate(*statements)
-				statements.each do | statement |
-					@output.puts statement	
-				end
-			end
-			
-			def speak(character, statement)
-				"#{character.name}: #{statement}"
-			end
-			
-			def action(character, does_thing)
-				"#{character.name} #{does_thing}"
-			end
-			
-			def says(statement)
-				def statement.command_type
-					:statement
-				end
-				statement
-			end
-			def thusly(does_thing)
-				def does_thing.command_type
-					:action
-				end
-				does_thing
-			end
-			
-			def _append_to_scene(scene, &block)
-				@scenes[scene].append(&block)
-			end
-			
-			def method_missing(method, *commands, &block)
-				commands.each do |command|
-					if command.respond_to? :command_type
-						# it's already a command
-					elsif command =~ /^[a-z]/
-						thusly(command)
-					else
-						says(command)
-					end
-				end
-				
-				character = @characters[method]
-				stage = @stages[method]
-				sound = @sounds[method]
-				
-				if character	
-					commands.each do |command|
-						if command.command_type == :statement
-							@output.puts speak(character, command)
-						elsif command.command_type == :action
-							@output.puts action(character, command)
-						else
-							raise NoMethodError.new "No such method: #{method} for character #{character.name}"
-						end
-					end
-					return character
-				elsif stage
-					@output.puts stage.description
-					return stage
-				elsif sound
-					return sound
-				else
-					raise NoMethodError.new "No such character or stage: #{method}"
-				end
-			end
 			instance_eval(&block) if block_given?
+		end
+		
+		def dynamic_character(character_alias, *commands)
+			character = @characters[character_alias]
+			commands.each do |command|
+				if command.respond_to? :command_type
+					# it's already a command
+				elsif command =~ /^[a-z]/
+					thusly(command)
+				else
+					says(command)
+				end
+			end
+			
+			commands.each do |command|
+				if command.command_type == :statement
+					@output.puts speak(character, command)
+				elsif command.command_type == :action
+					@output.puts action(character, command)
+				else
+					raise NoMethodError.new "No such method: #{method} for character #{character.name}"
+				end
+			end
+			return character
 		end
 		
 		def for_characters
 			def add(character_alias, character_name)
 				@characters[character_alias] = Character.new(character_name)
+				
+				self.class.class_eval do
+					eval "def #{character_alias.to_s}(*commands); dynamic_character(:#{character_alias.to_s}, *commands); end"
+				end
 			end
 			
 			yield if block_given?
 		end
 		
+		def dynamic_sound(sound_id)
+			sound = @sounds[sound_id]
+			
+			return sound
+		end
+		
 		def for_sounds
 			def add(sound_id, sound_name)
 				@sounds[sound_id] = Sound.new(sound_name)
+				
+				self.class.class_eval do
+					eval "def #{sound_id.to_s}(*commands); dynamic_sound(:#{sound_id.to_s}, *commands); end"
+				end
 			end
 			
 			yield if block_given?
+		end
+		
+		def dynamic_stage(stage_alias, *commands)
+			stage = @stages[stage_alias]
+			@output.puts stage.description
+			return stage
 		end
 		
 		def for_stages
@@ -221,6 +231,10 @@ module RubyAi
 				yield if block_given?
 				
 				@stages[stage_alias] = Stage.new(stage_name, @current_description)
+				
+				self.class.class_eval do
+					eval "def #{stage_alias.to_s}(*commands); dynamic_stage(:#{stage_alias.to_s}, *commands); end"
+				end
 			end
 			
 			yield if block_given?
