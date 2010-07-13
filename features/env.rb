@@ -2,42 +2,42 @@ $LOAD_PATH << File.expand_path('../../lib', __FILE__)
 require 'spec'
 require 'lib/rubyai'
 
-class Input
+class PassiveInterface
   def initialize
-    @messages = []
+    @incoming_messages = []
+    @outgoing_messages = []
   end
   
   def add_message(message)
-    @messages.push(message)
-  end
-  
-  def gets
-    @messages.pop
-  end
-end
-
-class Output
-  def initialize
-    @messages = []
+    @incoming_messages.push(message)
   end
   
   def messages
-    @messages ||= []
+    @outgoing_messages
+  end
+  
+  def gets(prompt=nil)
+    self.puts(prompt)
+    @incoming_messages.pop
   end
   
   def puts(message)
     message.to_s.split("\n").each do |line|
-      @messages << line
+      @outgoing_messages.push(line)
     end
   end
 end
 
+def interface
+	@interface ||= PassiveInterface.new
+end
+
 def output
-  @output ||= Output.new
+  @output ||= interface
 end
 
 def input
-  @input ||= Input.new
+  @input ||= interface
 end
 
 def game

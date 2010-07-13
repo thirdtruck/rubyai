@@ -1,3 +1,21 @@
+# Required just for the text-based interface
+require 'rubygems'
+require 'highline/import'
+
+class InteractiveInterface
+	def puts(string)
+		Kernel.print(string)
+		ask(''){ |q| q.echo = '' }
+		Kernel.puts()
+	end
+	def gets(query)
+		query = query + " " if query !~ /\s$/
+		answer = ask(query) { |q| q.echo = true }
+		Kernel.puts()
+		answer
+	end
+end
+
 module RubyAi
 	class Character
 		attr_reader :name
@@ -81,7 +99,7 @@ module RubyAi
 				total_questions = total_questions + 1
 			end
 			
-			@stringified << "Choose one [1#{total_questions > 1 ? "-"+total_questions.to_s : ""}]: "
+			@stringified << "Choose one [1#{total_questions > 1 ? "-"+total_questions.to_s : ""}]:"
 		end
 		
 		def to_s
@@ -89,6 +107,7 @@ module RubyAi
 		end
 		
 		def user_chooses(choice)
+			# TODO: make this require a valid option; *.to_i automatically defaults to zero and so supplies an inadvertent default of the final choice.
 			@options[choice.to_i-1].block
 		end
 	end
@@ -100,14 +119,14 @@ module RubyAi
 			@stages = { }
 			@sounds = { }
 			@scenes = { }
-			@output = output
-			@input = input
+			@input = input == nil ? InteractiveInterface.new : input
+			@output = output == nil ? InteractiveInterface.new : output
 			@source_file = source_filename ? File.open(source_filename).read : nil
 		end
 		
 		def start
 			@output.puts "Welcome to Ruby'Ai!"
-			@output.puts "Begin? [y/n]:"
+			answer = @input.gets "Begin? [y/n]:"
 			eval(@source_file) if @source_file
 		end
 		
@@ -121,8 +140,8 @@ module RubyAi
 		end
 		def choice(&block)
 			current_choice = Choice.new(self, &block)
-			@output.puts current_choice
-			result = current_choice.user_chooses(@input.gets)
+			choice_made = @input.gets(current_choice.to_s)
+			result = current_choice.user_chooses(choice_made)
 			instance_eval &result
 		end
 		def narrate(*statements)

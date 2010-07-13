@@ -13,7 +13,6 @@ Given /^an? :(.*) scene with contents `([^`]*)`$/ do |scene_id, contents|
 end
 
 Given /^an? :(.*) scene$/ do |scene_id|
-  @current_scene = scene_id
   game.parse_script do
     add_scene scene_id.to_sym
   end
@@ -46,6 +45,6 @@ When /^I add `([^`]*)` to scene :(.*)$/ do |command, scene_id|
 end
 
 When /^I choose option "([^"]*)"$/ do |choice|
-  input.add_message(choice)
+  @input.add_message(choice)
 end
 
