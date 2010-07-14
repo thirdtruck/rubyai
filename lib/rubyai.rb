@@ -1,6 +1,26 @@
 # Required just for the text-based interface
 require 'rubygems'
 
+class << Object
+	def wrap_callbacks_around(target_class, *methods)
+		methods.each do |method|
+			method_name = method.to_s
+			before_method = "before_#{method_name}"
+			within_method = "within_#{method_name}"
+			after_method = "after_#{method_name}"
+			unwrapped_method = "unwrapped_#{method_name}"
+			
+			target_class.class_eval do
+				eval "def #{before_method};end"
+				eval "def #{within_method}(*args, &block);end"
+				eval "def #{after_method};end"
+				eval "alias #{unwrapped_method} #{method_name}"
+				eval "def #{method_name}(*args, &block); #{before_method};#{unwrapped_method}(*args, &block);#{after_method};end;"
+			end
+		end
+	end
+end
+
 module RubyAi
 	class StageElement
 		attr_reader :name, :description
@@ -10,8 +30,12 @@ module RubyAi
 			@description = description
 		end
 		
+		# TODO: to_s and show_as can probably be replaced with a single, more explicit method.  to_s should probably *not* be this method.
 		def to_s
 			@name
+		end
+		
+		def show_as
 		end
 	end
 	
@@ -19,12 +43,12 @@ module RubyAi
 	end
 	
 	class Stage < StageElement
+		def show_as
+			@description
+		end
 	end
 	
 	class Sound < StageElement
-		def show_as
-			"*#{@name}*"
-		end
 	end
 	
 	class Scene
@@ -46,6 +70,9 @@ module RubyAi
 		end
 	end
 	class Choice
+		attr_accessor :options
+		attr_reader :game
+		
 		class Option
 			attr_accessor :description, :block
 			
@@ -53,41 +80,28 @@ module RubyAi
 				@description = description
 				@block = block
 			end
-		end
-		
-		def method_missing(method, *args, &block)
-			@game.send(method, *args, &block)
-		end
-		
-		attr_accessor :options
-		attr_reader :game
-		
-		def option(description, &block)
-			@options << Option.new(description, &block)
+			
+			# TODO: Add a parameter and place for explicit numbering/labeling of option triggers
 		end
 		
 		def initialize(game, &block)
 			@game = game
 			@options = []
-			@stringified = ""
+			@stringified = nil
 			instance_eval(&block) if block
-			
-			total_questions = 0
-			@options.each do |option|
-				@stringified << "[#{total_questions+1}] #{option.description}\n"
-				total_questions = total_questions + 1
-			end
-			
-			@stringified << "Choose one [1#{total_questions > 1 ? "-"+total_questions.to_s : ""}]:"
 		end
 		
-		def to_s
-			@stringified
+		def option(description, &block)
+			@options << Option.new(description, &block)
 		end
 		
 		def user_chooses(choice)
 			# TODO: make this require a valid option; *.to_i automatically defaults to zero and so supplies an inadvertent default of the final choice.
 			@options[choice.to_i-1].block
+		end
+		
+		def method_missing(method, *args, &block)
+			@game.send(method, *args, &block)
 		end
 	end
 	class Game
@@ -104,37 +118,29 @@ module RubyAi
 		end
 		
 		def start
-			@output.puts "Welcome to Ruby'Ai!"
-			answer = @input.gets "Begin? [y/n]:"
 			eval(@source_file) if @source_file
+			within_start
 		end
 		
 		def game_over(type=nil)
-			@output.puts "Game Over!"
-			case type
-				when :success then @output.puts "You win!"
-				when :failure then @output.puts "You lose!"
-				else @output.puts "Please play again!"
-			end
 		end
+		
 		def choice(&block)
 			current_choice = Choice.new(self, &block)
 			choice_made = @input.gets(current_choice.to_s)
 			result = current_choice.user_chooses(choice_made)
 			instance_eval &result
 		end
+		
 		def narrate(*statements)
-			statements.each do | statement |
-				@output.puts statement	
-			end
 		end
 		
 		def speak(character, statement)
-			"#{character.name}: #{statement}"
+			within_speak(character, statement)
 		end
 		
 		def action(character, does_thing)
-			"#{character.name} #{does_thing}"
+			within_action(character, does_thing)
 		end
 		
 		def says(statement)
@@ -172,9 +178,9 @@ module RubyAi
 			
 			commands.each do |command|
 				if command.command_type == :statement
-					@output.puts speak(character, command)
+					speak(character, command)
 				elsif command.command_type == :action
-					@output.puts action(character, command)
+					action(character, command)
 				else
 					raise NoMethodError.new "No such method: #{method} for character #{character.name}"
 				end
@@ -214,7 +220,6 @@ module RubyAi
 		
 		def dynamic_stage(stage_alias, *commands)
 			stage = @stages[stage_alias]
-			@output.puts stage.description
 			return stage
 		end
 		
@@ -245,19 +250,30 @@ module RubyAi
 		def run_scene(scene_alias)
 			def show(element, image_name=nil)
 				case
-					when image_name then @output.puts "[#{element.name} #{image_name.to_s}]"
-					when element.respond_to?(:show_as)then @output.puts element.show_as
-					when @stages[element] then @output.puts @stages[element].description
+					when image_name then show_image(element, image_name)
+					when element.respond_to?(:show_as)then show_element(element)
 				end
-			end
-			def hide(element)
-				@output.puts "[Hide #{element.name}]"
-			end
-			def sound(sound_element)
-				@output.puts sound_element.show_as
 			end
 			
 			parse_script { @scenes[scene_alias].run }
 		end
+		
+		def show_element(element)
+			within_show_element(element)
+		end
+		
+		def show_image(element, image_name)
+			within_show_image(element, image_name)
+		end
+		
+		def hide(element)
+			within_hide(element)
+		end
+		
+		def sound(sound_element)
+			within_sound(sound_element)
+		end
+		
+		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action
 	end
 end
