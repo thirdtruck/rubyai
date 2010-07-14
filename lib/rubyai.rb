@@ -1,20 +1,5 @@
 # Required just for the text-based interface
 require 'rubygems'
-require 'highline/import'
-
-class InteractiveInterface
-	def puts(string)
-		Kernel.print(string)
-		ask(''){ |q| q.echo = '' }
-		Kernel.puts()
-	end
-	def gets(query)
-		query = query + " " if query !~ /\s$/
-		answer = ask(query) { |q| q.echo = true }
-		Kernel.puts()
-		answer
-	end
-end
 
 module RubyAi
 	class StageElement
@@ -113,8 +98,8 @@ module RubyAi
 			@stages = { }
 			@sounds = { }
 			@scenes = { }
-			@input = input == nil ? InteractiveInterface.new : input
-			@output = output == nil ? InteractiveInterface.new : output
+			@input = input == nil ? Kernel : input
+			@output = output == nil ? Kernel: output
 			@source_file = source_filename ? File.open(source_filename).read : nil
 		end
 		

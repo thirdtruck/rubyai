@@ -1,6 +1,8 @@
 require 'lib/rubyai'
+require 'lib/converters/interactive_fiction'
 
-game = RubyAi::Game.new(nil, nil, "scripts/tutorial.rb")
+interface = InteractiveInterface.new
+game = RubyAi::Game.new(interface, interface, "scripts/tutorial.rb")
 
 game.start
 
