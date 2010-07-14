@@ -17,37 +17,31 @@ class InteractiveInterface
 end
 
 module RubyAi
-	class Character
-		attr_reader :name
-		
-		def initialize(name)
-			@name =  name
-		end
-		
-		def to_s
-			@name
-		end
-	end
-	class Stage
+	class StageElement
 		attr_reader :name, :description
 		
 		def initialize(name, description="")
 			@name = name
 			@description = description
 		end
-	end
-	class Sound
-		attr_reader :name, :description
 		
-		def initialize(name, description="")
-			@name = name
-			@description = description || name
+		def to_s
+			@name
 		end
-		
+	end
+	
+	class Character < StageElement
+	end
+	
+	class Stage < StageElement
+	end
+	
+	class Sound < StageElement
 		def show_as
 			"*#{@name}*"
 		end
 	end
+	
 	class Scene
 		attr_accessor :contents
 		
