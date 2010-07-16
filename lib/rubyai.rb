@@ -1,6 +1,4 @@
-# Required just for the text-based interface
-require 'rubygems'
-
+# Class Macros
 class << Object
 	def wrap_callbacks_around(target_class, *methods)
 		methods.each do |method|
@@ -15,7 +13,7 @@ class << Object
 				eval "def #{within_method}(*args, &block);end"
 				eval "def #{after_method};end"
 				eval "alias #{unwrapped_method} #{method_name}"
-				eval "def #{method_name}(*args, &block); #{before_method};#{unwrapped_method}(*args, &block);#{after_method};end;"
+				eval "def #{method_name}(*args, &block); #{before_method};original_results = #{unwrapped_method}(*args, &block);#{after_method};original_results;end;"
 			end
 		end
 	end
@@ -84,15 +82,16 @@ module RubyAi
 			# TODO: Add a parameter and place for explicit numbering/labeling of option triggers
 		end
 		
-		def initialize(game, &block)
-			@game = game
+		def initialize(results_context, &block)
+			@results_context = results_context
 			@options = []
 			@stringified = nil
 			instance_eval(&block) if block
 		end
 		
 		def option(description, &block)
-			@options << Option.new(description, &block)
+			new_option = Option.new(description, &block)
+			@options << new_option
 		end
 		
 		def user_chooses(choice)
@@ -101,8 +100,10 @@ module RubyAi
 		end
 		
 		def method_missing(method, *args, &block)
-			@game.send(method, *args, &block)
+			@results_context.send(method, *args, &block)
 		end
+
+		wrap_callbacks_around self, :user_chooses
 	end
 	class Game
 		attr_reader :characters, :stages, :scenes
@@ -123,16 +124,16 @@ module RubyAi
 		end
 		
 		def game_over(type=nil)
+			within_game_over(type)
 		end
 		
 		def choice(&block)
 			current_choice = Choice.new(self, &block)
-			choice_made = @input.gets(current_choice.to_s)
-			result = current_choice.user_chooses(choice_made)
-			instance_eval &result
+			within_choice(current_choice)
 		end
 		
 		def narrate(*statements)
+			within_narrate(*statements)
 		end
 		
 		def speak(character, statement)
@@ -274,6 +275,6 @@ module RubyAi
 			within_sound(sound_element)
 		end
 		
-		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action
+		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_image, :show_element, :run_scene, :choice, :game_over, :narrate
 	end
 end

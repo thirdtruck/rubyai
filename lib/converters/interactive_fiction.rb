@@ -21,6 +21,9 @@ module RubyAi
 			answer = @input.gets "Begin? [y/n]:"
 		end
 		
+		def after_start
+		end
+		
 		def within_show_element(element)
 			@output.puts element.show_as
 		end
@@ -45,7 +48,7 @@ module RubyAi
 			@output.puts "#{character.name} #{does_thing}"
 		end
 		
-		def game_over(type=nil)
+		def within_game_over(type=nil)
 			@output.puts "Game Over!"
 			case type
 				when :success then @output.puts "You win!"
@@ -54,32 +57,30 @@ module RubyAi
 			end
 		end
 		
-		def narrate(*statements)
+		def within_narrate(*statements)
 			statements.each do | statement |
 				@output.puts statement	
 			end
+		end
+		
+		def within_choice(choice_obj)
+			choices_as_text = ""
+			option_index = 1
+			choice_obj.options.each do |option_obj|
+				choices_as_text << "[#{option_index}] #{option_obj.description}\n"
+				option_index = option_index + 1
+			end
+			choices_as_text << "Choose one [1#{choice_obj.options.size > 1 ? "-"+choice_obj.options.size.to_s : ""}]:"
+			choice_made = @input.gets(choices_as_text)
+			
+			result = choice_obj.user_chooses(choice_made)
+			instance_eval &result
 		end
 	end
 	
 	class Sound < StageElement
 		def show_as
 			"*#{@name}*"
-		end
-	end
-	
-	class Choice
-		def to_s
-			if not @stringified
-				@stringified = ""
-				total_questions = 0
-				@options.each do |option|
-					@stringified << "[#{total_questions+1}] #{option.description}\n"
-					total_questions = total_questions + 1
-				end
-				
-				@stringified << "Choose one [1#{total_questions > 1 ? "-"+total_questions.to_s : ""}]:"
-			end
-			@stringified
 		end
 	end
 end
