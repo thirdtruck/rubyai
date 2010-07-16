@@ -4,3 +4,4 @@ Refactor the features and steps to expect *only* certain content so as to avoid 
 
 FINISH improving the text-based interface used by the tutorial, including better prompts, prompts that require specific options, fix the choice defaulting or make it intentional, and add features for all of this!
 
+Add "in_function" convenience method for "function(){}" generation and auto-indentation.

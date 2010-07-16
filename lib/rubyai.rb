@@ -246,17 +246,18 @@ module RubyAi
 		
 		def add_scene(scene_alias, &block)
 			@scenes[scene_alias] = Scene.new(&block)
+			within_add_scene(scene_alias, &block)
 		end
 		
 		def run_scene(scene_alias)
-			def show(element, image_name=nil)
-				case
-					when image_name then show_image(element, image_name)
-					when element.respond_to?(:show_as)then show_element(element)
-				end
+			within_run_scene(scene_alias)
+		end
+		
+		def show(element, image_name=nil)
+			case
+				when image_name then show_image(element, image_name)
+				when element.respond_to?(:show_as)then show_element(element)
 			end
-			
-			parse_script { @scenes[scene_alias].run }
 		end
 		
 		def show_element(element)
@@ -275,6 +276,6 @@ module RubyAi
 			within_sound(sound_element)
 		end
 		
-		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_image, :show_element, :run_scene, :choice, :game_over, :narrate
+		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_image, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene
 	end
 end

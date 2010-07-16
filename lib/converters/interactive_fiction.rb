@@ -76,6 +76,10 @@ module RubyAi
 			result = choice_obj.user_chooses(choice_made)
 			instance_eval &result
 		end
+		
+		def within_run_scene(scene_alias)
+                        parse_script { @scenes[scene_alias].run }
+		end
 	end
 	
 	class Sound < StageElement

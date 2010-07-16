@@ -1,80 +1,112 @@
 require 'highline/import'
 
-class InteractiveInterface
-	def puts(string)
-		Kernel.print(string)
-		ask(''){ |q| q.echo = '' }
-		Kernel.puts()
+class Exporter
+	def initialize
+		@js = File.open("web/js/script.js", "w")
 	end
+	
+	def puts(string)
+		indentation = "\t" * current_indentation
+		@js.write(indentation + string+"\n")
+		@js.write("\n")
+	end
+	
 	def gets(query)
-		query = query + " " if query !~ /\s$/
-		answer = ask(query) { |q| q.echo = true }
-		Kernel.puts()
-		answer
+		@output.puts %^make_choice(current_choice);^;
+	end
+	
+	def start_function
+		@indent ||= 0
+		puts " function() {"
+		@indent = @indent + 1
+	end
+
+	def end_function
+		@indent = @indent - 1
+		puts " } "
+	end
+
+	def within_function
+		start_function
+		yield if block_given?
+		end_function
+	end
+
+	def current_indentation
+		@indent ||= 0
 	end
 end
 
 module RubyAi
 	class Game
 		def before_start
-			@output.puts "Welcome to Ruby'Ai!"
-			answer = @input.gets "Begin? [y/n]:"
+			@output.puts %^renai_script = new RenAiScript(^ 
+			@output.start_function
+			@output.puts %^intro();^
 		end
 		
 		def after_start
+			@output.end_function
+			@output.puts %^);^
 		end
 		
 		def within_show_element(element)
-			@output.puts element.show_as
+			@output.puts %^show("#{element.name}");^
 		end
 		
 		def within_show_image(element, image_name)
-			@output.puts "[#{element.name} #{image_name.to_s}]"
+			@output.puts %^show("#{element.name}", "#{image_name.to_s}");^
 		end
 		
 		def within_hide(element)
-			@output.puts "[Hide #{element.name}]"
+			@output.puts %^hide("#{element.name}");^
 		end
 		
 		def within_sound(sound_element)
-			@output.puts sound_element.show_as
+			@output.puts %^sound("#{sound_element.name}");^
 		end
 		
 		def within_speak(character, statement)
-			@output.puts "#{character.name}: #{statement}"
+			@output.puts %{speak("#{character.name}", "#{statement}");}
 		end
 		
 		def within_action(character, does_thing)
-			@output.puts "#{character.name} #{does_thing}"
+			@output.puts %{action("#{character.name}", "#{does_thing}");}
 		end
 		
 		def within_game_over(type=nil)
-			@output.puts "Game Over!"
 			case type
-				when :success then @output.puts "You win!"
-				when :failure then @output.puts "You lose!"
-				else @output.puts "Please play again!"
+				when :success then @output.puts %^game_over("success");^
+				when :failure then @output.puts %^game_over("failure");^
+				else @output.puts %^game_over("neutral");^
 			end
+		end
+		
+		def within_add_scene(scene_alias, &block)
+			@output.puts %^add_scene("#{scene_alias.to_s}",^
+			@output.within_function &block
+			@output.puts %^)^
+                        #parse_script { @scenes[scene_alias].run }
+		end
+		
+		def within_run_scene(scene_alias)
+			@output.puts %^run_scene("#{scene_alias.to_s}");^
 		end
 		
 		def within_narrate(*statements)
 			statements.each do | statement |
-				@output.puts statement	
+				@output.puts %^narrate("#{statement}");^
 			end
 		end
 		
 		def within_choice(choice_obj)
-			choices_as_text = ""
-			option_index = 1
-			choice_obj.options.each do |option_obj|
-				choices_as_text << "[#{option_index}] #{option_obj.description}\n"
-				option_index = option_index + 1
-			end
-			choices_as_text << "Choose one [1#{choice_obj.options.size > 1 ? "-"+choice_obj.options.size.to_s : ""}]:"
-			choice_made = @input.gets(choices_as_text)
+			@output.puts %^current_choice = new Choice;^
 			
-			result = choice_obj.user_chooses(choice_made)
-			instance_eval &result
+			choice_obj.options.each do |option_obj|
+				@output.puts %^add_option_to_choice(current_choice, "#{option_obj.description}",^
+				@output.within_function { option_obj.block.call }
+				@output.puts %^);^
+			end
 		end
 	end
 	
