@@ -1,3 +1,5 @@
+In JS: Figure out why, after making and seeing the results of a choice, it still then runs the second choice (potential repeat).
+
 Replace the "game" singleton object with better pre-feature code support instead, if actually preferable.
 
 Refactor the features and steps to expect *only* certain content so as to avoid unexpected content.
