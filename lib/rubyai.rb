@@ -257,7 +257,7 @@ module RubyAi
 		def show(element, image_name=nil)
 			case
 				when image_name then show_image(element, image_name)
-				when element.respond_to?(:show_as)then show_element(element)
+				when element.respond_to?(:show_as) then show_element(element)
 			end
 		end
 		

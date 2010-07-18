@@ -5,6 +5,7 @@ include FileUtils
 JS_ESCAPE_MAP = { '\\' => '\\\\', '</' => '<\/', "\r\n" => '\n', "\n" => '\n', "\r" =>  '\n', '"' => '\\"', "'" => "\\'" }
 
 def escape_js_no_quotes(string)
+	string = string.to_s
 	string.gsub(/(['"])/) { JS_ESCAPE_MAP[$1] }
 end
 
@@ -64,18 +65,21 @@ module RubyAi
 		end
 		
 		def within_show_element(element)
-			if element.description
-				copy_from = "media/stages/#{element.alias}.png"
-				image_url = "#{element.resource_url}.png"
-				cp(copy_from, "web/"+image_url)
-				@output.puts %^show_stage(#{escape_js element.name}, #{escape_js image_url}, #{escape_js element.description});^
-			else
-				@output.puts %^show(#{escape_js element.name});^
-			end
+			show_image(element, element.alias)
+			@output.puts %^show(#{escape_js element.name});^
 		end
 		
 		def within_show_image(element, image_name)
-			@output.puts %^show(#{escape_js element.name}, #{escape_js image_name.to_s});^
+			default_image_source = "media/#{element.type_plural}/#{element.alias}.png"
+			specific_image_source = "media/#{element.type_plural}/#{element.alias}_#{image_name}.png"
+			image_url = "#{element.resource_url}_#{image_name}.png"
+			if(FileTest.exists? specific_image_source)
+				cp(specific_image_source, "web/"+image_url)
+			else
+				cp(default_image_source, "web/"+image_url)
+			end
+			#element.copy_resource(image_name) unless element.resource_exists?(image_name)
+			@output.puts element.show_function(image_name)
 		end
 		
 		def within_hide(element)
@@ -136,17 +140,43 @@ module RubyAi
 		def resource_url
 			"images/misc/#{@alias}"
 		end
+		
+		def type
+			"misc"
+		end
+		
+		def type_plural
+			if self.type != "misc"
+				self.type + "s"
+			else
+				self.type
+			end
+		end
+		
+		def show_function(image_name)
+			specific_image = (image_name == self.alias ? "#{self.alias}.png" : "#{self.alias}_#{image_name}.png")
+			image_url = "images/#{self.type_plural}/#{specific_image}"
+			"show_#{self.type}(#{escape_js @alias}, #{escape_js @name}, #{escape_js image_url}, #{escape_js @description});"
+		end
 	end
 	
 	class Character
 		def resource_url
 			"images/characters/#{@alias}"
 		end
+		
+		def type
+			"character"
+		end
 	end
 	
 	class Stage
 		def resource_url
 			"images/stages/#{@alias}"
+		end
+		
+		def type
+			"stage"
 		end
 	end
 	
@@ -157,6 +187,10 @@ module RubyAi
 		
 		def show_as
 			"*#{@name}*"
+		end
+		
+		def type
+			"sound"
 		end
 	end
 end

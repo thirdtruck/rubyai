@@ -73,9 +73,15 @@ function show(name, doing) {
 	} );
 };
 
-function show_stage(stage_name, image_url, description) {
+function show_stage(stage_alias, stage_name, image_url, description) {
 	add_step( function() {
 		$("#display").css("background-image", "url("+image_url+")");
+	} );
+}
+
+function show_character(character_alias, character_name, image_url, description) {
+	add_step( function() {
+		$("#character").attr("src", image_url).show();
 	} );
 }
 
