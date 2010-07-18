@@ -1,8 +1,15 @@
+require 'fileutils'
+include FileUtils
+
 # Javascript-escaping implemention borrowed from Ruby on Rails's JavaScriptHelper
 JS_ESCAPE_MAP = { '\\' => '\\\\', '</' => '<\/', "\r\n" => '\n', "\n" => '\n', "\r" =>  '\n', '"' => '\\"', "'" => "\\'" }
 
+def escape_js_no_quotes(string)
+	string.gsub(/(['"])/) { JS_ESCAPE_MAP[$1] }
+end
+
 def escape_js(string)
-	escaped_string = string.gsub(/(['"])/) { JS_ESCAPE_MAP[$1] }
+	escaped_string = escape_js_no_quotes(string)
 	%^"#{escaped_string}"^
 end
 
@@ -58,7 +65,10 @@ module RubyAi
 		
 		def within_show_element(element)
 			if element.description
-				@output.puts %^show_stage(#{escape_js element.name}, #{escape_js element.description});^
+				copy_from = "media/stages/#{element.alias}.png"
+				image_url = "#{element.resource_url}.png"
+				cp(copy_from, "web/"+image_url)
+				@output.puts %^show_stage(#{escape_js element.name}, #{escape_js image_url}, #{escape_js element.description});^
 			else
 				@output.puts %^show(#{escape_js element.name});^
 			end
@@ -122,7 +132,29 @@ module RubyAi
 		end
 	end
 	
-	class Sound < StageElement
+	class StageElement
+		def resource_url
+			"images/misc/#{@alias}"
+		end
+	end
+	
+	class Character
+		def resource_url
+			"images/characters/#{@alias}"
+		end
+	end
+	
+	class Stage
+		def resource_url
+			"images/stages/#{@alias}"
+		end
+	end
+	
+	class << Sound
+		def resource_url
+			"sounds/#{@alias}"
+		end
+		
 		def show_as
 			"*#{@name}*"
 		end

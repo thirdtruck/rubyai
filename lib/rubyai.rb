@@ -21,9 +21,10 @@ end
 
 module RubyAi
 	class StageElement
-		attr_reader :name, :description
+		attr_reader :alias, :name, :description
 		
-		def initialize(name, description="")
+		def initialize(element_alias, name, description="")
+			@alias = element_alias
 			@name = name
 			@description = description
 		end
@@ -191,7 +192,7 @@ module RubyAi
 		
 		def for_characters
 			def add(character_alias, character_name)
-				@characters[character_alias] = Character.new(character_name)
+				@characters[character_alias] = Character.new(character_alias, character_name)
 				
 				self.class.class_eval do
 					eval "def #{character_alias.to_s}(*commands); dynamic_character(:#{character_alias.to_s}, *commands); end"
@@ -209,7 +210,7 @@ module RubyAi
 		
 		def for_sounds
 			def add(sound_id, sound_name)
-				@sounds[sound_id] = Sound.new(sound_name)
+				@sounds[sound_id] = Sound.new(sound_id, sound_name)
 				
 				self.class.class_eval do
 					eval "def #{sound_id.to_s}(*commands); dynamic_sound(:#{sound_id.to_s}, *commands); end"
@@ -234,7 +235,7 @@ module RubyAi
 				
 				yield if block_given?
 				
-				@stages[stage_alias] = Stage.new(stage_name, @current_description)
+				@stages[stage_alias] = Stage.new(stage_alias, stage_name, @current_description)
 				
 				self.class.class_eval do
 					eval "def #{stage_alias.to_s}(*commands); dynamic_stage(:#{stage_alias.to_s}, *commands); end"

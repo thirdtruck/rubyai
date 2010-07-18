@@ -73,11 +73,9 @@ function show(name, doing) {
 	} );
 };
 
-function show_stage(stage_name, description) {
+function show_stage(stage_name, image_url, description) {
 	add_step( function() {
-		output = "[" + stage_name + "]<br/>";
-		output += description;
-		print(output);
+		$("#display").css("background-image", "url("+image_url+")");
 	} );
 }
 
