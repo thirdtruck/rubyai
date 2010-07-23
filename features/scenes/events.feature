@@ -7,7 +7,14 @@ Feature: scene events
 	Scenario: show a character
 		Given an :intro scene
 		And a :lucy character named "Lucy"
-		When I add `show lucy, :smiling` to scene :intro
+		When I add `show lucy` to scene :intro
+		And I run scene :intro
+		Then I should see "[Show Lucy]"
+
+	Scenario: show a character in a mood
+		Given an :intro scene
+		And a :lucy character named "Lucy"
+		When I add `show smiling_lucy` to scene :intro
 		And I run scene :intro
 		Then I should see "[Lucy smiling]"
 

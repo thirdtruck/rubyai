@@ -34,45 +34,37 @@ add_scene :opening do
 	
 	# The command `<character> "string"` makes the character say or do something, depending on the
 	# capitalization of the first letter (uppercase -> statement, lowercase -> action).
-	show lucy, :tired
-	lucy "Phew!  Gym class sucks!  At least I lasted all the way through."
+	tired_lucy "Phew!  Gym class sucks!  At least I lasted all the way through."
 	lucy "sighs as she tosses her backpack aside."
 	
 	# Use `<character> says "statement"` or `character thusly "does something"` if you need explicit 
 	# commands
-	show lucy, :excited
-	lucy says "Now for my homework, then sleep!"
+	excited_lucy says "Now for my homework, then sleep!"
 	lucy thusly "flops onto her chair."
 	
 	narrate "The hours fly by as she types, the essays practically pouring out of her fingers and into the keyboard.",
 		"Hitting Ctrl-P just as the sun finishes setting, #{lucy} starts nodding off as the churning of the printer serenades her."
 	
-	show lucy, :tired
-	lucy "yawns."
+	tired_lucy "yawns."
 	lucy "Just one more assigment..."
 	
-	show lucy, :terrified
-	lucy "Ahhhh!",
+	terrified_lucy "Ahhhh!",
 	     "My art class assignment!"
 	
 	hidden_fairy "Don't forget about it!"
-	show lucy, :mortified
-	lucy "I can't graduate unless I pass!",
+	mortified_lucy "I can't graduate unless I pass!",
 	     "Why did I ever take that elective?  I'm an English major!"
 	hidden_fairy "You can't graduate without it!"
 	
-	show lucy, :annoyed
+	show annoyed_lucy
 	lucy "I know!",
 	     "I just said that!"
 	
-	show fairy, :pleased
-	show lucy, :terrified
-	lucy "Who the heck are you?"
+	show pleased_fairy
+	terried_lucy "Who the heck are you?"
 	
-	show fairy, :hurt
-	fairy "You don't recognize your own Ruby'Ai Fairy?"
-	show lucy, :tired
-	lucy "You really want me to believe that?  Seriously?"
+	hurt_fairy "You don't recognize your own Ruby'Ai Fairy?"
+	tired_lucy "You really want me to believe that?  Seriously?"
 	fairy "But you must!  We fairies only last as long as you believe in us!"
 	
 	choice do
@@ -82,15 +74,15 @@ add_scene :opening do
 end
 
 add_scene :disbelieve do
-	show lucy, :thinking
-	show fairy, :terrified
+	show thinking_lucy
+	show terrified_fairy
 	
 	narrate "Thinking back to her Intro to Psychology Class, #{lucy} empties her mind, focusing all of her skepticism on the floating figure before her."
 	
 	sound poof
-	show fairy, :exploding
+	show exploding_fairy
 	hide fairy
-	show lucy, :terrified
+	show terrified_lucy
 	
 	narrate "With a horrible scream, the #{fairy} vanishes in a cloud of sparkles."
         lucy "spends the rest of the night researching \"Hallucinations\" and local folklore on AltMed and Wikipedia instead of finishing her homework.  Exhausted, she sleeps in late, missing the class entirely and forced into another year of classes and student loans."
@@ -99,15 +91,13 @@ add_scene :disbelieve do
 end
 
 add_scene :believe do
-	show fairy, :excited
-	show lucy, :tired
+	show excited_fairy
+	show tired_lucy
 	fairy "You do believe, you do!  I can feel it.  I'll earn my Fairy Wand yet!"
 	lucy "You don't even have your want yet?  Are you kidding me?"
 	
-	show fairy, :stern
-	fairy "And you still don't have your art class assignment."
-	show lucy, :terrified
-	lucy "Riiight."
+	stern_fairy "And you still don't have your art class assignment."
+	terrified_lucy "Riiight."
 	
 	narrate "Over the course of the night, the dynamic duo crafts a creative masterpiece!  #{lucy} graduates and goes to a fulfulling career in education!"
 	

@@ -28,10 +28,6 @@ module RubyAi
 			@output.puts element.show_as
 		end
 		
-		def within_show_image(element, image_name)
-			@output.puts "[#{element.name} #{image_name.to_s}]"
-		end
-		
 		def within_hide(element)
 			@output.puts "[Hide #{element.name}]"
 		end
@@ -41,11 +37,19 @@ module RubyAi
 		end
 		
 		def within_speak(character, statement)
-			@output.puts "#{character.name}: #{statement}"
+			context = case character.context
+				when :default then ""
+				else "[#{character.context.to_s.capitalize}] "
+			end
+			@output.puts "#{context}#{character.name}: #{statement}"
 		end
 		
 		def within_action(character, does_thing)
-			@output.puts "#{character.name} #{does_thing}"
+			context = case character.context
+				when :default then ""
+				else "[#{character.context.to_s.capitalize}] "
+			end
+			@output.puts "#{context}#{character.name} #{does_thing}"
 		end
 		
 		def within_game_over(type=nil)
@@ -77,6 +81,17 @@ module RubyAi
 			instance_eval &result
 		end
 	end
+	
+
+        class Character < StageElement
+                def show_as
+                        if @context == :default
+                                "[Show #{@name}]"
+                        else
+                                "[#{@name} #{@context}]"
+                        end
+                end
+        end
 	
 	class Sound < StageElement
 		def show_as

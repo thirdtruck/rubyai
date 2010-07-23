@@ -34,4 +34,17 @@ Feature: character actions
 		When I call `lucy "Hello, World!", "How are you today?"`
 		Then I should see "Lucy: Hello, World!"
 		And I should see "Lucy: How are you today?"
-
+	
+	Scenario: a character in a mood says something
+		Given an :intro scene
+		And a :lucy character named "Lucy"
+		When I add `smiling_lucy "I won the prize!"` to scene :intro
+		And I run scene :intro
+		Then I should see "[Smiling] Lucy: I won the prize!"
+	
+	Scenario: a character in a mood performs an action
+		Given an :intro scene
+		And a :lucy character named "Lucy"
+		When I add `terrified_lucy "drops her raffle ticket."` to scene :intro
+		And I run scene :intro
+		Then I should see "[Terrified] Lucy drops her raffle ticket."

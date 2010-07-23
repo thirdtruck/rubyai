@@ -4,3 +4,7 @@ Refactor the features and steps to expect *only* certain content so as to avoid 
 
 FINISH improving the text-based interface used by the tutorial, including better prompts, prompts that require specific options, fix the choice defaulting or make it intentional, and add features for all of this!
 
+New Layout:
+lucy smiled, she "did not want to go to the store" # Might allow for the automatic trimming of the pronoun (she)
+lucy shouted, "Not on my watch!"
+lucy mumbles, "There's another one where that came from."

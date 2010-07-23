@@ -22,10 +22,12 @@ end
 module RubyAi
 	class StageElement
 		attr_reader :name, :description
+		attr_accessor :context
 		
 		def initialize(name, description="")
 			@name = name
 			@description = description
+			@context = :default
 		end
 		
 		# TODO: to_s and show_as can probably be replaced with a single, more explicit method.  to_s should probably *not* be this method.
@@ -136,12 +138,12 @@ module RubyAi
 			within_narrate(*statements)
 		end
 		
-		def speak(character, statement)
-			within_speak(character, statement)
+		def speak(character, *statements)
+			within_speak(character, *statements)
 		end
 		
-		def action(character, does_thing)
-			within_action(character, does_thing)
+		def action(character, *does_things)
+			within_action(character, *does_things)
 		end
 		
 		def says(statement)
@@ -175,9 +177,7 @@ module RubyAi
 				else
 					says(command)
 				end
-			end
-			
-			commands.each do |command|
+				
 				if command.command_type == :statement
 					speak(character, command)
 				elsif command.command_type == :action
@@ -186,6 +186,7 @@ module RubyAi
 					raise NoMethodError.new "No such method: #{method} for character #{character.name}"
 				end
 			end
+			
 			return character
 		end
 		
@@ -249,11 +250,8 @@ module RubyAi
 		end
 		
 		def run_scene(scene_alias)
-			def show(element, image_name=nil)
-				case
-					when image_name then show_image(element, image_name)
-					when element.respond_to?(:show_as)then show_element(element)
-				end
+			def show(element)
+				show_element(element)
 			end
 			
 			parse_script { @scenes[scene_alias].run }
@@ -261,10 +259,6 @@ module RubyAi
 		
 		def show_element(element)
 			within_show_element(element)
-		end
-		
-		def show_image(element, image_name)
-			within_show_image(element, image_name)
 		end
 		
 		def hide(element)
@@ -275,6 +269,29 @@ module RubyAi
 			within_sound(sound_element)
 		end
 		
-		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_image, :show_element, :run_scene, :choice, :game_over, :narrate
+		def command_with_context(element_alias, context, *statements)
+			element = @characters[element_alias] or 
+				@stages[element_alias] or 
+				raise NoMethodError.new "Unrecognized character or stage \"#{element_alias}\" called with context \"#{context}\"."
+			element.context = context
+			
+			self.send(element_alias, *statements)
+		end
+		
+		def method_missing(method, *args, &block)
+			unless method.to_s =~ /^(\w+)_(\w+)$/
+				raise NoMethodError.new "No such method \"#{method}\".  Were you trying to show something in a context?"
+			end
+			
+			context, element_name = $1, $2
+			
+			unless element_name
+				raise NoMethodError.new "Tried to show a stage element in context \"#{context}\", but no element was found"
+			end
+			
+			command_with_context(element_name.to_sym, context, *args)
+		end
+		
+		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate
 	end
 end
