@@ -1,0 +1,34 @@
+<html>
+<head>
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/rubyai.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+<script type="text/javascript">
+	$(document).ready( function() {
+		game = new RubyAiGame( $("#game-output"), rubyai_script );
+		game.start();
+	} );
+</script>
+<style type="text/css">
+	#display {
+		width: 500px;
+		height: 210px;
+	}
+	#character {
+		display: none;
+		float: left;
+	}
+</style>
+</head>
+<body>
+<h1>Welcome to the Ruby'Ai Tutorial!</h1>
+<div id="display">
+<img id="character" />
+</div>
+<div id="game-output">
+</div>
+<p id="controls">
+<a href="javascript:advance_story();">Continue</a> (or press the space bar)
+</p>
+</body>
+</html>

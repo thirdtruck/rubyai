@@ -61,7 +61,7 @@ add_scene :opening do
 	     "I just said that!"
 	
 	show pleased_fairy
-	terried_lucy "Who the heck are you?"
+	terrified_lucy "Who the heck are you?"
 	
 	hurt_fairy "You don't recognize your own Ruby'Ai Fairy?"
 	tired_lucy "You really want me to believe that?  Seriously?"
@@ -94,7 +94,7 @@ add_scene :believe do
 	show excited_fairy
 	show tired_lucy
 	fairy "You do believe, you do!  I can feel it.  I'll earn my Fairy Wand yet!"
-	lucy "You don't even have your want yet?  Are you kidding me?"
+	lucy "You don't even have your wand yet?  Are you kidding me?"
 	
 	stern_fairy "And you still don't have your art class assignment."
 	terrified_lucy "Riiight."

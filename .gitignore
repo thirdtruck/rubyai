@@ -1,4 +1,5 @@
 .*~
 .*.swp
 cucumber_output.txt
-
+web/js/script.js
+web/images/*

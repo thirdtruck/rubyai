@@ -21,10 +21,11 @@ end
 
 module RubyAi
 	class StageElement
-		attr_reader :name, :description
+		attr_reader :alias, :name, :description
 		attr_accessor :context
 		
-		def initialize(name, description="")
+		def initialize(element_alias, name, description="")
+			@alias = element_alias
 			@name = name
 			@description = description
 			@context = :default
@@ -192,7 +193,7 @@ module RubyAi
 		
 		def for_characters
 			def add(character_alias, character_name)
-				@characters[character_alias] = Character.new(character_name)
+				@characters[character_alias] = Character.new(character_alias, character_name)
 				
 				self.class.class_eval do
 					eval "def #{character_alias.to_s}(*commands); dynamic_character(:#{character_alias.to_s}, *commands); end"
@@ -210,7 +211,7 @@ module RubyAi
 		
 		def for_sounds
 			def add(sound_id, sound_name)
-				@sounds[sound_id] = Sound.new(sound_name)
+				@sounds[sound_id] = Sound.new(sound_id, sound_name)
 				
 				self.class.class_eval do
 					eval "def #{sound_id.to_s}(*commands); dynamic_sound(:#{sound_id.to_s}, *commands); end"
@@ -235,7 +236,7 @@ module RubyAi
 				
 				yield if block_given?
 				
-				@stages[stage_alias] = Stage.new(stage_name, @current_description)
+				@stages[stage_alias] = Stage.new(stage_alias, stage_name, @current_description)
 				
 				self.class.class_eval do
 					eval "def #{stage_alias.to_s}(*commands); dynamic_stage(:#{stage_alias.to_s}, *commands); end"
@@ -247,14 +248,15 @@ module RubyAi
 		
 		def add_scene(scene_alias, &block)
 			@scenes[scene_alias] = Scene.new(&block)
+			within_add_scene(scene_alias, &block)
 		end
 		
 		def run_scene(scene_alias)
-			def show(element)
-				show_element(element)
-			end
-			
-			parse_script { @scenes[scene_alias].run }
+			within_run_scene(scene_alias)
+		end
+		
+		def show(element)
+			show_element(element)
 		end
 		
 		def show_element(element)
@@ -292,6 +294,6 @@ module RubyAi
 			command_with_context(element_name.to_sym, context, *args)
 		end
 		
-		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate
+		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene
 	end
 end

@@ -1,10 +1,18 @@
+Consider switching out the "show <obj>, :<adj>" format of the command with "show [<adj>] <char> [statement/action]", making the adjective a method instead of a symbol and adding the statement/action at the end.  This would make combined image-statement commands more natural.  Ex:
+show tired lucy "flops onto her bed."
+
 Replace the "game" singleton object with better pre-feature code support instead, if actually preferable.
 
 Refactor the features and steps to expect *only* certain content so as to avoid unexpected content.
 
 FINISH improving the text-based interface used by the tutorial, including better prompts, prompts that require specific options, fix the choice defaulting or make it intentional, and add features for all of this!
 
-New Layout:
-lucy smiled, she "did not want to go to the store" # Might allow for the automatic trimming of the pronoun (she)
-lucy shouted, "Not on my watch!"
-lucy mumbles, "There's another one where that came from."
+Add some introspective Ruby class > JS object export code for automatic mitigation of changes. 
+Ex:
+class StageElement
+	attr_accessor :name
+end
+
+function StageElement(name) {
+	this.name = name;
+}
