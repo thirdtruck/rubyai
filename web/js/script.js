@@ -4,7 +4,7 @@ rubyai_script = new RubyAiScript(
 
 	intro();
 
-	add_scene("opening",
+	add_scene("intro",
 
 	 function() {
 
@@ -136,7 +136,7 @@ rubyai_script = new RubyAiScript(
 
 	)
 
-	run_scene("opening");
+	run_scene("intro");
 
  } 
 

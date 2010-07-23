@@ -1,32 +1,4 @@
-for_characters do
-	add :lucy, "Lucy"
-	add :fairy, "Ruby'Ai Fairy" do
-		# Pseudonyms let you refer to this character by other names both in commands and with 
-		# different names in the novel text
-		# TODO: Consider adding this feature back in when it offers a real benefit beyond 
-		# just add a new character
-		# pseudonym :hidden_fairy, "????"
-	end
-	add :hidden_fairy, "????"
-end
-
-for_sounds do
-	add :click, "Click"
-	add :poof, "Poof"
-end
-
-for_stages do
-	add :bedroom, "Bedroom" do
-		describe_as "Somewhere underneath piles of clothes and stuffed animals lies a bed, or so my mom keeps telling me.  If not for the closet and my computer desk, you might not realize that you were in my bedroom."
-	end
-end
-
-# Character and stage images are added automatically based on the /images/ directory structure.
-# e.g. `lucy :smiles` looks for /images/characters/lucy/smiles.png,
-# `stage :bedroom` looks for /images/stages/bedroom.png, and
-# `stage :bedroom, :on_fire` looks for /images/stages/bedroom/on_fire.png
-
-add_scene :opening do
+add_scene :intro do
 	show bedroom
 	
 	# By default, `sound <id>` will try to play an audio file named "<id>.ogg" and display the text as "*<sound.name>*"
@@ -103,5 +75,3 @@ add_scene :believe do
 	
 	game_over :success
 end
-
-run_scene :opening

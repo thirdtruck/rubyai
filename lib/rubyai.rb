@@ -111,19 +111,40 @@ module RubyAi
 	class Game
 		attr_reader :characters, :stages, :scenes
 		
-		def initialize(input, output, source_filename=nil)
+		def initialize(input, output, target_script=nil)
 			@characters = { }
 			@stages = { }
 			@sounds = { }
 			@scenes = { }
 			@input = input == nil ? Kernel : input
 			@output = output == nil ? Kernel: output
-			@source_file = source_filename ? File.open(source_filename).read : nil
+			@target_script = target_script
 		end
 		
 		def start
-			eval(@source_file) if @source_file
+			if @target_script
+				script_dir = "scripts/#{@target_script}/"
+				
+				for_characters do
+					eval File.read(script_dir + "characters.rb")
+				end
+				
+				for_sounds do
+					eval File.read(script_dir + "sounds.rb")
+				end
+				
+				for_stages do
+					eval File.read(script_dir + "stages.rb")
+				end
+				
+				for_scenes do
+					eval File.read(script_dir + "scenes.rb")
+				end
+			end
+			
 			within_start
+			
+			run_scene :intro if @scenes[:intro]
 		end
 		
 		def game_over(type=nil)
@@ -224,6 +245,11 @@ module RubyAi
 		def dynamic_stage(stage_alias, *commands)
 			stage = @stages[stage_alias]
 			return stage
+		end
+		
+		# A placeholder for consistency with the other for_* methods
+		def for_scenes
+			yield
 		end
 		
 		def for_stages
