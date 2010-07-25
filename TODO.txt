@@ -16,3 +16,5 @@ end
 function StageElement(name) {
 	this.name = name;
 }
+
+Move some more of the implicit things (like always running the :intro scene first if provided) into the feature lists.

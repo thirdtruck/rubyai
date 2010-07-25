@@ -84,6 +84,14 @@ module RubyAi
 		def within_run_scene(scene_alias)
                         parse_script { @scenes[scene_alias].run }
 		end
+		
+		def within_st(string)
+			"*#{string}*"
+		end
+		
+		def within_em(string)
+			"/#{string}/"
+		end
 	end
 	
 

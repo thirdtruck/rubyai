@@ -320,6 +320,16 @@ module RubyAi
 			command_with_context(element_name.to_sym, context, *args)
 		end
 		
-		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene
+		# Strong text
+		def st(string)
+			within_st(string)
+		end
+		
+		# Emphasized text
+		def em(string)
+			within_em(string)
+		end
+		
+		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene, :st, :em
 	end
 end

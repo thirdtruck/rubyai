@@ -71,7 +71,22 @@ add_scene :believe do
 	stern_fairy "And you still don't have your art class assignment."
 	terrified_lucy "Riiight."
 	
-	narrate "Over the course of the night, the dynamic duo crafts a creative masterpiece!  #{lucy} graduates and goes to a fulfulling career in education!"
+	run_scene :install
 	
 	game_over :success
+end
+
+add_scene :install do
+	show computer_desk
+	
+	tired_lucy "So what do we do now, Miss #{fairy}?"
+	
+	fairy "Now I get to help you write a novel!"
+	
+	show tired_lucy
+	
+	terrified_lucy "That doesn't help me in the #{st 'slightest'}!"
+	tired_lucy "I would have written one already if I thought that my #{em 'art'} teacher would accept it."
+	
+	bemused_fairy "What about a #{em 'visual'} novel?"
 end
