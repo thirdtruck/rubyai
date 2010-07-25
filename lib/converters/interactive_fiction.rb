@@ -92,6 +92,14 @@ module RubyAi
 		def within_em(string)
 			"/#{string}/"
 		end
+		
+		def within_url(url, description=nil)
+			if description
+				"#{description} [#{url}]"
+			else
+				"[#{url}]"
+			end
+		end
 	end
 	
 

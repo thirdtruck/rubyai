@@ -112,6 +112,9 @@ module RubyAi
 		attr_reader :characters, :stages, :scenes
 		
 		def initialize(input, output, target_script=nil)
+			@settings = {
+				:urls => {}
+			}
 			@characters = { }
 			@stages = { }
 			@sounds = { }
@@ -124,6 +127,10 @@ module RubyAi
 		def start
 			if @target_script
 				script_dir = "scripts/#{@target_script}/"
+				
+				for_settings do
+					eval File.read(script_dir + "settings.rb")
+				end
 				
 				for_characters do
 					eval File.read(script_dir + "characters.rb")
@@ -210,6 +217,18 @@ module RubyAi
 			end
 			
 			return character
+		end
+		
+		def for_settings
+			def for_urls
+				def set(url_alias, url)
+					@settings[:urls][url_alias] = url
+				end
+				
+				yield if block_given?
+			end
+			
+			yield if block_given?
 		end
 		
 		def for_characters
@@ -328,6 +347,15 @@ module RubyAi
 		# Emphasized text
 		def em(string)
 			within_em(string)
+		end
+		
+		# Show a URl
+		def url(url_alias, description=nil)
+			url = @settings[:urls][url_alias]
+			
+			raise Exception.new "No such URL in the settings: #{url}" unless url
+			
+			within_url(url, description)
 		end
 		
 		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene, :st, :em

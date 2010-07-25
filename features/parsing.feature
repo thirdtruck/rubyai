@@ -17,3 +17,17 @@ Feature: parsing
 		When I add `lucy "Could you #{st 'not'} step on my toe again?"` to scene :intro
 		And I run scene :intro
 		Then I should see "Lucy: Could you *not* step on my toe again?"
+	
+	Scenario: show a url
+		Given an :intro scene
+		When I set the URL :homepage to "http://www.rubyai.org"
+		When I add `narrate "You can visit us at #{url :homepage}!"` to scene :intro
+		And I run scene :intro
+		Then I should see "You can visit us at [http://www.rubyai.org]!"
+	
+	Scenario: show a url with a description
+		Given an :intro scene
+		When I set the URL :homepage to "http://www.rubyai.org"
+		When I add `narrate "You can visit us at #{url :homepage, 'our homepage'}!"` to scene :intro
+		And I run scene :intro
+		Then I should see "You can visit us at our homepage [http://www.rubyai.org]!"

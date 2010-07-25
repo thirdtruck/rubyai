@@ -32,6 +32,10 @@ add_scene :intro do
 	lucy "I know!",
 	     "I just said that!"
 	
+	run_scene :very_first_choice
+end
+	
+add_scene :very_first_choice do
 	show pleased_fairy
 	terrified_lucy "Who the heck are you?"
 	
@@ -59,7 +63,10 @@ add_scene :disbelieve do
 	narrate "With a horrible scream, the #{fairy} vanishes in a cloud of sparkles."
         lucy "spends the rest of the night researching \"Hallucinations\" and local folklore on AltMed and Wikipedia instead of finishing her homework.  Exhausted, she sleeps in late, missing the class entirely and forced into another year of classes and student loans."
 	
-	game_over :failure
+	choice do
+		option "Try that first choice again?" do run_scene :very_first_choice end
+		option  "Quit now" do game_over :failure end
+	end
 end
 
 add_scene :believe do
@@ -72,8 +79,6 @@ add_scene :believe do
 	terrified_lucy "Riiight."
 	
 	run_scene :install
-	
-	game_over :success
 end
 
 add_scene :install do
@@ -89,4 +94,48 @@ add_scene :install do
 	tired_lucy "I would have written one already if I thought that my #{em 'art'} teacher would accept it."
 	
 	bemused_fairy "What about a #{em 'visual'} novel?"
+	
+	tired_lucy "Eh?"
+	
+	typing_fairy "types a URL into #{lucy}'s browser."
+	fairy "They call them \"Ren'Ai\" in Japan!  It uses pictures #{em 'and'} words to create a whole new experience!"
+	
+	confused_lucy "You said \"Ren'Ai\" --"
+	excited_fairy "That I did!"
+	tired_lucy "That you did."
+	confused_lucy "So why did you go to \"#{url :rubyai_homepage}\"?"
+	
+	excited_fairy "Because you need software like this to make it happen!"
+	
+	terrified_lucy "S-s-software?  How can you expect me to #{em 'program'} at this hour?!"
+	tired_lucy "Besides, does it even work on my computer?  It runs..."
+	
+	choice do
+		option "Linux" do run_scene :install_linux end
+		option "Windows" do run_scene :install_windows end
+		option "Mac OS X" do run_scene :install_osx end
+		option "In the Browser" do run_scene :install_browser end
+	end
+	
+	narrate "With a little help from the #{url :message_boards, 'message boards'}, #{lucy} and the #{fairy} soon have the #{em 'Ruby\'Ai'} software up and running."
+end
+
+add_scene :install_linux do
+	excited_fairy "It sure does!"
+	# gem installation directions
+end
+
+add_scene :install_windows do
+	excited_fairy "You bet it does!"
+	# gem installation directions
+end
+
+add_scene :install_osx do
+	excited_fairy "It even runs on that!"
+	# gem installation directions
+end
+
+add_scene :install_browser do
+	excited_fairy "You can even try it out in your browser!"
+	# gem installation directions
 end
