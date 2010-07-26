@@ -100,6 +100,10 @@ module RubyAi
 				"[#{url}]"
 			end
 		end
+		
+		def within_code(string)
+			"`#{string}`"
+		end
 	end
 	
 

@@ -349,15 +349,19 @@ module RubyAi
 			within_em(string)
 		end
 		
-		# Show a URl
+		# Show a URL
 		def url(url_alias, description=nil)
 			url = @settings[:urls][url_alias]
 			
-			raise Exception.new "No such URL in the settings: #{url}" unless url
+			raise Exception.new "No such URL in the settings: #{url_alias}" unless url
 			
 			within_url(url, description)
 		end
 		
-		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene, :st, :em
+		def code(string)
+			within_code(string)
+		end
+		
+		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene, :st, :em, :url, :code
 	end
 end

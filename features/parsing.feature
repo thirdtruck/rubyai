@@ -31,3 +31,9 @@ Feature: parsing
 		When I add `narrate "You can visit us at #{url :homepage, 'our homepage'}!"` to scene :intro
 		And I run scene :intro
 		Then I should see "You can visit us at our homepage [http://www.rubyai.org]!"
+	
+	Scenario: show code
+		Given an :intro scene
+		When I add `narrate "Try entering #{code 'show tired_lucy'} into the parser."` to scene :intro
+		And I run scene :intro
+		Then I should see "Try entering `show tired_lucy` into the parser."
