@@ -46,6 +46,16 @@ rubyai_script = new RubyAiScript(
 
 		speak("Lucy", "I just said that!", "images/characters/lucy_annoyed.png");
 
+		run_scene("very_first_choice");
+
+	 } 
+
+	)
+
+	add_scene("very_first_choice",
+
+	 function() {
+
 		show_character("fairy", "Ruby\'Ai Fairy", "images/characters/fairy_pleased.png", "");
 
 		speak("Lucy", "Who the heck are you?", "images/characters/lucy_terrified.png");
@@ -106,7 +116,29 @@ rubyai_script = new RubyAiScript(
 
 		action("Lucy", "spends the rest of the night researching \"Hallucinations\" and local folklore on AltMed and Wikipedia instead of finishing her homework.  Exhausted, she sleeps in late, missing the class entirely and forced into another year of classes and student loans.", "images/characters/lucy_terrified.png");
 
-		game_over("failure");
+		choose_from( new Choice( [
+
+		new Option("Try that first choice again?",
+
+		 function() {
+
+			run_scene("very_first_choice");
+
+		 } 
+
+		),
+
+		new Option("Quit now",
+
+		 function() {
+
+			game_over("failure");
+
+		 } 
+
+		),
+
+		] ) );
 
 	 } 
 
@@ -128,9 +160,135 @@ rubyai_script = new RubyAiScript(
 
 		speak("Lucy", "Riiight.", "images/characters/lucy_terrified.png");
 
-		narrate("Over the course of the night, the dynamic duo crafts a creative masterpiece!  Lucy graduates and goes to a fulfulling career in education!");
+		run_scene("install");
 
-		game_over("success");
+	 } 
+
+	)
+
+	add_scene("install",
+
+	 function() {
+
+		show_stage("computer_desk", "Computer Desk", "images/stages/computer_desk_default.png", "My relic of a computer, inherited from my father.  He already wore the \'E\' key down to a nub from years of editing.");
+
+		speak("Lucy", "So what do we do now, Miss Ruby\'Ai Fairy?", "images/characters/lucy_tired.png");
+
+		speak("Ruby\'Ai Fairy", "Now I get to help you write a novel!", "images/characters/fairy_stern.png");
+
+		show_character("lucy", "Lucy", "images/characters/lucy_tired.png", "");
+
+		speak("Lucy", "That doesn\'t help me in the <strong>slightest</strong>!", "images/characters/lucy_terrified.png");
+
+		speak("Lucy", "I would have written one already if I thought that my <em>art</em> teacher would accept it.", "images/characters/lucy_tired.png");
+
+		speak("Ruby\'Ai Fairy", "What about a <em>visual</em> novel?", "images/characters/fairy_bemused.png");
+
+		speak("Lucy", "Eh?", "images/characters/lucy_tired.png");
+
+		action("Ruby\'Ai Fairy", "types a URL into Lucy\'s browser.", "images/characters/fairy_typing.png");
+
+		speak("Ruby\'Ai Fairy", "They call them \"Ren\'Ai\" in Japan!  It uses pictures <em>and</em> words to create a whole new experience!", "images/characters/fairy_typing.png");
+
+		speak("Lucy", "You said \"Ren\'Ai\" --", "images/characters/lucy_confused.png");
+
+		speak("Ruby\'Ai Fairy", "That I did!", "images/characters/fairy_excited.png");
+
+		speak("Lucy", "That you did.", "images/characters/lucy_tired.png");
+
+		speak("Lucy", "So why did you go to \"[<a href=\"http://www.rubyai.org\" target=\"_blank\">http://www.rubyai.org</a>]\"?", "images/characters/lucy_confused.png");
+
+		speak("Ruby\'Ai Fairy", "Because you need software like this to make it happen!", "images/characters/fairy_excited.png");
+
+		speak("Lucy", "S-s-software?  How can you expect me to <em>program</em> at this hour?!", "images/characters/lucy_terrified.png");
+
+		speak("Lucy", "Besides, does it even work on my computer?  It runs...", "images/characters/lucy_tired.png");
+
+		choose_from( new Choice( [
+
+		new Option("Linux",
+
+		 function() {
+
+			run_scene("install_linux");
+
+		 } 
+
+		),
+
+		new Option("Windows",
+
+		 function() {
+
+			run_scene("install_windows");
+
+		 } 
+
+		),
+
+		new Option("Mac OS X",
+
+		 function() {
+
+			run_scene("install_osx");
+
+		 } 
+
+		),
+
+		new Option("In the Browser",
+
+		 function() {
+
+			run_scene("install_browser");
+
+		 } 
+
+		),
+
+		] ) );
+
+		narrate("With a little help from the <a href=\"http://www.rubyai.org/message_boards\" target=\"_blank\">message boards</a>, Lucy and the Ruby\'Ai Fairy soon have the <em>Ruby\'Ai</em> software up and running.");
+
+	 } 
+
+	)
+
+	add_scene("install_linux",
+
+	 function() {
+
+		speak("Ruby\'Ai Fairy", "It sure does!", "images/characters/fairy_excited.png");
+
+	 } 
+
+	)
+
+	add_scene("install_windows",
+
+	 function() {
+
+		speak("Ruby\'Ai Fairy", "You bet it does!", "images/characters/fairy_excited.png");
+
+	 } 
+
+	)
+
+	add_scene("install_osx",
+
+	 function() {
+
+		speak("Ruby\'Ai Fairy", "It even runs on that!", "images/characters/fairy_excited.png");
+
+	 } 
+
+	)
+
+	add_scene("install_browser",
+
+	 function() {
+
+		speak("Ruby\'Ai Fairy", "You can even try it out in your browser!", "images/characters/fairy_excited.png");
 
 	 } 
 

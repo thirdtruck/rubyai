@@ -33,16 +33,16 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="16.428571"
+     inkscape:cx="-37.825841"
      inkscape:cy="520"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1024"
-     inkscape:window-height="576"
+     inkscape:window-height="600"
      inkscape:window-x="-1"
-     inkscape:window-y="-3"
-     inkscape:window-maximized="1" />
+     inkscape:window-y="-27"
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -51,7 +51,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -59,45 +59,87 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <g
+       id="g2826">
+      <rect
+         inkscape:export-ydpi="78.75"
+         inkscape:export-xdpi="78.75"
+         inkscape:export-filename="/home/james/git_repositories/rubyai_tutorial/media/stages/bedroom.png"
+         y="258.07648"
+         x="45.714287"
+         height="240"
+         width="571.42859"
+         id="rect2816"
+         style="fill:#e6e6e6" />
+      <rect
+         inkscape:export-ydpi="78.75"
+         inkscape:export-xdpi="78.75"
+         inkscape:export-filename="/home/james/git_repositories/rubyai_tutorial/media/stages/bedroom.png"
+         y="389.50504"
+         x="345.71429"
+         height="62.857143"
+         width="197.14285"
+         id="rect2818"
+         style="fill:#ff5555" />
+      <rect
+         inkscape:export-ydpi="78.75"
+         inkscape:export-xdpi="78.75"
+         inkscape:export-filename="/home/james/git_repositories/rubyai_tutorial/media/stages/bedroom.png"
+         y="346.64792"
+         x="531.42859"
+         height="128.57143"
+         width="25.714287"
+         id="rect2820"
+         style="fill:#c83737" />
+      <rect
+         inkscape:export-ydpi="78.75"
+         inkscape:export-xdpi="78.75"
+         inkscape:export-filename="/home/james/git_repositories/rubyai_tutorial/media/stages/bedroom.png"
+         y="380.93362"
+         x="337.14285"
+         height="94.285713"
+         width="28.571428"
+         id="rect2822"
+         style="fill:#c83737" />
+    </g>
     <rect
-       style="fill:#e6e6e6"
-       id="rect2816"
-       width="571.42859"
-       height="240"
+       inkscape:export-ydpi="78.75"
+       inkscape:export-xdpi="78.75"
+       inkscape:export-filename="/home/james/git_repositories/rubyai_tutorial/media/stages/bedroom.png"
+       y="600.93359"
        x="45.714287"
-       y="258.07648"
-       inkscape:export-filename="/home/james/git_repositories/rubyai_tutorial/media/stages/bedroom.png"
-       inkscape:export-xdpi="78.75"
-       inkscape:export-ydpi="78.75" />
+       height="240"
+       width="571.42859"
+       id="rect2834"
+       style="fill:#e6e6e6" />
     <rect
-       style="fill:#ff5555"
-       id="rect2818"
-       width="197.14285"
-       height="62.857143"
-       x="345.71429"
-       y="389.50504"
-       inkscape:export-filename="/home/james/git_repositories/rubyai_tutorial/media/stages/bedroom.png"
-       inkscape:export-xdpi="78.75"
-       inkscape:export-ydpi="78.75" />
+       style="fill:#c3c3c3;fill-opacity:1;stroke:#838383;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3624"
+       width="65.714287"
+       height="91.428574"
+       x="298.57144"
+       y="697.2193" />
     <rect
-       style="fill:#c83737"
-       id="rect2820"
-       width="25.714287"
-       height="128.57143"
-       x="531.42859"
-       y="346.64792"
-       inkscape:export-filename="/home/james/git_repositories/rubyai_tutorial/media/stages/bedroom.png"
-       inkscape:export-xdpi="78.75"
-       inkscape:export-ydpi="78.75" />
+       style="fill:#c3c3c3;fill-opacity:1;stroke:#838383;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect2846"
+       width="202.85715"
+       height="134.28572"
+       x="230"
+       y="631.50507" />
     <rect
-       style="fill:#c83737"
-       id="rect2822"
-       width="28.571428"
-       height="94.285713"
-       x="337.14285"
-       y="380.93362"
-       inkscape:export-filename="/home/james/git_repositories/rubyai_tutorial/media/stages/bedroom.png"
-       inkscape:export-xdpi="78.75"
-       inkscape:export-ydpi="78.75" />
+       y="648.03253"
+       x="254.96704"
+       height="101.23077"
+       width="152.92308"
+       id="rect3622"
+       style="fill:#ffffff;fill-opacity:1;stroke:#838383;stroke-width:3.76923084;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       ry="20" />
+    <rect
+       style="fill:#c3c3c3;fill-opacity:1;stroke:#838383;stroke-width:5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3626"
+       width="257.14285"
+       height="31.428572"
+       x="202.85715"
+       y="782.93359" />
   </g>
 </svg>

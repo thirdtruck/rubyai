@@ -148,6 +148,22 @@ module RubyAi
 			
 			@output.puts %^] ) );^
 		end
+		
+		def within_st(string)
+			%^<strong>#{string}</strong>^
+		end
+		
+		def within_em(string)
+			%^<em>#{string}</em>^
+		end
+		
+		def within_url(url, description=nil)
+			if description
+				%^<a href="#{url}" target="_blank">#{description}</a>^
+			else
+				%^[<a href="#{url}" target="_blank">#{url}</a>]^
+			end
+		end
 	end
 	
 	class StageElement
