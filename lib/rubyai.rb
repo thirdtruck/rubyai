@@ -1,3 +1,5 @@
+require 'delegate'
+
 # Class Macros
 class << Object
 	def wrap_callbacks_around(target_class, *methods)
@@ -363,5 +365,22 @@ module RubyAi
 		end
 		
 		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene, :st, :em, :url, :code
+	end
+
+	class GameWorkspace < DelegateClass(Game)
+		instance_methods.each do |method|
+			# TODO: Does this actually do anything useful or does DelegateClass render this 
+			# implementation useless?
+			# We might have to try a custom delegate setup wherein this class only delegates 
+			# to *class* or *instance* methods of Game, thereby avoiding its inherited methods 
+			# effectively
+			undef_method method unless method.to_s =~ /method_missing|respond_to?|object_id|^__/
+		end
+		
+		def initialize(game_environment)
+			super(game_environment)
+		end
+		
+		# Sandboxing goes here
 	end
 end

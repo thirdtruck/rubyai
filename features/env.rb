@@ -42,5 +42,10 @@ def input
 end
 
 def game
-  @game ||= RubyAi::Game.new(input, output)
+  if @game
+    @game
+  else
+    game_environment = RubyAi::Game.new(input, output)
+    @game = RubyAi::GameWorkspace.new(game_environment)
+  end
 end

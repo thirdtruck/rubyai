@@ -262,9 +262,9 @@ add_scene :first_script do
 	worried_lucy "So what do I do now?"
 	
 	if @os == "windows"
-		@first_script_directory = "scripts/my_first_renai/scenes.rb"
-	else
 		@first_script_directory = "scripts\\my_first_renai\\scenes.rb"
+	else
+		@first_script_directory = "scripts/my_first_renai/scenes.rb"
 	end
 	
 	bespeckled_fairy "Now we open up the #{@first_script_directory} file!"

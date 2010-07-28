@@ -64,7 +64,7 @@ rubyai_script = new RubyAiScript(
 
 		speak("Lucy", "You really want me to believe that?  Seriously?", "images/characters/lucy_tired.png");
 
-		speak("Ruby\'Ai Fairy", "But you must!  We fairies only last as long as you believe in us!", "images/characters/fairy_hurt.png");
+		speak("Ruby\'Ai Fairy", "But you must!  We fairies only last as long as you believe in us!", "images/characters/fairy_terrified.png");
 
 		choose_from( new Choice( [
 
@@ -196,13 +196,25 @@ rubyai_script = new RubyAiScript(
 
 		speak("Lucy", "That you did.", "images/characters/lucy_tired.png");
 
-		speak("Lucy", "So why did you go to \"[<a href=\"http://www.rubyai.org\" target=\"_blank\">http://www.rubyai.org</a>]\"?", "images/characters/lucy_confused.png");
+		speak("Lucy", "So why did you go to \"[<a href=\"http://www.rubyai.org\" target=\"_blank\">http://www.rubyai.org</a>]\"?", "images/characters/lucy_questioning.png");
 
 		speak("Ruby\'Ai Fairy", "Because you need software like this to make it happen!", "images/characters/fairy_excited.png");
 
-		speak("Lucy", "S-s-software?  How can you expect me to <em>program</em> at this hour?!", "images/characters/lucy_terrified.png");
+		speak("Lucy", "S-s-software?  How can you expect me to <em>program</em> at this hour?!  Besides...", "images/characters/lucy_terrified.png");
 
-		speak("Lucy", "Besides, does it even work on my computer?  It runs...", "images/characters/lucy_tired.png");
+		speak("Lucy", "Besides...", "images/characters/lucy_tired.png");
+
+		speak("Lucy", "Does it even work on my computer?  It runs...", "images/characters/lucy_questioning.png");
+
+		run_scene("choose_os");
+
+	 } 
+
+	)
+
+	add_scene("choose_os",
+
+	 function() {
 
 		choose_from( new Choice( [
 
@@ -250,6 +262,30 @@ rubyai_script = new RubyAiScript(
 
 		narrate("With a little help from the <a href=\"http://www.rubyai.org/message_boards\" target=\"_blank\">message boards</a>, Lucy and the Ruby\'Ai Fairy soon have the <em>Ruby\'Ai</em> software up and running.");
 
+		speak("Ruby\'Ai Fairy", "And now we go to the project directory we made... \"my_first_renai\"...", "images/characters/fairy_typing.png");
+
+		speak("Lucy", "Did everything work?", "images/characters/lucy_worried.png");
+
+		speak("Ruby\'Ai Fairy", "It sure did!", "images/characters/fairy_excited.png");
+
+		speak("Lucy", "Egads!  Look at all those directories!", "images/characters/lucy_terried.png");
+
+		speak("Lucy", "\"bin\", \"lib\", \"web\", what does it all <em>meeeeeean!?</em>", "images/characters/lucy_terried.png");
+
+		speak("Lucy", "...", "images/characters/lucy_soulless.png");
+
+		speak("Ruby\'Ai Fairy", "Don\'t die on me now!", "images/characters/fairy_frantic.png");
+
+		speak("Lucy", "Get away from me with those paddles!", "images/characters/lucy_terrified.png");
+
+		show_character("fairy", "Ruby\'Ai Fairy", "images/characters/fairy_apologetic.png", "");
+
+		action("Lucy", "types away at the computer, one key at a time.", "images/characters/lucy_tired.png");
+
+		run_scene("command_line_setup");
+
+		run_scene("first_script");
+
 	 } 
 
 	)
@@ -289,6 +325,202 @@ rubyai_script = new RubyAiScript(
 	 function() {
 
 		speak("Ruby\'Ai Fairy", "You can even try it out in your browser!", "images/characters/fairy_excited.png");
+
+	 } 
+
+	)
+
+	add_scene("command_line_setup",
+
+	 function() {
+
+		speak("Lucy", "Okay, Miss Ruby\'Ai Fairy, what do I do now?", "images/characters/lucy_default.png");
+
+		speak("Ruby\'Ai Fairy", "Let me see.. its says that you should, after installing the software...", "images/characters/fairy_bespeckled.png");
+
+		speak("Lucy", "You\'re still reading the manual?", "images/characters/lucy_tired.png");
+
+		action("Lucy", "stares at the screen.", "images/characters/lucy_confused.png");
+
+		choose_from( new Choice( [
+
+		new Option("media",
+
+		 function() {
+
+			run_scene("directory_media");
+
+		 } 
+
+		),
+
+		new Option("web",
+
+		 function() {
+
+			run_scene("directory_web");
+
+		 } 
+
+		),
+
+		new Option("scripts",
+
+		 function() {
+
+			run_scene("directory_scripts");
+
+		 } 
+
+		),
+
+		] ) );
+
+	 } 
+
+	)
+
+	add_scene("directory_media",
+
+	 function() {
+
+		action("Ruby\'Ai Fairy", "looks up from the book.", "images/characters/fairy_bespeckled.png");
+
+		speak("Ruby\'Ai Fairy", "You can\'t go in there!", "images/characters/fairy_terrified.png");
+
+		action("Lucy", "opens the directory accidentially.", "images/characters/lucy_confused.png");
+
+		speak("Lucy", "Wait, what\'s this \"lucy.png\" image...?", "images/characters/lucy_worried.png");
+
+		show_character("fairy", "Ruby\'Ai Fairy", "images/characters/fairy_terrified.png", "");
+
+		speak("Lucy", "It\'s a picture of <em>me</em>!  I\'m looking at a picture of me, looking at a picture of me, of me, of me...", "images/characters/lucy_terrified.png");
+
+		narrate("Lucy\'s universe segfaults from the recursive loop and implodes.");
+
+		choose_from( new Choice( [
+
+		new Option("Try that again?",
+
+		 function() {
+
+			run_scene("command_line_setup");
+
+		 } 
+
+		),
+
+		new Option("Quit now",
+
+		 function() {
+
+			game_over("failure");
+
+		 } 
+
+		),
+
+		] ) );
+
+	 } 
+
+	)
+
+	add_scene("directory_web",
+
+	 function() {
+
+		speak("Lucy", "It\'s empty!", "images/characters/lucy_terrified.png");
+
+		speak("Ruby\'Ai Fairy", "What\'s empty?!", "images/characters/fairy_confused.png");
+
+		speak("Lucy", "The \"web\" directory!", "images/characters/lucy_indignant.png");
+
+		speak("Ruby\'Ai Fairy", "Oh, that\'s perfectly normal.", "images/characters/fairy_bemused.png");
+
+		speak("Lucy", "What the heck do you expect me to do with an empty directory?", "images/characters/lucy_tired.png");
+
+		speak("Ruby\'Ai Fairy", "Nothing yet.  <em>Ruby\'Ai</em> will put all of the actual game file after we export the finished project!", "images/characters/fairy_default.png");
+
+		speak("Lucy", "Oh.", "images/characters/lucy_tired.png");
+
+		speak("Lucy", "So where do I go?", "images/characters/lucy_tired.png");
+
+		speak("Ruby\'Ai Fairy", "To the \"scripts\" directory!", "images/characters/fairy_excited.png");
+
+		show_character("fairy", "Ruby\'Ai Fairy", "images/characters/fairy_typing.png", "");
+
+		run_scene("directory_scripts");
+
+	 } 
+
+	)
+
+	add_scene("directory_scripts",
+
+	 function() {
+
+		speak("Lucy", "It\'s empty.", "images/characters/lucy_confused.png");
+
+		speak("Ruby\'Ai Fairy", "Oh, we just need to run the script setup command!", "images/characters/fairy_default.png");
+
+		speak("Lucy", "I have to type all of that out correctly...", "images/characters/lucy_worried.png");
+
+		speak("Ruby\'Ai Fairy", "Just this once!", "images/characters/fairy_excited.png");
+
+		speak("Lucy", "If you say so...", "images/characters/lucy_typing.png");
+
+		speak("Lucy", "Ah, an error!  Did I <em>break</em> it?  Tell me I didn\'t break it!", "images/characters/lucy_terrified.png");
+
+		speak("Ruby\'Ai Fairy", "Don\'t worry!", "images/characters/fairy_excited.png");
+
+		speak("Ruby\'Ai Fairy", "You can try it again.", "images/characters/fairy_excited.png");
+
+		speak("Ruby\'Ai Fairy", "I have confidence in you!", "images/characters/fairy_excited.png");
+
+		speak("Lucy", "...", "images/characters/lucy_typing.png");
+
+		speak("Lucy", "Oh!  I forgot a period.", "images/characters/lucy_typing.png");
+
+		show_character("lucy", "Lucy", "images/characters/lucy_gasping.png", "");
+
+		speak("Lucy", "It works!", "images/characters/lucy_gasping.png");
+
+		speak("Ruby\'Ai Fairy", "It works!", "images/characters/fairy_excited.png");
+
+	 } 
+
+	)
+
+	add_scene("initialize_in_browser",
+
+	 function() {
+
+		speak("Ruby\'Ai Fairy", "I can\'t reach the site!", "images/characters/fairy_terrified.png");
+
+		action("Lucy", "pulls the keyboard over.", "images/characters/lucy_tired.png");
+
+		speak("Lucy", "Let\'s just install a local copy.", "images/characters/lucy_tired.png");
+
+		run_scene("choose_os");
+
+	 } 
+
+	)
+
+	add_scene("first_script",
+
+	 function() {
+
+		speak("Lucy", "So what do I do now?", "images/characters/lucy_worried.png");
+
+		speak("Ruby\'Ai Fairy", "Now we open up the scriptsmy_first_renai cenes.rb file!", "images/characters/fairy_bespeckled.png");
+
+		speak("Lucy", "Okay...", "images/characters/lucy_worried.png");
+
+		speak("Lucy", "It says , , and .", "images/characters/lucy_worried.png");
+
+		speak("Ruby\'Ai Fairy", "That\'s right!  <em>Ruby\'Ai</em> always runs the \"intro\" scene first, if you add one, so it makes one for you automagically!", "images/characters/fairy_excited.png");
 
 	 } 
 

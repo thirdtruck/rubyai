@@ -4,7 +4,9 @@ end
 Given /^an empty script$/ do
   @output = output
   @input = input
-  game = RubyAi::Game.new(@input, @output)
+  
+  game_environment = RubyAi::Game.new(@input, @output)
+  game = RubyAi::GameWorkspace.new(game_environment)
   
   game.start
 end

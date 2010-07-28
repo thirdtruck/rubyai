@@ -8,7 +8,8 @@ script_to_export = ARGV[1] or raise "Script to export required"
 
 exporter = Exporter.new
 
-game = RubyAi::Game.new(exporter, exporter, script_to_export)
+game_environment = RubyAi::Game.new(exporter, exporter, script_to_export)
+game = RubyAi::GameWorkspace.new(game_environment)
 
 game.start
 
