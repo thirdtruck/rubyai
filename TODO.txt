@@ -1,4 +1,4 @@
-Figure out why the last scene, 'first_script', was looping a few times.
+Figure out why the last scene, 'first_script', was looping a few times: this appears to stem from looks like the "In the browser" choice adding extra scene-runs or the like.
 
 Consider switching out the "show <obj>, :<adj>" format of the command with "show [<adj>] <char> [statement/action]", making the adjective a method instead of a symbol and adding the statement/action at the end.  This would make combined image-statement commands more natural.  Ex:
 show tired lucy "flops onto her bed."

@@ -269,6 +269,19 @@ add_scene :first_script do
 	
 	bespeckled_fairy "Now we open up the #{@first_script_directory} file!"
 	worried_lucy "Okay...",
-		"It says #{code 'add_scene :intro'}, #{code 'lucius says "Hello!"'}, and #{code 'end'}."
+		"It says:"
+	code_block %{
+		add_scene :intro
+		lucius says "Hello!"
+		end
+	}
 	excited_fairy "That's right!  #{em 'Ruby\'Ai'} always runs the \"intro\" scene first, if you add one, so it makes one for you automagically!"
+	
+	worried_lucy "What's this \"test_run.rb\" file?"
+	show typing_lucy
+	tired_lucy "Ugh, another error."
+	excited_fairy "This one has its own instructions!  If you don't know what a script does, trying running it and see if it offers any help of its own!"
+	typing_lucy "I see now... #{code './test_run.rb tutorial'} ..."
+	excited_lucy "And success!  #{lucius} said \"Hello!\"",
+		"I think I can actually make this happen.  This girl will graduate this semester yet."
 end
