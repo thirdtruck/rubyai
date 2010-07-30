@@ -29,3 +29,7 @@ Then /^I should see "([^"]*)"$/ do |results|
   @output.messages.should include results
 end
 
+Then /^I should see only:$/ do |results|
+  filtered_results = results.split("\n")
+  @output.messages.should == filtered_results
+end

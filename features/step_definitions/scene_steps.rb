@@ -48,3 +48,10 @@ When /^I choose option "([^"]*)"$/ do |choice|
   @input.add_message(choice)
 end
 
+When /^I add the following to scene :(.*):$/ do |scene_id, contents|
+  game.parse_script do
+    _append_to_scene scene_id.to_sym do
+      instance_eval(contents)
+    end
+  end
+end

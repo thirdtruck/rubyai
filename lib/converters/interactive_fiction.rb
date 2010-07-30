@@ -104,6 +104,19 @@ module RubyAi
 		def within_code(string)
 			"`#{string}`"
 		end
+		
+		def within_code_block(string)
+			# TODO: Find the more concise way of trimming this
+			if string[0] == "\n"
+				trimmed_string = string[1..-1]
+			else
+				trimmed_string = string
+			end
+			if string[-1] == "\n"
+				trimmed_string = trimmed_string[0..-2]
+			end
+			@output.puts "CODE>>>\n#{trimmed_string}\n<<<CODE"
+		end
 	end
 	
 

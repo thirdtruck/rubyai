@@ -107,7 +107,7 @@ add_scene :install do
 	
 	excited_fairy "Because you need software like this to make it happen!"
 	
-	terrified_lucy "S-s-software?  How can you expect me to #{em 'program'} at this hour?!  Besides..."
+	terrified_lucy "S-s-software?  How can you expect me to #{em 'program'} at this hour?!"
 	tired_lucy "Besides..."
 	questioning_lucy "Does it even work on my computer?  It runs..."
 	

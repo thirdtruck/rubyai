@@ -32,8 +32,50 @@ Feature: parsing
 		And I run scene :intro
 		Then I should see "You can visit us at our homepage [http://www.rubyai.org]!"
 	
-	Scenario: show code
+	Scenario: show inline code
 		Given an :intro scene
 		When I add `narrate "Try entering #{code 'show tired_lucy'} into the parser."` to scene :intro
 		And I run scene :intro
 		Then I should see "Try entering `show tired_lucy` into the parser."
+	
+	Scenario: show a single line of code in regular quotes
+		Given an :intro scene
+		When I add `code_block "show lucy"` to scene :intro
+		And I run scene :intro
+		Then I should see only:
+			"""
+			CODE>>>
+			show lucy
+			<<<CODE
+			"""
+	
+	Scenario: show a single line of code in block quotes
+		Given an :intro scene
+		When I add `code_block %{show lucy}` to scene :intro
+		And I run scene :intro
+		Then I should see only:
+			"""
+			CODE>>>
+			show lucy
+			<<<CODE
+			"""
+	
+	Scenario: show multiple lines of code
+		Given an :intro scene
+		When I add the following to scene :intro:
+			"""
+			code_block %{
+				show adjective_character
+				character "does x."
+				character "I say y."
+			}
+			"""
+		And I run scene :intro
+		Then I should see only:
+			"""
+			CODE>>>
+				show adjective_character
+				character "does x."
+				character "I say y."
+			<<<CODE
+			"""

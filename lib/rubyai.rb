@@ -364,7 +364,11 @@ module RubyAi
 			within_code(string)
 		end
 		
-		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene, :st, :em, :url, :code
+		def code_block(string)
+			within_code_block(string)
+		end
+		
+		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene, :st, :em, :url, :code, :code_block
 	end
 
 	class GameWorkspace < DelegateClass(Game)

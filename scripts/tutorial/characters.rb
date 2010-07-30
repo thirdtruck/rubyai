@@ -10,8 +10,6 @@ end
 
 add :hidden_fairy, "????"
 
-add :code, "Code"
-
 add :marcus, "Prince Marcus"
 
 add :amanda, "Amanda"
