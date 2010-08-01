@@ -1,6 +1,6 @@
 require 'highline/import'
 
-class InteractiveInterface
+module InteractiveInterfaceCommands
 	def puts(string)
 		Kernel.print(string)
 		ask(''){ |q| q.echo = '' }
@@ -12,6 +12,10 @@ class InteractiveInterface
 		Kernel.puts()
 		answer
 	end
+end
+
+class InteractiveInterface
+	include InteractiveInterfaceCommands
 end
 
 module RubyAi
@@ -134,5 +138,13 @@ module RubyAi
 		def show_as
 			"*#{@name}*"
 		end
+	end
+end
+
+class Exporter
+	include InteractiveInterfaceCommands
+	
+	def self.description
+		"Runs the script directly with a plain-text, command-line interface."
 	end
 end

@@ -200,7 +200,7 @@ rubyai_script = new RubyAiScript(
 
 		speak("Ruby\'Ai Fairy", "Because you need software like this to make it happen!", "images/characters/fairy_excited.png");
 
-		speak("Lucy", "S-s-software?  How can you expect me to <em>program</em> at this hour?!  Besides...", "images/characters/lucy_terrified.png");
+		speak("Lucy", "S-s-software?  How can you expect me to <em>program</em> at this hour?!", "images/characters/lucy_terrified.png");
 
 		speak("Lucy", "Besides...", "images/characters/lucy_tired.png");
 
@@ -336,7 +336,7 @@ rubyai_script = new RubyAiScript(
 
 		speak("Lucy", "Okay, Miss Ruby\'Ai Fairy, what do I do now?", "images/characters/lucy_default.png");
 
-		speak("Ruby\'Ai Fairy", "Let me see.. its says that you should, after installing the software...", "images/characters/fairy_bespeckled.png");
+		speak("Ruby\'Ai Fairy", "Let me see.. its says that you should, after installing the software...", "images/characters/fairy_bespectacled.png");
 
 		speak("Lucy", "You\'re still reading the manual?", "images/characters/lucy_tired.png");
 
@@ -384,7 +384,7 @@ rubyai_script = new RubyAiScript(
 
 	 function() {
 
-		action("Ruby\'Ai Fairy", "looks up from the book.", "images/characters/fairy_bespeckled.png");
+		action("Ruby\'Ai Fairy", "looks up from the book.", "images/characters/fairy_bespectacled.png");
 
 		speak("Ruby\'Ai Fairy", "You can\'t go in there!", "images/characters/fairy_terrified.png");
 
@@ -514,21 +514,105 @@ rubyai_script = new RubyAiScript(
 
 		speak("Lucy", "So what do I do now?", "images/characters/lucy_worried.png");
 
-		speak("Ruby\'Ai Fairy", "Now we open up the scriptsmy_first_renai cenes.rb file!", "images/characters/fairy_bespeckled.png");
+		speak("Ruby\'Ai Fairy", "Now we open up the scripts/my_first_renai/scenes.rb file!", "images/characters/fairy_bespectacled.png");
 
 		speak("Lucy", "Okay...", "images/characters/lucy_worried.png");
 
-		speak("Lucy", "It says , , and .", "images/characters/lucy_worried.png");
+		speak("Lucy", "It says:", "images/characters/lucy_worried.png");
 
 		speak("Ruby\'Ai Fairy", "That\'s right!  <em>Ruby\'Ai</em> always runs the \"intro\" scene first, if you add one, so it makes one for you automagically!", "images/characters/fairy_excited.png");
+
+		speak("Lucy", "What\'s this \"test_run.rb\" file?", "images/characters/lucy_worried.png");
+
+		show_character("lucy", "Lucy", "images/characters/lucy_typing.png", "");
+
+		speak("Lucy", "Ugh, another error.", "images/characters/lucy_tired.png");
+
+		speak("Ruby\'Ai Fairy", "This one has its own instructions!  If you don\'t know what a script does, trying running it and see if it offers any help of its own!", "images/characters/fairy_excited.png");
+
+		speak("Lucy", "I see now...  ...", "images/characters/lucy_typing.png");
+
+		speak("Lucy", "And success!  Marcus said \"Hello!\"", "images/characters/lucy_excited.png");
+
+		speak("Lucy", "I think I can actually make this happen.  This girl will graduate this semester yet.", "images/characters/lucy_excited.png");
+
+		run_scene("first_changes");
 
 	 } 
 
 	)
 
-	run_scene("intro");
+	add_scene("first_changes",
 
- } 
+	 function() {
 
-);
+		speak("Lucy", "Okay, now what?  We need more than just this Marcus person standing there.", "images/characters/lucy_worried.png");
+
+		speak("Ruby\'Ai Fairy", "I don\'t know about that; he <em>is</em> pretty handsome.", "images/characters/fairy_bespectacled.png");
+
+		speak("Lucy", "Focus!", "images/characters/lucy_furious.png");
+
+		action("Ruby\'Ai Fairy", "tumbles backwards into a heap of library books.", "images/characters/fairy_terrified.png");
+
+		speak("Ruby\'Ai Fairy", "Okay!  Focusing!", "images/characters/fairy_surrendered.png");
+
+		action("Ruby\'Ai Fairy", "flies back over to the computer.", "images/characters/fairy_default.png");
+
+		speak("Ruby\'Ai Fairy", "How about we have him wave?", "images/characters/fairy_bemused.png");
+
+		speak("Lucy", "And how do we do that?", "images/characters/lucy_worried.png");
+
+		speak("Ruby\'Ai Fairy", "Try this: .", "images/characters/fairy_bespectacled.png");
+
+		speak("Lucy", "...", "images/characters/lucy_tired.png");
+
+		speak("Ruby\'Ai Fairy", "Yes?  What?  Is there something on my face?", "images/characters/fairy_worried.png");
+
+		speak("Ruby\'Ai Fairy", "Don\'t tell me that I have a bookworm on my face!", "images/characters/fairy_terrified.png");
+
+		action("Ruby\'Ai Fairy", "tries desperately to wipe her face on Lucy\'s shirt before the girl pulls her off of it.", "images/characters/fairy_terrified.png");
+
+		speak("Lucy", "No, not that.  It\'s just that \"thusy\" isn\'t grammatically correct here.", "images/characters/lucy_tired.png");
+
+		speak("Ruby\'Ai Fairy", "Oh thank the novella authors.  Feral bookworms constitute a leading cause of fairy death in this country.  Did you know that?", "images/characters/fairy_distracted.png");
+
+		speak("Lucy", "That I did not.  But back to \"thusly\"?", "images/characters/lucy_tired.png");
+
+		action("Ruby\'Ai Fairy", "swats something.", "images/characters/fairy_focused.png");
+
+		speak("Ruby\'Ai Fairy", "There.", "images/characters/fairy_focused.png");
+
+		speak("Ruby\'Ai Fairy", "Oh!  I actually remember that from my time in Fairy University!", "images/characters/fairy_excited.png");
+
+		speak("Lucy", "You do?  Wait, from where?", "images/characters/lucy_confused.png");
+
+		speak("Ruby\'Ai Fairy", "Yep!  The teacher mentioned a  \"language keyword conflict\" or something...", "images/characters/fairy_bespectacled.png");
+
+		speak("Lucy", "And?", "images/characters/lucy_worried.png");
+
+		speak("Ruby\'Ai Fairy", "And then I dozed off again.", "images/characters/fairy_tired.png");
+
+		speak("Lucy", "...", "images/characters/lucy_furious.png");
+
+		speak("Ruby\'Ai Fairy", "But I\'ve seen your art teacher\'s assignment handouts and I doubt he\'d notice!", "images/characters/fairy_bemused.png");
+
+		speak("Ruby\'Ai Fairy", "Besides, you don\'t have to use that word anyways!", "images/characters/fairy_bemused.png");
+
+		speak("Lucy", "Now you tell me?", "images/characters/lucy_tired.png");
+
+		speak("Ruby\'Ai Fairy", "That\'s right!  <em>Ruby\'Ai</em> will deduce your intent from what you type!", "images/characters/fairy_excited.png");
+
+		speak("Lucy", "How so?", "images/characters/lucy_wary.png");
+
+		speak("Ruby\'Ai Fairy", "If the sentence starts with a lowercase letter, <em>Ruby\'Ai</em> treats it as if you typed \"thusly\".  Otherwise, it acts as if you used \"says\"!", "images/characters/fairy_bespectacled.png");
+
+		speak("Lucy", "So if I add this to what we already have...", "images/characters/lucy_typing.png");
+
+		action("Lucy", "runs the script again and this pops up on the screen:", "images/characters/lucy_typing.png");
+
+		action("Ruby\'Ai Fairy", "claps!", "images/characters/fairy_excited.png");
+
+		action("Lucy", "cheers!", "images/characters/lucy_excited.png");
+
+		narrate("A woman shouts from downstairs.");
 

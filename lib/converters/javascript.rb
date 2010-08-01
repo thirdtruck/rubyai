@@ -4,7 +4,7 @@ include FileUtils
 def log(statement)
 	@log_messages ||= []
 	@log_messages << statement
-	puts "Log: " + statement
+	Kernel.puts "Log: " + statement
 end
 
 def log_once(statement)
@@ -26,8 +26,16 @@ def escape_js(string)
 end
 
 class Exporter
+	def self.description
+		"Exports a web-based version that runs via Javascript.  Requires images."
+	end
+
 	def initialize
-		@js = File.open("web/js/script.js", "w")
+		destination_dir = "web"
+		destination_file = destination_dir + "/js/script.js"
+		log "Exporting files to \"#{destination_dir}\"..."
+		log "Open \"#{destination_dir}/index.html\" in your browser to view the results."
+		@js = File.open(destination_file, "w")
 	end
 	
 	def puts(string)

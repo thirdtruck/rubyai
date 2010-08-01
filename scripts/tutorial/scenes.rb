@@ -374,14 +374,45 @@ add_scene :second_character do
 	pleased_fairy "Snozberry."
 	tired_lucy "Apparently I did not want to know."
 	curious_lucy "Anyways, what do I do if I want to add, say, \"#{petunia}\", the evil ex-fiancee of #{marcus}?"
-	bespectacled_fairy "You simply have to add #{code 'add :petunia, "Princess Petunia"'} to \"characters.rb\"!"
+	bespectacled_fairy "You simply have to add #{code "add :petunia, \"#{petunia}\""} to \"characters.rb\"!"
 	show excited_lucy
 	bespectacled_fairy "But #{em 'Ruby\'Ai'} only comes with pictures for the default characters."
 	depressed_lucy "Alas.  At least that keeps things simple."
 	typing_lucy "pounds out the beginning to her story."
 	
-	run_scene :emotions
+	run_scene :exporting
 end
 
-add_scene :emotions
+add_scene :exporting do
+	show bedroom
+	
+	typing_lucy "types for a while, engrossed in her work."
+	bespectacled_fairy "looks up from one of #{lucy}'s books."
+		"How's everything coming along?"
+	typing_lucy "Pretty good so far..."
+	confused_lucy "But this visual novel still has a lot more #{em 'text'} than #{em 'visuals'}."
+	excited_fairy "Then the time has arrived to #{em 'export'} it!"
+	terrified_lucy "E-e-export?"
+	excited_fairy "Yep!  You only have to run a simple command like before!"
+	concerned_lucy "Which one?"
+	bespectacled_fairy "This time, #{code 'bin/export.rb --help'}!"
+	surprised_lucy "Gasp!  Instructions!  This \"--help\" thing really comes in handy."
+	excited_fairy "You bet!  Try it with every command.  You never know what you might find!"
+	concerned_lucy "So it wants an exporter and a script, if I read this correctly?"
+	excited_lucy "A-ha.  #{code 'bin/export.rb --exporters'} gives me a starting point, and according to the example it gives..."
+	show anxious_fairy
+	confused_lucy "I just need a second to figure it out myself..."
+	excited_lucy "This \"javascript\" exporter requires images, so I'll use it!"
+	code_block %{bin/export.rb javascript my_first_renai}
+	excited_fairy "nods enthusiastically."
+	excited_lucy "It works!  I think.  It says to open \"index.html\" in my browser."
+	show excited_fairy
+	excited_lucy "Success!"
+	whispering_lucy "covers her mouth.", "Oh, I mean 'success'."
+	excited_fairy "gives #{lucy} a high-five."
+	
+	run_scene :contexts
+end
+
+add_scene :contexts
 end
