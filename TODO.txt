@@ -1,8 +1,5 @@
 Figure out why the last scene, 'first_script', was looping a few times: this appears to stem from looks like the "In the browser" choice adding extra scene-runs or the like.
 
-Consider switching out the "show <obj>, :<adj>" format of the command with "show [<adj>] <char> [statement/action]", making the adjective a method instead of a symbol and adding the statement/action at the end.  This would make combined image-statement commands more natural.  Ex:
-show tired lucy "flops onto her bed."
-
 Replace the "game" singleton object with better pre-feature code support instead, if actually preferable.
 
 Refactor the features and steps to expect *only* certain content so as to avoid unexpected content.
@@ -20,3 +17,5 @@ function StageElement(name) {
 }
 
 Move some more of the implicit things (like always running the :intro scene first if provided) into the feature lists.
+
+Consider ways to keep the tutorial script and its final product results DRYer.
