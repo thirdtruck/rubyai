@@ -183,7 +183,7 @@ end
 
 add_scene :command_line_setup do
 	default_lucy "Okay, Miss #{fairy}, what do I do now?"
-	bespeckled_fairy "Let me see.. its says that you should, after installing the software..."
+	bespectacled_fairy "Let me see.. its says that you should, after installing the software..."
 	tired_lucy "You're still reading the manual?"
 	confused_lucy "stares at the screen."
 	
@@ -195,7 +195,7 @@ add_scene :command_line_setup do
 end
 
 add_scene :directory_media do
-	bespeckled_fairy "looks up from the book."
+	bespectacled_fairy "looks up from the book."
 	terrified_fairy "You can't go in there!"
 	confused_lucy "opens the directory accidentially."
 	worried_lucy "Wait, what's this \"lucy.png\" image...?"
@@ -267,12 +267,12 @@ add_scene :first_script do
 		@first_script_directory = "scripts/my_first_renai/scenes.rb"
 	end
 	
-	bespeckled_fairy "Now we open up the #{@first_script_directory} file!"
+	bespectacled_fairy "Now we open up the #{@first_script_directory} file!"
 	worried_lucy "Okay...",
 		"It says:"
 	code_block %{
 		add_scene :intro
-		lucius says "Hello!"
+		marcus says "Hello!"
 		end
 	}
 	excited_fairy "That's right!  #{em 'Ruby\'Ai'} always runs the \"intro\" scene first, if you add one, so it makes one for you automagically!"
@@ -282,6 +282,106 @@ add_scene :first_script do
 	tired_lucy "Ugh, another error."
 	excited_fairy "This one has its own instructions!  If you don't know what a script does, trying running it and see if it offers any help of its own!"
 	typing_lucy "I see now... #{code './test_run.rb tutorial'} ..."
-	excited_lucy "And success!  #{lucius} said \"Hello!\"",
+	excited_lucy "And success!  #{marcus} said \"Hello!\"",
 		"I think I can actually make this happen.  This girl will graduate this semester yet."
+	
+	run_scene :first_changes
+end
+
+add_scene :first_changes do
+	worried_lucy "Okay, now what?  We need more than just this #{marcus} person standing there."
+	bespectacled_fairy "I don't know about that; he #{em 'is'} pretty handsome."
+	furious_lucy "Focus!"
+	terrified_fairy "tumbles backwards into a heap of library books."
+	surrendered_fairy "Okay!  Focusing!"
+	
+	default_fairy "flies back over to the computer."
+	bemused_fairy "How about we have him wave?"
+	worried_lucy "And how do we do that?"
+	bespectacled_fairy "Try this: #{code 'marcus thusy "waves."'}."
+	
+	tired_lucy "..."
+	worried_fairy "Yes?  What?  Is there something on my face?"
+	terrified_fairy "Don't tell me that I have a bookworm on my face!",
+		"tries desperately to wipe her face on #{lucy}'s shirt before the girl pulls her off of it."
+	tired_lucy "No, not that.  It's just that \"thusy\" isn't grammatically correct here."
+	distracted_fairy "Oh thank the novella authors.  Feral bookworms constitute a leading cause of fairy death in this country.  Did you know that?"
+	tired_lucy "That I did not.  But back to \"thusly\"?"
+	focused_fairy "swats something.", "There."
+	excited_fairy "Oh!  I actually remember that from my time in Fairy University!"
+	confused_lucy "You do?  Wait, from where?"
+	bespectacled_fairy "Yep!  The teacher mentioned a  \"language keyword conflict\" or something..."
+	worried_lucy "And?"
+	tired_fairy "And then I dozed off again."
+	furious_lucy "..."
+	bemused_fairy "But I've seen your art teacher's assignment handouts and I doubt he'd notice!",
+		"Besides, you don't have to use that word anyways!"
+	tired_lucy "Now you tell me?"
+	
+	excited_fairy "That's right!  #{em 'Ruby\'Ai'} will deduce your intent from what you type!"
+	wary_lucy "How so?"
+	bespectacled_fairy "If the sentence starts with a lowercase letter, #{em 'Ruby\'Ai'} treats it as if you typed \"thusly\".  Otherwise, it acts as if you used \"says\"!"
+	typing_lucy "So if I add this to what we already have..."
+	code_block %{
+		marcus "How are you today?"
+		marcus "surveys the terrain."
+	}
+	typing_lucy "runs the script again and this pops up on the screen:"
+	code_block %{
+		Prince Marcus: Hello!
+		Prince Marcus waves.
+		Prince Marcus: How are you today?
+		Prince Marcus surveys the terrain.
+	}
+	excited_fairy "claps!"
+	excited_lucy "cheers!"
+	narrate "A woman shouts from downstairs."
+	mom "#{lucy}, is everything alright up there?"
+	whispering_lucy "We woke her!",
+		"stuffs a pillow over a scrambling #{fairy}."
+	worried_lucy "Everything is just hunky-dory up here, mom!  I just, um, got some good grades back online?"
+	mom "Wonderful, dear.  Remember to rest enough before your classes tomorrow, please!  Good night!"
+	worried_lucy "Yes, mom!  Good night!"
+	terrified_fairy "gasps for air."
+	
+	run_scene :second_character
+end
+
+add_scene :second_character do
+	terrified_fairy "You nearly killed me!"
+	whispering_lucy "Shh!"
+	terrified_fairy "Don't you know that We fairies have #{em 'obnoxiously'} small lungs?"
+	worried_lucy "And if I had choked you, I would never finish this visual novel, so that leaves me stuck with you..."
+	show soulless_lucy
+	terrified_fairy "breaks out a pair of defibrillator paddles and starts rubbing them together."
+	tired_lucy "unplugs the defibrillator."
+		"Where did you even get...? never mind."
+	excited_fairy "Back to the novel?"
+	tired_lucy "Back to the novel."
+	
+	confused_lucy "We need another character.  For that matter, where did we get this #{marcus} guy, and who made him a prince?"
+	typing_fairy "From here, in \"characters.rb\"!"
+	code_block %{
+		add :marcus, "Prince Marcus"
+		add :jen, "Jennifer"
+	}
+	confused_lucy "Who's \"#{jen}\"?"
+	bespectacled_fairy "#{em 'Ruby\'Ai'} adds these characters when you create the script files so that you have a starting place right away!"
+	curious_lucy "So that first part, \":marcus\", tells us the name to use in the code, right?  And the second part, \"Prince Marcus\", tells the computer what to show in the game itself?"
+	excited_fairy "Precisely!   You're really picking this up quickly, you know?  You might not even fail out of college like the last one.  I can almost #{em 'taste'} my fairy wand!"
+	terrified_lucy "Last what?"
+	confused_lucy "Scratch that.  Do I even want to know what a fairy wand tastes like?"
+	pleased_fairy "Snozberry."
+	tired_lucy "Apparently I did not want to know."
+	curious_lucy "Anyways, what do I do if I want to add, say, \"#{petunia}\", the evil ex-fiancee of #{marcus}?"
+	bespectacled_fairy "You simply have to add #{code 'add :petunia, "Princess Petunia"'} to \"characters.rb\"!"
+	show excited_lucy
+	bespectacled_fairy "But #{em 'Ruby\'Ai'} only comes with pictures for the default characters."
+	depressed_lucy "Alas.  At least that keeps things simple."
+	typing_lucy "pounds out the beginning to her story."
+	
+	run_scene :emotions
+end
+
+add_scene :emotions
 end

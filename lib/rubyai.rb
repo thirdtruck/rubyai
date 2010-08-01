@@ -126,7 +126,7 @@ module RubyAi
 			@target_script = target_script
 		end
 		
-		def start
+		def start(starting_scene=:intro)
 			if @target_script
 				script_dir = "scripts/#{@target_script}/"
 				
@@ -153,7 +153,11 @@ module RubyAi
 			
 			within_start
 			
-			run_scene :intro if @scenes[:intro]
+			if @scenes[starting_scene]
+				run_scene starting_scene 
+			else
+				raise "No such scene found: #{starting_scene}."
+			end
 		end
 		
 		def game_over(type=nil)
