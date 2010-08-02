@@ -12,7 +12,7 @@ add :hidden_fairy, "????"
 
 add :mom, "Lucy's Mom"
 
-add :marcus, "Marcus"
+add :marcus, "Prince Marcus"
 
 add :jen, "Jennifer"
 

@@ -202,6 +202,7 @@ add_scene :directory_media do
 	show terrified_fairy
 	terrified_lucy "It's a picture of #{em 'me'}!  I'm looking at a picture of me, looking at a picture of me, of me, of me..."
 	narrate "#{lucy}'s universe segfaults from the recursive loop and implodes."
+	@doom = true
 	
 	choice do
 		option "Try that again?" do run_scene :command_line_setup end
@@ -414,5 +415,43 @@ add_scene :exporting do
 	run_scene :contexts
 end
 
-add_scene :contexts
+add_scene :contexts do
+	show computer_desk
+	concerned_lucy "It makes me glad to finally have a visual novel that's, well, #{em 'visual'}, but where did we get these pictures of #{marcus} and #{jen}?"
+	
+	if @os == "windows"
+		@character_image_directory = "media\\characters\\"
+	else
+		@character_image_directory = "media/characters/"
+	end
+	bespectacled_fairy "How very astute of you!  You can take a look inside of the \"#{@character_image_directory}\" directory."
+	typing_lucy "clicks a few times."
+	confused_lucy "I see \"marcus_waving.png\", \"marcus_smiling.png\", \"jen_concerned.png\" and several more."
+	worried_lucy "Wait, what's this \"lucy_worried.png\" image about..."
+	terrified_fairy "snatches the keyboard away!"
+	if @doom
+		terrified_fairy "Not again!"
+	end
+	worried_lucy "What?"
+	terrified_fairy "Never mind!"
+	bespectacled_fairy "Anyways, those images come with #{em 'Ruby\'Ai'} for you to use in your own games!  You get them under a Creative Commons license, too, so you already have permission for it!"
+	smiling_lucy "That was nice of them.", "Now give me my keyboard back."
+	surprised_fairy "Oh, of course!"
+	tired_lucy "Now what do I do with these other images?"
+	excited_fairy "You can show the characters with those moods and actions!",
+		"Try adding #{code %{show smiling_marcus}} and #{code %{waving_marcus "runs over to #{jen}."}} and export it again."
+	typing_lucy "Okay...",
+		"runs through the game."
+	surprised_lucy "And now he smiles and waves!  Let's see if I can make him jump like a good little minion of literary domination!"
+	tired_lucy "He's just standing there."
+	bespectacled_fairy "Yep.  #{em 'Ruby\'Ai'} falls back to the default image - in this case, \"marcus_default.png\" - if it can't find a matching one."
+	contemplative_lucy "That #{em 'would'} explain the error message about a \"missing image\"."
+	excited_fairy "Why don't you take a look at the other \"marcus\" and \"jen\" images next and write out some more script?  I have another great thing to show you after that!"
+	typing_lucy "Okay!"
+	
+	run_scene :stages
+end
+
+add_scene :stages do
+	
 end
