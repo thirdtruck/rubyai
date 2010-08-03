@@ -452,6 +452,48 @@ add_scene :contexts do
 	run_scene :stages
 end
 
+# TODO: Consider a choice to choose which areas to cover, invoking options that expire after use
 add_scene :stages do
+	typing_lucy "wipes the sweat from her brow."
+	excited_lucy "So what do you have for me now?"
+	bespectacled_fairy "How about a background?"
+	confused_lucy "Oh?"
+	excited_lucy "Oh!  I hadn't even noticed the lack of scenery."
+	show terrified_lucy
+	concerned_fairy "What's the matter?"
+	terrified_lucy "I just had horrible flashbacks to my landscape painting attempts from back at the beginning of this darn art class."
+	worrid_lucy "Tell me that the #{em 'Ruby\'Ai'} people lent some backgrounds, too."
+	excited_fairy "That they did!"
+	tired_lucy "Phew."
 	
+	if @os == "windows"
+		@stage_image_directory = "media\\stages\\"
+	else
+		@stage_image_directory = "media/stages/"
+	end
+	bespectacled_fairy "Check the \"#{@stage_image_directory}\" directory."
+	typing_lucy "Neat."
+	# TODO: offer a multiple choice or fill-in-the-blank prompt here, allowing the player to guess first.
+	contemplative_lucy "Let me guess: going by what we've used before, I should try #{code 'show castle'}?"
+	excited_fairy "Exactamundo!"
+	excited_lucy "And it works!"
+	
+	concerned_lucy "But what if I want to add a new stage?  I remember these panoramas from Wikipedia..."
+	if @os == "windows"
+		@stage_script_directory = "scripts\\my_first_renai\\stages.rb\\"
+	else
+		@stage_script_directory = "scripts/my_first_renai/stages.rb"
+	end
+	bespectacled_fairy "Just open up \"#{@stage_script_directory}\"!"
+	excited_lucy "Oh, there's \"castle.png\"."
+	typing_lucy "opens a browser window and copies a few images into the directory."
+	excited_lucy "And now I can add #{code 'show garden'} and #{code 'show farm'} and -"
+	frantic_fairy "Whoa, whoa, whoa!  Give your poor characters a chance to rest!"
+	tired_fairy "You'll tire out the players with all that movement, too."
+	show terrified_lucy
+	
+	run_scene :choices
+end
+
+add_scene :choices do
 end
