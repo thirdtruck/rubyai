@@ -93,9 +93,9 @@ add_scene :install do
 	terrified_lucy "That doesn't help me in the #{st 'slightest'}!"
 	tired_lucy "I would have written one already if I thought that my #{em 'art'} teacher would accept it."
 	
-	bemused_fairy "What about a #{em 'visual'} novel?"
+	bemused_fairy "What about an interactive, #{em 'visual'} novel?"
 	
-	tired_lucy "Eh?"
+	tired_lucy "Interactive?  Visual?"
 	
 	typing_fairy "types a URL into #{lucy}'s browser."
 	fairy "They call them \"Ren'Ai\" in Japan!  It uses pictures #{em 'and'} words to create a whole new experience!"
@@ -273,7 +273,7 @@ add_scene :first_script do
 		"It says:"
 	code_block %{
 		add_scene :intro
-		marcus says "Hello!"
+			marcus says "Hello!"
 		end
 	}
 	excited_fairy "That's right!  #{em 'Ruby\'Ai'} always runs the \"intro\" scene first, if you add one, so it makes one for you automagically!"
@@ -472,7 +472,8 @@ add_scene :stages do
 		@stage_image_directory = "media/stages/"
 	end
 	bespectacled_fairy "Check the \"#{@stage_image_directory}\" directory."
-	typing_lucy "Neat."
+	excited_lucy "Neat."
+	typing_lucy "Oh, they have a \"castle.png\" image."
 	# TODO: offer a multiple choice or fill-in-the-blank prompt here, allowing the player to guess first.
 	contemplative_lucy "Let me guess: going by what we've used before, I should try #{code 'show castle'}?"
 	excited_fairy "Exactamundo!"
@@ -485,15 +486,167 @@ add_scene :stages do
 		@stage_script_directory = "scripts/my_first_renai/stages.rb"
 	end
 	bespectacled_fairy "Just open up \"#{@stage_script_directory}\"!"
-	excited_lucy "Oh, there's \"castle.png\"."
+	code_block %{
+		add :castle, "Castle" do
+			describe_as "A European castle."
+		end
+	}
+	concerned_lucy "So I just write another one of these \"add\" chunks of code, using the new image's name and title, and then give it a description?"
+	excited_fairy  "nods emphatically."
 	typing_lucy "opens a browser window and copies a few images into the directory."
+		"then writes more of \"#{@stage_script_directory}\"."
 	excited_lucy "And now I can add #{code 'show garden'} and #{code 'show farm'} and -"
 	frantic_fairy "Whoa, whoa, whoa!  Give your poor characters a chance to rest!"
 	tired_fairy "You'll tire out the players with all that movement, too."
 	show terrified_lucy
+	worried_fairy "#{lucy}?"
 	
 	run_scene :choices
 end
 
 add_scene :choices do
+	terrified_lucy "quivers in her chair."
+	concerned_fairy "By the intractable Fairy's Job Manual, you've gone pale!"
+	soulless_lucy "I feel like I've seen a ghost."
+	amused_fairy "Silly!  Who in their right mind would believe such a thing as ghosts?"
+	tired_lucy "...",
+		"This coming from a fairy."
+	amused_fairy "I'm a magical creature myself!  #{em 'Of course'}, I would know about these kinds of things."
+	worried_fairy "Watch out for zombies and daemons, though."
+	worried_lucy "..."
+	
+	concerned_fairy "Oh, but what #{em 'did'} freak you out?"
+	terrified_lucy "I had completely forgotten that this was an #{em 'interactive'} novel."
+	concerned_fairy "Well, you don't #{em 'have'} to make it interactive."
+		"You could have a linear visual novel, that's perfectly normal."
+	worried_lucy "No, that's alright.  Some interactively could win me extra kudos with the teacher."
+
+	excited_fairy "Wonderful!  Let me introduce you to the \"choice\" command."
+	concerned_lucy "Another command?"
+	excited_fairy "The second-to-last one for tonight?"
+	concerned_lucy "Wait, for #{em 'tonight'}?"
+	excited_fairy "There's always tomorrow, after all!"
+	amused_fairy "If I play my cards right, I could stay assigned to you for the rest of your writing career!"
+	show soulless_lucy
+	concerned_fairy "Well, you will have an awfully short career if you don't finish this novel."
+	terrified_lucy "Writing time!"
+	
+	concerned_lucy "So how does this \"choice\" command work?"
+	typing_fairy "It's the most complicated command so far, so let me show you a complete example:"
+	sound keyboard
+	@example_choice = %{
+		choice do
+			option "Wave back at #{marcus}" do jen "waves back!" end
+			option "Hide behind a tree" do jen "hides behind a tree"; jen "I'll surprise him!" end
+			option "Dance" do
+				jen "does a little jig."
+				marcus "You have \\\"mad moves\\\", I think."
+				jen "bows."
+			end
+		end
+	}
+	code_block @example_choice
+	terrified_lucy "So much.. code.. vision.. blurring.."
+	concerned_fairy "unsheathes her Let's Refocus!(TM)-branded mini-taser."
+	sound taser
+	excited_lucy "Ahh! What-what-what?"
+	show excited_fairy
+	tired_lucy "Right."
+	
+	curious_lucy "Okay, the \"choice\" command itself doesn't look too bad."
+	bespectacled_fairy "Nope.  It really just corrals all of the \"option\" commands into a single choice for the user."
+	concerned_lucy "Still, those \"option\" commands concern me."
+	bespectacled_fairy "Not to worry!  They really just corral a few other commands together.",
+		"The semi-colon there just stands in for the linebreak that we normally use to separate commands."
+	curious_lucy "Gotcha..."
+	excited_fairy "Why not try the choice out?"
+	eval @example_choice
+	excited_lucy "Awesome!"
+	
+	run_scene :running_scenes
+end
+
+add_scene :running_scenes do
+	typing_lucy "adds a couple more choices to the script."
+	concerned_lucy "This last option grew really long, and now I want to add another choice inside of it.",
+		"Will that work?"
+	bespectacled_fairy "It would, but we have an even better option!"
+	show worried_lucy
+	excited_fairy "No need to worry!  This will make your job easier!"
+	tired_lucy "Just what I need at 2 A.M., honestly."
+	
+	bespectacled_fairy "Remember the \"add_scene\" from #{em 'way'} back at the top of the script?"
+	concerned_lucy "Vaguely."
+	excited_fairy "It has a sister command, \"run_scene\".  Just give it the name of a scene you've added and it will jump right to that one!"
+	bespectacled_fairy "Try moving all of those commands from that choice into a new script first."
+	typing_lucy "Alright... I'll call it \":awesome_answer\"."
+	code_block %{
+		add_scene :awesome_answer do
+			marcus "You really mean it?"
+			jen "I do!"
+			marcus "jumps up and down like a puppy."
+			marcus "Then let's go get some ice cream!"
+			jen "Okay!  What flavor?"
+		end
+	}
+	amused_fairy "Yep, just like that! Now, where you had that code, you can add just #{code 'run_scene :awesome_answer'}."
+	code_block %{
+		choice do
+			option "Look confused" do jen "Que?" end
+			option "Run away" do jen "sprints off back towards the woods." end
+			option "Agree" do run_scene :awesome_answer end
+		end
+	}
+	excited_lucy "And success!  Whoohoo!"
+	excited_fairy "It looks like you've really figured this out!"
+	typing_lucy "You bet.  I'll have this ready for the class presentation with time to spare now."
+	excited_fairy "watches on intently as #{lucy} pounds away at the keyboard."
+	
+	run_scene :ending
+end
+
+add_scene :ending do
+	show bedroom
+	
+	narrate "Another couple of hours pass."
+	tired_lucy "yawns."
+	bespectacled_fairy "Oh, I almost forgot one of the most essential commands!"
+	terrified_lucy "Ack!"
+	excited_fairy "Game over!"
+	terrified_lucy "Not before I finish!"
+	amused_fairy "No silly, #{em 'when'} you finish."
+	show tired_lucy
+	bespectacled_fairy "When you reach a point where the novel should end, use the \"game_over\" command."
+	tired_lucy "Oh."
+	bespectacled_fairy "You can call it in three different ways:",
+		"By itself, for a default ending.",
+		"As #{code 'game_over :failure'} for a \"bad\" ending.",
+		"Or, as #{code 'game_over :success'} for a \"good\" ending!"
+	tired_lucy "I see.  I'm almost ready to use that, too.",
+		"Okay, back to typing."
+	
+	narrate "Time passes and the earliest rays of the rising sun peek in through the curtains."
+	tired_lucy "hits the \"Save\" button and then copies the files over to the school's servers."
+		"Well, I think that does it."
+	excited_lucy "Thanks for all the help, #{fairy}!  I couldn't have done it without you."
+	default_fairy "waves.",
+		"You're welcome!"
+	excited_fairy "My job here is done, then!"
+	default_fairy "heads for the door."
+	concerned_lucy "Will I ever see you again?"
+	bespectacled_fairy "Any time you need my assistance, you can count on me to be there!"
+	default_lucy "Thanks again."
+	default_fairy "flies out through the door."
+	
+	tired_lucy "looks at her books and her still-neat bed.",
+		"I might as well get in a little nap..."
+	excited_fairy "peeks back in, waving her pair of defibrillator paddles."
+	terrified_lucy "What are you doing back here already?"
+	excited_fairy "I can't let you forget about that History class assignment, now can I?"
+	terrified_lucy "screams.",
+		"Not another one!"
+	
+	narrate "Though rather frazzled, #{lucy} still passes all of her classes and manages to graduate with honors that semester, all with the help of the #{fairy} and you, too!  Thanks for playing!"
+	
+	game_over :success
 end
