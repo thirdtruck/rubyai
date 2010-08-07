@@ -5,8 +5,9 @@ Feature: rubyai starts game
 	So that I can play the game
 	
 	Scenario: start game
-		Given I am not yet playing
-		When I start a game
+		Given an empty script
+		When I add an :intro scene
+		And I start a game
 		Then I should see "Welcome to Ruby'Ai!"
 		And I should see "Begin? [y/n]:"
 	
