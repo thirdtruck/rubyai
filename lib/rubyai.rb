@@ -2,21 +2,23 @@ require 'delegate'
 require 'lib/novel_elements'
 
 # Class Macros
-class << Object
-	def wrap_callbacks_around(target_class, *methods)
-		methods.each do |method|
-			method_name = method.to_s
-			before_method = "before_#{method_name}"
-			within_method = "within_#{method_name}"
-			after_method = "after_#{method_name}"
-			unwrapped_method = "unwrapped_#{method_name}"
-			
-			target_class.class_eval do
-				eval "def #{before_method};end"
-				eval "def #{within_method}(*args, &block);end"
-				eval "def #{after_method};end"
-				eval "alias #{unwrapped_method} #{method_name}"
-				eval "def #{method_name}(*args, &block); #{before_method};original_results = #{unwrapped_method}(*args, &block);#{after_method};original_results;end;"
+module CallbackWrapper
+	def self.included(base)
+		def base.wrap_callbacks_around(target_class, *methods)
+			methods.each do |method|
+				method_name = method.to_s
+				before_method = "before_#{method_name}"
+				within_method = "within_#{method_name}"
+				after_method = "after_#{method_name}"
+				unwrapped_method = "unwrapped_#{method_name}"
+				
+				target_class.class_eval do
+					eval "def #{before_method};end"
+					eval "def #{within_method}(*args, &block);end"
+					eval "def #{after_method};end"
+					eval "alias #{unwrapped_method} #{method_name}"
+					eval "def #{method_name}(*args, &block); #{before_method};original_results = #{unwrapped_method}(*args, &block);#{after_method};original_results;end;"
+				end
 			end
 		end
 	end
@@ -44,6 +46,8 @@ module RubyAi
 	class Choice
 		attr_accessor :options
 		attr_reader :game
+		
+		include CallbackWrapper
 		
 		class Option
 			attr_accessor :description, :block
@@ -81,6 +85,8 @@ module RubyAi
 	end
 	class Game
 		attr_reader :characters, :stages, :scenes
+		
+		include CallbackWrapper
 		
 		def initialize(input, output, target_script=nil)
 			@settings = {
