@@ -1,5 +1,10 @@
+# Cache Files
 .*~
 .*.swp
+
+# Development Tool Output
 cucumber_output.txt
+
+# Exporter Output
 web/js/script.js
 web/images/*
