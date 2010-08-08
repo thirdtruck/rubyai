@@ -37,17 +37,17 @@ class Exporter
 		log "Open \"#{destination_dir}/index.html\" in your browser to view the results."
 		@js = File.open(destination_file, "w")
 	end
-	
+
 	def puts(string)
 		indentation = "\t" * current_indentation
 		@js.write(indentation + string+"\n")
 		@js.write("\n")
 	end
-	
+
 	def gets(query)
 		@output.puts %^make_choice(current_choice);^;
 	end
-	
+
 	def start_function
 		@indent ||= 0
 		puts " function() {"
@@ -132,7 +132,7 @@ module RubyAi
 			@output.puts %^add_scene(#{escape_js scene_alias.to_s},^
 			@output.within_function &block
 			@output.puts %^)^
-                        #parse_script { @scenes[scene_alias].run }
+			#parse_script { @scenes[scene_alias].run }
 		end
 		
 		def within_run_scene(scene_alias)
@@ -173,60 +173,60 @@ module RubyAi
 			end
 		end
 	end
+end
+
+class NovelElement
+	def resource_url
+		"images/misc/#{@alias}"
+	end
 	
-	class StageElement
-		def resource_url
-			"images/misc/#{@alias}"
-		end
-		
-		def type
-			"misc"
-		end
-		
-		def type_plural
-			if self.type != "misc"
-				self.type + "s"
-			else
-				self.type
-			end
-		end
-		
-		def show_function(image_url)
-			"show_#{self.type}(#{escape_js @alias}, #{escape_js @name}, #{escape_js image_url}, #{escape_js @description});"
+	def type
+		"misc"
+	end
+	
+	def type_plural
+		if self.type != "misc"
+			self.type + "s"
+		else
+			self.type
 		end
 	end
 	
-	class Character
-		def resource_url
-			"images/characters/#{@alias}"
-		end
-		
-		def type
-			"character"
-		end
+	def show_function(image_url)
+		"show_#{self.type}(#{escape_js @alias}, #{escape_js @name}, #{escape_js image_url}, #{escape_js @description});"
+	end
+end
+
+class Character
+	def resource_url
+		"images/characters/#{@alias}"
 	end
 	
-	class Stage
-		def resource_url
-			"images/stages/#{@alias}"
-		end
-		
-		def type
-			"stage"
-		end
+	def type
+		"character"
+	end
+end
+
+class Stage
+	def resource_url
+		"images/stages/#{@alias}"
 	end
 	
-	class << Sound
-		def resource_url
-			"sounds/#{@alias}"
-		end
-		
-		def show_as
-			"*#{@name}*"
-		end
-		
-		def type
-			"sound"
-		end
+	def type
+		"stage"
+	end
+end
+
+class Sound
+	def resource_url
+		"sounds/#{@alias}"
+	end
+	
+	def show_as
+		"*#{@name}*"
+	end
+	
+	def type
+		"sound"
 	end
 end
