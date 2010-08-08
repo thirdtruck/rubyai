@@ -149,6 +149,12 @@ function narrate(statement) {
 	} );
 };
 
+function code_block(statement) {
+	add_step( function() {
+		print('<pre class="code">'+statement+'</pre>');
+	} );
+}
+
 function game_over(type) {
 	add_step( function() {
 		elements = [$("<p>Game Over!</p>")];

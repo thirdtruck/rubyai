@@ -172,6 +172,16 @@ module RubyAi
 				%^[<a href="#{url}" target="_blank">#{url}</a>]^
 			end
 		end
+		
+		def within_code(string)
+			%^<span class="code">#{string}</span>^
+		end
+		
+		def within_code_block(string)
+			clean_string = string.gsub(/[\n\r]+/, '\\n');
+			clean_string.gsub!(/"/, "&quot;");
+			@output.puts %^code_block(#{escape_js clean_string});^
+		end
 	end
 end
 
