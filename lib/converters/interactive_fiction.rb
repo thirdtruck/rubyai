@@ -1,4 +1,5 @@
 require 'highline/import'
+require 'lib/novel_elements'
 
 module InteractiveInterfaceCommands
 	def puts(string)
@@ -16,6 +17,22 @@ end
 
 class InteractiveInterface
 	include InteractiveInterfaceCommands
+end
+
+class Character
+	def show_as
+		if @context == :default
+			"[Show #{@name}]"
+		else
+			"[#{@name} #{@context}]"
+		end
+	end
+end
+
+class Sound
+	def show_as
+		"*#{@name}*"
+	end
 end
 
 module RubyAi
@@ -120,23 +137,6 @@ module RubyAi
 				trimmed_string = trimmed_string[0..-2]
 			end
 			@output.puts "CODE>>>\n#{trimmed_string}\n<<<CODE"
-		end
-	end
-	
-
-        class Character < StageElement
-                def show_as
-                        if @context == :default
-                                "[Show #{@name}]"
-                        else
-                                "[#{@name} #{@context}]"
-                        end
-                end
-        end
-	
-	class Sound < StageElement
-		def show_as
-			"*#{@name}*"
 		end
 	end
 end
