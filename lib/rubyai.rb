@@ -1,5 +1,6 @@
 require 'delegate'
 require 'lib/novel_elements'
+require 'lib/scene'
 
 # Class Macros
 module CallbackWrapper
@@ -25,24 +26,6 @@ module CallbackWrapper
 end
 
 module RubyAi
-	class Scene
-		attr_accessor :contents
-		
-		def initialize(&block)
-			@contents = []
-			@contents << block if block
-		end
-		
-		def append(&block)
-			@contents << block
-		end
-		
-		def run
-			for block in @contents
-				block.call
-			end
-		end
-	end
 	class Choice
 		attr_accessor :options
 		attr_reader :game
