@@ -5,7 +5,7 @@ require 'lib/scene'
 # Class Macros
 module CallbackWrapper
 	def self.included(base)
-		def base.wrap_callbacks_around(target_class, *methods)
+		def base.wrap_callbacks_around(*methods)
 			methods.each do |method|
 				method_name = method.to_s
 				before_method = "before_#{method_name}"
@@ -13,7 +13,7 @@ module CallbackWrapper
 				after_method = "after_#{method_name}"
 				unwrapped_method = "unwrapped_#{method_name}"
 				
-				target_class.class_eval do
+				self.class_eval do
 					eval "def #{before_method};end"
 					eval "def #{within_method}(*args, &block);end"
 					eval "def #{after_method};end"
@@ -64,7 +64,7 @@ module RubyAi
 			@results_context.send(method, *args, &block)
 		end
 
-		wrap_callbacks_around self, :user_chooses
+		wrap_callbacks_around :user_chooses
 	end
 	class Game
 		attr_reader :characters, :stages, :scenes
@@ -330,7 +330,7 @@ module RubyAi
 			within_code_block(string)
 		end
 		
-		wrap_callbacks_around self, :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene, :st, :em, :url, :code, :code_block
+		wrap_callbacks_around :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene, :st, :em, :url, :code, :code_block
 	end
 
 	class GameWorkspace < DelegateClass(Game)
