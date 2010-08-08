@@ -14,9 +14,12 @@ module CallbackWrapper
 				unwrapped_method = "unwrapped_#{method_name}"
 				
 				self.class_eval do
-					eval "def #{before_method};end"
+					define_method before_method.to_sym do
+					end
+					define_method after_method.to_sym do
+					end
+					# TODO: Find ways around these `eval` calls
 					eval "def #{within_method}(*args, &block);end"
-					eval "def #{after_method};end"
 					eval "alias #{unwrapped_method} #{method_name}"
 					eval "def #{method_name}(*args, &block); #{before_method};original_results = #{unwrapped_method}(*args, &block);#{after_method};original_results;end;"
 				end
