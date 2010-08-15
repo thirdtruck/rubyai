@@ -18,7 +18,7 @@ var basicSetup = function() {
 };
 
 var basicTeardown = function() {
-		rubyai_game = null;
+	rubyai_game = null;
 };
 
 var example_scenes = {
@@ -33,14 +33,14 @@ var example_scenes = {
 
 var command_examples = {
 	narrate: { contents: [function() { rubyai_game.narrate("Stuff happens"); }],
-		output: "Stuff happens"
+		output: "Stuff happens\n"
 	},
 	speak: { contents: [function() { rubyai_game.speak("Lucy", "I have something to say.") }],
-		output: "Lucy: I have something to say."
+		output: "Lucy: I have something to say.\n"
 	},
 	action: { contents: [function() { rubyai_game.action("Lucy", "does something.") }],
-		output: "Lucy does something."
-	}
+		output: "Lucy does something.\n"
+	},
 };
 
 function testContent( examples ) {
@@ -101,3 +101,25 @@ module("Script Commands", {
 } );
 
 testCommands(command_examples);
+
+test("test command/runScene", function() {
+	expect(1);
+	
+	var script = new RubyAiScript( rubyai_game, function() {
+		this.addScene( "intro", [
+			function() { rubyai_game.narrate("This is the intro scene"); },
+			function() { rubyai_game.runScene("part2"); }
+		] );
+		this.addScene( "part2", [
+			function() { rubyai_game.narrate("This is the second scene"); },
+		] );
+	} )
+	
+	rubyai_game.start({ scene: "intro" })
+	console.log(rubyai_game);
+	
+	same(	rubyai_game.outputAsText(),
+		"This is the intro scene\nThis is the second scene\n",
+		"The runScene() command moves the script to another scene successfully."
+	);
+} );

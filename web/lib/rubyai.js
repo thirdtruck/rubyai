@@ -21,15 +21,21 @@ var RubyAiGame = function() {
 	};
 	
 	this.narrate = function( statement ) {
-		this.output += statement;
+		this.output += statement + "\n";
 	};
 	
 	this.speak = function( character, statement ) {
-		this.output += character + ": " + statement;
+		this.output += character + ": " + statement + "\n";
 	};
 	
 	this.action = function( character, behavior ) {
-		this.output += character + " " + behavior;
+		this.output += character + " " + behavior + "\n";
+	};
+	
+	this.runScene = function( scene_name ) {
+		var next_scene = this.scenes[scene_name];
+		this.current_crawler = new SceneCrawler(next_scene);
+		while(this.current_crawler.advanceScene()) { /* move this into a method on the crawler? */ }
 	};
 	
 	this.outputAsText = function() {
