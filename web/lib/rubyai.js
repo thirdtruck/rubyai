@@ -47,6 +47,10 @@ var RubyAiGame = function(contents) {
 		this.output += "Show character " + name + " [" + alias + "]: " + image + "\n";
 	};
 	
+	this.hide = function(alias, name) {
+		this.output += "[Hide " + name + "]" + "\n";
+	};
+	
 	this.addScene = function(name, scene_contents) {
 		this.scenes[name] = scene_contents;
 	};
