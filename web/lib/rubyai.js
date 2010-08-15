@@ -34,6 +34,10 @@ var RubyAiGame = function(contents) {
 		this.output += character + " " + behavior + "\n";
 	};
 	
+	this.sound = function( sound_name, sound_description ) {
+		this.output += "*"+sound_description+"*" + "\n";
+	};
+	
 	this.addScene = function(name, scene_contents) {
 		this.scenes[name] = scene_contents;
 	};

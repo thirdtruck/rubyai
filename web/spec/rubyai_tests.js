@@ -39,6 +39,9 @@ var command_examples = {
 	action: { contents: [function() { rubyai_game.action("Lucy", "does something.") }],
 		output: "Lucy does something.\n"
 	},
+	sound: { contents: [function() { rubyai_game.sound("bang", "Bang") }],
+		output: "*Bang*\n"
+	},
 };
 
 function testContent( examples ) {
