@@ -45,11 +45,14 @@ var command_examples = {
 	showStage: { contents: [function() { rubyai_game.showStage("outdoors", "Outdoors", "The outdoors, where they keep all of the trees.") }],
 		output: "Show stage Outdoors [outdoors]: The outdoors, where they keep all of the trees.\n"
 	},
+	showCharacter: { contents: [function() { rubyai_game.showCharacter("lucy", "Lucy", "lucy_default.png") }],
+		output: "Show character Lucy [lucy]: lucy_default.png\n"
+	},
 	hide: { contents: [function() { rubyai_game.hide("lucy", "Lucy") }],
 		output: "[Hide Lucy]\n"
 	},
-	showCharacter: { contents: [function() { rubyai_game.showCharacter("lucy", "Lucy", "lucy_default.png") }],
-		output: "Show character Lucy [lucy]: lucy_default.png\n"
+	codeBlock: { contents: [function() { rubyai_game.codeBlock("\tline_one();\n\tline_two();") }],
+		output: "CODE>>>\n\tline_one();\n\tline_two();\n<<<CODE\n"
 	},
 	gameOver_neutral: { contents: [function() { rubyai_game.gameOver() }],
 		output: "Game Over!\n"

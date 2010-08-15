@@ -51,6 +51,10 @@ var RubyAiGame = function(contents) {
 		this.output += "[Hide " + name + "]" + "\n";
 	};
 	
+	this.codeBlock = function(code) {
+		this.output += "CODE>>>\n"+code+"\n<<<CODE\n";
+	};
+	
 	this.addScene = function(name, scene_contents) {
 		this.scenes[name] = scene_contents;
 	};
