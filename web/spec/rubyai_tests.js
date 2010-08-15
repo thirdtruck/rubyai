@@ -156,11 +156,11 @@ var runScene_examples = [
 	}
 ];
 
-function testRunScene( examples ) {
+function testFullScript( command_name, examples ) {
 	for(var example_index in examples) {
 		// Remember, function-only context
 		(function(example) {
-		test("test command/runScene ("+example.name+")", function() {
+		test("test command/"+command_name+" ("+example.name+")", function() {
 			expect(1);
 			
 			rubyai_game = new RubyAiGame( example.contents )
@@ -169,11 +169,11 @@ function testRunScene( examples ) {
 			
 			same(	rubyai_game.outputAsText(),
 				example.output,
-				"The runScene() command moves the script to another scene successfully."
+				"The "+command_name+"() command moves the script to another scene successfully."
 			);
 		} );
 		})(examples[example_index]);
 	}
 };
 
-testRunScene(runScene_examples);
+testFullScript("runScene", runScene_examples);
