@@ -1,6 +1,7 @@
 var debug_scenes;
 
-var RubyAiGame = function() {
+var RubyAiGame = function(contents) {
+	this.contents = contents;
 	this.scenes = { };
 	this.output = "";
 	this.current_crawler = null;
@@ -32,6 +33,10 @@ var RubyAiGame = function() {
 		this.output += character + " " + behavior + "\n";
 	};
 	
+	this.addScene = function(name, scene_contents) {
+		this.scenes[name] = scene_contents;
+	};
+	
 	this.runScene = function( scene_name ) {
 		var next_scene = this.scenes[scene_name];
 		this.current_crawler = new SceneCrawler(next_scene);
@@ -41,6 +46,8 @@ var RubyAiGame = function() {
 	this.outputAsText = function() {
 		return this.output;
 	};
+	
+	this.contents();
 	
 	return this;
 };
@@ -63,19 +70,6 @@ var SceneCrawler = function(steps) {
 	
 	return this;
 }
-
-var RubyAiScript = function(game, contents) {
-	this.game = game;
-	this.contents = contents;
-	
-	this.addScene = function(name, scene_contents) {
-		this.game.scenes[name] = scene_contents;
-	};
-	
-	this.contents();
-	
-	return this;
-};
 
 var Option = function() {
 	return this;

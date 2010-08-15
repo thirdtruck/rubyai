@@ -3,18 +3,16 @@ var rubyai_game;
 module("Basic Setup");
 
 test("core objects", function() {
-	expect(3); 
+	expect(2); 
 	
-	var rubyai_game = new RubyAiGame();
-	var rubyai_script = new RubyAiScript( rubyai_game, function() { } );
+	rubyai_game = new RubyAiGame(function() {} );
 	
 	ok(rubyai_game, "The game engine initializes without issue.");
-	ok(rubyai_script, "The script object initializes without issue.");
 	ok(new Option(), "The Option object initializes without issue.");
 } );
 
 var basicSetup = function() {
-	rubyai_game = new RubyAiGame();
+	rubyai_game = new RubyAiGame(function() {} );
 };
 
 var basicTeardown = function() {
@@ -50,13 +48,13 @@ function testContent( examples ) {
 			test("add content/"+scene_name, function() {
 				expect(1);
 				
-				var script = new RubyAiScript( rubyai_game, function() {
+				rubyai_game = new RubyAiGame( function() {
 					this.addScene( scene_name, examples[scene_name] );
 				} );
 				
 				same(	rubyai_game.scenes[scene_name],
 					examples[scene_name],
-					"RubyAiScript.addScene() adds the '"+scene_name+"' scene to the game correctly."
+					"RubyAiGame.addScene() adds the '"+scene_name+"' scene to the game correctly."
 				);
 			} );
 		})(scene_name);
@@ -80,7 +78,7 @@ function testCommands( examples ) {
 			var contents = examples[scene_name].contents;
 			var expected_output = examples[scene_name].output;
 			
-			var script = new RubyAiScript( rubyai_game, function() {
+			rubyai_game = new RubyAiGame( function() {
 				this.addScene( scene_name, contents );
 			} );
 			
@@ -105,7 +103,7 @@ testCommands(command_examples);
 test("test command/runScene", function() {
 	expect(1);
 	
-	var script = new RubyAiScript( rubyai_game, function() {
+	rubyai_game = new RubyAiGame( function() {
 		this.addScene( "intro", [
 			function() { rubyai_game.narrate("This is the intro scene"); },
 			function() { rubyai_game.runScene("part2"); }
@@ -116,7 +114,6 @@ test("test command/runScene", function() {
 	} )
 	
 	rubyai_game.start({ scene: "intro" })
-	console.log(rubyai_game);
 	
 	same(	rubyai_game.outputAsText(),
 		"This is the intro scene\nThis is the second scene\n",
