@@ -100,23 +100,80 @@ module("Script Commands", {
 
 testCommands(command_examples);
 
-test("test command/runScene", function() {
-	expect(1);
-	
-	rubyai_game = new RubyAiGame( function() {
-		this.addScene( "intro", [
-			function() { rubyai_game.narrate("This is the intro scene"); },
-			function() { rubyai_game.runScene("part2"); }
-		] );
-		this.addScene( "part2", [
-			function() { rubyai_game.narrate("This is the second scene"); },
-		] );
-	} )
-	
-	rubyai_game.start({ scene: "intro" })
-	
-	same(	rubyai_game.outputAsText(),
-		"This is the intro scene\nThis is the second scene\n",
-		"The runScene() command moves the script to another scene successfully."
-	);
-} );
+var runScene_examples = [
+	{
+		name: "Simple example",
+		starting_scene: "intro",
+		contents: function() {
+			this.addScene( "intro", [
+				function() { rubyai_game.narrate("This is the intro scene"); },
+				function() { rubyai_game.runScene("part2"); }
+			] );
+			this.addScene( "part2", [
+				function() { rubyai_game.narrate("This is the second scene"); },
+			] );
+		},
+		output: "This is the intro scene\nThis is the second scene\n"
+	},
+	{
+		name: "Return to the original scene after finishing the inner scene",
+		starting_scene: "intro",
+		contents: function() {
+			this.addScene( "intro", [
+				function() { rubyai_game.narrate("This is the start of the intro scene"); },
+				function() { rubyai_game.runScene("part2"); },
+				function() { rubyai_game.narrate("This is the end of the intro scene"); },
+			] );
+			this.addScene( "part2", [
+				function() { rubyai_game.narrate("This is the second scene"); },
+			] );
+		},
+		output: "This is the start of the intro scene\nThis is the second scene\nThis is the end of the intro scene\n"
+	},
+	{
+		name: "Two scenes deep",
+		starting_scene: "intro",
+		contents: function() {
+			this.addScene( "intro", [
+				function() { rubyai_game.narrate("This is the start of the intro scene"); },
+				function() { rubyai_game.runScene("part2"); },
+				function() { rubyai_game.narrate("This is the end of the intro scene"); },
+			] );
+			this.addScene( "part2", [
+				function() { rubyai_game.narrate("This is the start of the second scene"); },
+				function() { rubyai_game.runScene("part3"); },
+				function() { rubyai_game.narrate("This is the end of the second scene"); },
+			] );
+			this.addScene( "part3", [
+				function() { rubyai_game.narrate("This is the third scene"); },
+			] );
+		},
+		output: "This is the start of the intro scene\n"+
+			"This is the start of the second scene\n"+
+			"This is the third scene\n"+
+			"This is the end of the second scene\n"+
+			"This is the end of the intro scene\n"
+	}
+];
+
+function testRunScene( examples ) {
+	for(var example_index in examples) {
+		// Remember, function-only context
+		(function(example) {
+		test("test command/runScene ("+example.name+")", function() {
+			expect(1);
+			
+			rubyai_game = new RubyAiGame( example.contents )
+			
+			rubyai_game.start({ scene: example.starting_scene });
+			
+			same(	rubyai_game.outputAsText(),
+				example.output,
+				"The runScene() command moves the script to another scene successfully."
+			);
+		} );
+		})(examples[example_index]);
+	}
+};
+
+testRunScene(runScene_examples);

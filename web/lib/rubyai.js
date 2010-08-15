@@ -12,7 +12,7 @@ var RubyAiGame = function(contents) {
 		var starting_scene = this.scenes[ starting_scene_name ];
 		
 		if(starting_scene !== undefined) {
-			this.current_crawler = new SceneCrawler(starting_scene);
+			this.current_crawler = new SceneCrawler(this, starting_scene);
 			while(this.current_crawler.advanceScene()) { /* move this into a method on the crawler? */ }
 		} else {
 			throw { message: "Missing scene: " + starting_scene_name };
@@ -39,7 +39,7 @@ var RubyAiGame = function(contents) {
 	
 	this.runScene = function( scene_name ) {
 		var next_scene = this.scenes[scene_name];
-		this.current_crawler = new SceneCrawler(next_scene);
+		this.current_crawler = new SceneCrawler(this, next_scene);
 		while(this.current_crawler.advanceScene()) { /* move this into a method on the crawler? */ }
 	};
 	
@@ -52,7 +52,10 @@ var RubyAiGame = function(contents) {
 	return this;
 };
 
-var SceneCrawler = function(steps) {
+var SceneCrawler = function(game, steps) {
+	this.game = game;
+	this.parent_crawler = this.game.current_crawler;
+	
 	this.steps = steps;
 	this.step_index = 0;
 	
@@ -64,6 +67,7 @@ var SceneCrawler = function(steps) {
 			this.step_index += 1;
 			return true;
 		} else {
+			this.game.current_crawler = this.parent_crawler;
 			return false;
 		}
 	};
