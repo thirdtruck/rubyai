@@ -43,6 +43,17 @@ var RubyAiGame = function(contents) {
 		while(this.current_crawler.advanceScene()) { /* move this into a method on the crawler? */ }
 	};
 	
+	this.choice = function( options ) {
+		this.output += "Choose:\n";
+		
+		for(var option_index = 0; option_index < options.length; option_index++) {
+			var option = options[option_index];
+			var printed_index = option_index + 1;
+			this.output += "("+(printed_index)+") "+option.name+"\n";
+		}
+	}
+			
+	
 	this.outputAsText = function() {
 		return this.output;
 	};
@@ -75,6 +86,8 @@ var SceneCrawler = function(game, steps) {
 	return this;
 }
 
-var Option = function() {
+var Option = function(name, contents) {
+	this.name = name;
+	this.contents = contents;
 	return this;
 };
