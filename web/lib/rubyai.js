@@ -38,6 +38,14 @@ var RubyAiGame = function(contents) {
 		this.output += "*"+sound_description+"*" + "\n";
 	};
 	
+	this.showStage = function(alias, title, description) {
+		this.output += "Show stage " + title + " [" + alias + "]: " + description + "\n";
+	};
+	
+	this.showCharacter = function(alias, name, image) {
+		this.output += "Show character " + name + " [" + alias + "]: " + image + "\n";
+	};
+	
 	this.addScene = function(name, scene_contents) {
 		this.scenes[name] = scene_contents;
 	};

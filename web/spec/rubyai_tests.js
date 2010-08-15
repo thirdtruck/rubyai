@@ -42,6 +42,12 @@ var command_examples = {
 	sound: { contents: [function() { rubyai_game.sound("bang", "Bang") }],
 		output: "*Bang*\n"
 	},
+	showStage: { contents: [function() { rubyai_game.showStage("outdoors", "Outdoors", "The outdoors, where they keep all of the trees.") }],
+		output: "Show stage Outdoors [outdoors]: The outdoors, where they keep all of the trees.\n"
+	},
+	showCharacter: { contents: [function() { rubyai_game.showCharacter("lucy", "Lucy", "lucy_default.png") }],
+		output: "Show character Lucy [lucy]: lucy_default.png\n"
+	},
 };
 
 function testContent( examples ) {
