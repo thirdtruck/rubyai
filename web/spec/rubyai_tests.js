@@ -168,7 +168,9 @@ function testFullScript( command_name, examples ) {
 			
 			rubyai_game = new RubyAiGame( example.contents )
 			
-			rubyai_game.start({ scene: example.starting_scene });
+			rubyai_game.start({	scene: example.starting_scene,
+						predefined_choices: example.choices
+			});
 			
 			same(	rubyai_game.outputAsText(),
 				example.output,
@@ -186,12 +188,13 @@ var choice_examples = [
 		name: "Simple example",
 		description: "prints out a full, short list of choices and the prompt",
 		starting_scene: "intro",
-		choices: [1],
 		contents: function() {
 			this.addScene( "intro", [
 				function() {
 					rubyai_game.choice( [
-					new Option("First Choice", function() { rubyai_game.narrate("Chose First Choice") })
+						new Option("First Choice", [
+							function() { rubyai_game.narrate("Chose First Choice") }
+						])
 					] );
 				}
 			] );
@@ -199,47 +202,81 @@ var choice_examples = [
 		output:	"Choose:\n"+
 			"(1) First Choice\n"
 	},
-	/*
 	{
-		name: "Return to the original scene after finishing the inner scene",
+		name: "Choose first",
+		description: "prints out a full, short list of choices, the prompt, and then execute the first option's contents",
 		starting_scene: "intro",
+		choices: [1],
 		contents: function() {
 			this.addScene( "intro", [
-				function() { rubyai_game.narrate("This is the start of the intro scene"); },
-				function() { rubyai_game.runScene("part2"); },
-				function() { rubyai_game.narrate("This is the end of the intro scene"); },
-			] );
-			this.addScene( "part2", [
-				function() { rubyai_game.narrate("This is the second scene"); },
+				function() {
+					rubyai_game.choice( [
+						new Option("First Option", [
+							function() { rubyai_game.narrate("Chose First Option") }
+						])
+					] );
+				}
 			] );
 		},
-		output: "This is the start of the intro scene\nThis is the second scene\nThis is the end of the intro scene\n"
+		output:	"Choose:\n"+
+			"(1) First Option\n"+
+			"Chose First Option\n"
 	},
 	{
-		name: "Two scenes deep",
+		name: "Choose second",
+		description: "prints out a full, short list of choices, the prompt, and then execute the second option's contents",
 		starting_scene: "intro",
+		choices: [2],
 		contents: function() {
 			this.addScene( "intro", [
-				function() { rubyai_game.narrate("This is the start of the intro scene"); },
-				function() { rubyai_game.runScene("part2"); },
-				function() { rubyai_game.narrate("This is the end of the intro scene"); },
-			] );
-			this.addScene( "part2", [
-				function() { rubyai_game.narrate("This is the start of the second scene"); },
-				function() { rubyai_game.runScene("part3"); },
-				function() { rubyai_game.narrate("This is the end of the second scene"); },
-			] );
-			this.addScene( "part3", [
-				function() { rubyai_game.narrate("This is the third scene"); },
+				function() {
+					rubyai_game.choice( [
+						new Option("First Option", [
+							function() { rubyai_game.narrate("Chose First Option") }
+						]),
+						new Option("Second Option", [
+							function() { rubyai_game.narrate("Chose Second Option") }
+						])
+					] );
+				}
 			] );
 		},
-		output: "This is the start of the intro scene\n"+
-			"This is the start of the second scene\n"+
-			"This is the third scene\n"+
-			"This is the end of the second scene\n"+
-			"This is the end of the intro scene\n"
-	}
-	*/
+		output:	"Choose:\n"+
+			"(1) First Option\n"+
+			"(2) Second Option\n"+
+			"Chose Second Option\n"
+	},
+	{
+		name: "Choose twice",
+		description: "prints out a full list of choices, the prompt, and then execute the chosen scene's contents, then does the same for a second choice",
+		starting_scene: "intro",
+		choices: [1, 1],
+		contents: function() {
+			this.addScene( "intro", [
+				function() {
+					rubyai_game.choice( [
+						new Option("First Option", [
+							function() { rubyai_game.narrate("Chose First Option") }
+						])
+					] );
+				},
+				function() {
+					rubyai_game.choice( [
+						new Option("Another First Option", [
+							function() { rubyai_game.narrate("Chose First Option Again") }
+						])
+					] );
+				}
+			] );
+		},
+		output:	"Choose:\n"+
+			"(1) First Option\n"+
+			"Chose First Option\n"+
+			"Choose:\n"+
+			"(1) Another First Option\n"+
+			"Chose First Option Again\n"
+			
+	},
 ];
 
 testFullScript("choice", choice_examples);

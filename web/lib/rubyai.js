@@ -10,6 +10,7 @@ var RubyAiGame = function(contents) {
 		new_args = new_args || {};
 		var starting_scene_name = new_args['scene'];
 		var starting_scene = this.scenes[ starting_scene_name ];
+		this.predefined_choices = new_args.predefined_choices || [];
 		
 		if(starting_scene !== undefined) {
 			this.current_crawler = new SceneCrawler(this, starting_scene);
@@ -51,6 +52,12 @@ var RubyAiGame = function(contents) {
 			var printed_index = option_index + 1;
 			this.output += "("+(printed_index)+") "+option.name+"\n";
 		}
+		var predefined_choice = this.predefined_choices.pop();
+		if(predefined_choice !== undefined) {
+			predefined_choice -= 1;
+			this.current_crawler = new SceneCrawler( this, options[predefined_choice].contents );
+			while(this.current_crawler.advanceScene()) { /* move this into a method on the crawler? */ }
+		}
 	}
 			
 	
@@ -84,10 +91,11 @@ var SceneCrawler = function(game, steps) {
 	};
 	
 	return this;
-}
+};
 
 var Option = function(name, contents) {
 	this.name = name;
 	this.contents = contents;
+	
 	return this;
 };
