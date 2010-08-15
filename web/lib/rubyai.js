@@ -5,16 +5,17 @@ var RubyAiGame = function(contents) {
 	this.scenes = { };
 	this.output = "";
 	this.current_crawler = null;
+	this.running = false;
 	
 	this.start = function(new_args) {
 		new_args = new_args || {};
 		var starting_scene_name = new_args['scene'];
 		var starting_scene = this.scenes[ starting_scene_name ];
 		this.predefined_choices = new_args.predefined_choices || [];
+		this.running = true;
 		
 		if(starting_scene !== undefined) {
-			this.current_crawler = new SceneCrawler(this, starting_scene);
-			while(this.current_crawler.advanceScene()) { /* move this into a method on the crawler? */ }
+			this.advanceScript(starting_scene);
 		} else {
 			throw { message: "Missing scene: " + starting_scene_name };
 		}
@@ -52,8 +53,7 @@ var RubyAiGame = function(contents) {
 	
 	this.runScene = function( scene_name ) {
 		var next_scene = this.scenes[scene_name];
-		this.current_crawler = new SceneCrawler(this, next_scene);
-		while(this.current_crawler.advanceScene()) { /* move this into a method on the crawler? */ }
+		this.advanceScript(next_scene);
 	};
 	
 	this.choice = function( options ) {
@@ -67,11 +67,25 @@ var RubyAiGame = function(contents) {
 		var predefined_choice = this.predefined_choices.pop();
 		if(predefined_choice !== undefined) {
 			predefined_choice -= 1;
-			this.current_crawler = new SceneCrawler( this, options[predefined_choice].contents );
-			while(this.current_crawler.advanceScene()) { /* move this into a method on the crawler? */ }
+			this.advanceScript(options[predefined_choice].contents);
 		}
 	}
 			
+	this.gameOver = function( final_status ) {
+		if(final_status == "success") {
+			this.output += "Game Over: You Win!\n";
+		} else if(final_status == "failure") {
+			this.output += "Game Over: You Lose!\n";
+		} else {
+			this.output += "Game Over!\n";
+		}
+		this.running = false;
+	}
+	
+	this.advanceScript = function(scene_contents) {
+		this.current_crawler = new SceneCrawler(this, scene_contents);
+		while(this.running && this.current_crawler.advanceScene()) { /* move this into a method on the crawler? */ }
+	};
 	
 	this.outputAsText = function() {
 		return this.output;

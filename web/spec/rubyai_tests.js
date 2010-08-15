@@ -48,6 +48,15 @@ var command_examples = {
 	showCharacter: { contents: [function() { rubyai_game.showCharacter("lucy", "Lucy", "lucy_default.png") }],
 		output: "Show character Lucy [lucy]: lucy_default.png\n"
 	},
+	gameOver_neutral: { contents: [function() { rubyai_game.gameOver() }],
+		output: "Game Over!\n"
+	},
+	gameOver_success: { contents: [function() { rubyai_game.gameOver("success") }],
+		output: "Game Over: You Win!\n"
+	},
+	gameOver_failure: { contents: [function() { rubyai_game.gameOver("failure") }],
+		output: "Game Over: You Lose!\n"
+	},
 };
 
 function testContent( examples ) {
@@ -289,3 +298,48 @@ var choice_examples = [
 ];
 
 testFullScript("choice", choice_examples);
+
+var gameOver_examples = [
+	{
+		name: "Quit after game over (neutral)",
+		description: "causes the game to stop running the scene after the game ends",
+		starting_scene: "intro",
+		contents: function() {
+			this.addScene( "intro", [
+				function() { rubyai_game.narrate("Before we end."); },
+				function() { rubyai_game.gameOver(); },
+				function() { rubyai_game.narrate("After we end."); },
+			] );
+		},
+		output:	"Before we end.\nGame Over!\n"
+	},
+	{
+		name: "Quit after game over (success)",
+		description: "causes the game to stop running the scene after the game ends with a success",
+		starting_scene: "intro",
+		contents: function() {
+			this.addScene( "intro", [
+				function() { rubyai_game.narrate("Before we end."); },
+				function() { rubyai_game.gameOver("success"); },
+				function() { rubyai_game.narrate("After we end."); },
+			] );
+		},
+		output:	"Before we end.\nGame Over: You Win!\n"
+	},
+	{
+		name: "Quit after game over (failure)",
+		description: "causes the game to stop running the scene after the game ends with a failure",
+		starting_scene: "intro",
+		contents: function() {
+			this.addScene( "intro", [
+				function() { rubyai_game.narrate("Before we end."); },
+				function() { rubyai_game.gameOver("failure"); },
+				function() { rubyai_game.narrate("After we end."); },
+			] );
+		},
+		output:	"Before we end.\nGame Over: You Lose!\n"
+	},
+];
+
+testFullScript("gameOver", gameOver_examples);
+
