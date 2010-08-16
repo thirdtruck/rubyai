@@ -1,5 +1,4 @@
 $LOAD_PATH << File.expand_path('../../lib', __FILE__)
-require 'spec'
 require 'lib/rubyai'
 require 'lib/converters/interactive_fiction'
 
