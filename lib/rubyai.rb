@@ -112,13 +112,7 @@ module RubyAi
 				end
 			end
 			
-			within_start
-			
-			if @scenes[starting_scene]
-				run_scene starting_scene 
-			else
-				raise "No such scene found: #{starting_scene}."
-			end
+			within_start(starting_scene)
 		end
 		
 		def game_over(type=nil)

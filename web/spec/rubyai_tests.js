@@ -31,28 +31,28 @@ var example_scenes = {
 
 var command_examples = {
 	narrate: { contents: [function() { rubyai_game.narrate("Stuff happens"); }],
-		output: "Stuff happens\n"
+		output: "Stuff happens\nGame Over!\n"
 	},
 	speak: { contents: [function() { rubyai_game.speak("Lucy", "I have something to say.") }],
-		output: "Lucy: I have something to say.\n"
+		output: "Lucy: I have something to say.\nGame Over!\n"
 	},
 	action: { contents: [function() { rubyai_game.action("Lucy", "does something.") }],
-		output: "Lucy does something.\n"
+		output: "Lucy does something.\nGame Over!\n"
 	},
 	sound: { contents: [function() { rubyai_game.sound("bang", "Bang") }],
-		output: "*Bang*\n"
+		output: "*Bang*\nGame Over!\n"
 	},
 	showStage: { contents: [function() { rubyai_game.showStage("outdoors", "Outdoors", "The outdoors, where they keep all of the trees.") }],
-		output: "Show stage Outdoors [outdoors]: The outdoors, where they keep all of the trees.\n"
+		output: "Show stage Outdoors [outdoors]: The outdoors, where they keep all of the trees.\nGame Over!\n"
 	},
 	showCharacter: { contents: [function() { rubyai_game.showCharacter("lucy", "Lucy", "lucy_default.png") }],
-		output: "Show character Lucy [lucy]: lucy_default.png\n"
+		output: "Show character Lucy [lucy]: lucy_default.png\nGame Over!\n"
 	},
 	hide: { contents: [function() { rubyai_game.hide("lucy", "Lucy") }],
-		output: "[Hide Lucy]\n"
+		output: "[Hide Lucy]\nGame Over!\n"
 	},
 	codeBlock: { contents: [function() { rubyai_game.codeBlock("\tline_one();\n\tline_two();") }],
-		output: "CODE>>>\n\tline_one();\n\tline_two();\n<<<CODE\n"
+		output: "CODE>>>\n\tline_one();\n\tline_two();\n<<<CODE\nGame Over!\n"
 	},
 	gameOver_neutral: { contents: [function() { rubyai_game.gameOver() }],
 		output: "Game Over!\n"
@@ -138,7 +138,7 @@ var runScene_examples = [
 				function() { rubyai_game.narrate("This is the second scene"); },
 			] );
 		},
-		output: "This is the intro scene\nThis is the second scene\n"
+		output: "This is the intro scene\nThis is the second scene\nGame Over!\n"
 	},
 	{
 		name: "Return to original",
@@ -154,7 +154,7 @@ var runScene_examples = [
 				function() { rubyai_game.narrate("This is the second scene"); },
 			] );
 		},
-		output: "This is the start of the intro scene\nThis is the second scene\nThis is the end of the intro scene\n"
+		output: "This is the start of the intro scene\nThis is the second scene\nThis is the end of the intro scene\nGame Over!\n"
 	},
 	{
 		name: "Two scenes deep",
@@ -179,7 +179,7 @@ var runScene_examples = [
 			"This is the start of the second scene\n"+
 			"This is the third scene\n"+
 			"This is the end of the second scene\n"+
-			"This is the end of the intro scene\n"
+			"This is the end of the intro scene\nGame Over!\n"
 	}
 ];
 
@@ -224,7 +224,7 @@ var choice_examples = [
 			] );
 		},
 		output:	"Choose:\n"+
-			"(1) First Choice\n"
+			"(1) First Choice\nGame Over!\n"
 	},
 	{
 		name: "Choose first",
@@ -244,7 +244,7 @@ var choice_examples = [
 		},
 		output:	"Choose:\n"+
 			"(1) First Option\n"+
-			"Chose First Option\n"
+			"Chose First Option\nGame Over!\n"
 	},
 	{
 		name: "Choose second",
@@ -268,7 +268,7 @@ var choice_examples = [
 		output:	"Choose:\n"+
 			"(1) First Option\n"+
 			"(2) Second Option\n"+
-			"Chose Second Option\n"
+			"Chose Second Option\nGame Over!\n"
 	},
 	{
 		name: "Choose twice",
@@ -298,7 +298,7 @@ var choice_examples = [
 			"Chose First Option\n"+
 			"Choose:\n"+
 			"(1) Another First Option\n"+
-			"Chose First Option Again\n"
+			"Chose First Option Again\nGame Over!\n"
 			
 	},
 ];
@@ -349,3 +349,64 @@ var gameOver_examples = [
 
 testFullScript("gameOver", gameOver_examples);
 
+test("test command/gameOver (Game Over only ends the game itself)", function() {
+	expect(1);
+	
+	rubyai_game = new RubyAiGame( function() {
+		this.addScene( "intro", [
+			function() { rubyai_game.narrate("Before game over."); },
+			function() { rubyai_game.gameOver(); }
+		] )
+	} );
+	
+	rubyai_game.start( { scene: "intro" } );
+	rubyai_game.output += "After game over.\n";
+	
+	same(	rubyai_game.outputAsText(),
+		"Before game over.\nGame Over!\nAfter game over.\n",
+		"The rest of the Javascript runs after RubyAiGame.gameOver()."
+	);
+} );
+
+test("test command/gameOver (Game Over only ends the game itself after a choice)", function() {
+	expect(1);
+	
+	rubyai_game = new RubyAiGame( function() {
+		this.addScene( "intro", [
+			function() { rubyai_game.narrate("Before game over."); },
+			function() { rubyai_game.choice( [
+				new Option( 
+					"First Option",
+					[function() { rubyai_game.narrate("Chose the first option."); }]
+				),
+			] ) },
+			function() { rubyai_game.gameOver(); }
+		] )
+	} );
+	
+	rubyai_game.start( { scene: "intro", predefined_choices: [1] } );
+	rubyai_game.output += "After game over.\n";
+	
+	same(	rubyai_game.outputAsText(),
+		"Before game over.\nChoose:\n(1) First Option\nChose the first option.\nGame Over!\nAfter game over.\n",
+		"The rest of the Javascript runs after RubyAiGame.gameOver()."
+	);
+} );
+
+test("test command/gameOver (Call a neutral Game Over automatically if we run out of script)", function() {
+	expect(1);
+	
+	rubyai_game = new RubyAiGame( function() {
+		this.addScene( "intro", [
+			function() { rubyai_game.narrate("Example command."); },
+			// The intentionally-removed command: function() { rubyai_game.gameOver(); }
+		] )
+	} );
+	
+	rubyai_game.start( { scene: "intro" } );
+	
+	same(	rubyai_game.outputAsText(),
+		"Example command.\nGame Over!\n",
+		"The rest of the Javascript runs after RubyAiGame.gameOver()."
+	);
+} );

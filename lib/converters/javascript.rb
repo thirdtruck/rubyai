@@ -44,10 +44,6 @@ class Exporter
 		@js.write("\n")
 	end
 
-	def gets(query)
-		@output.puts %^make_choice(current_choice);^;
-	end
-
 	def start_function
 		@indent ||= 0
 		puts " function() {"
@@ -59,12 +55,25 @@ class Exporter
 		puts " } "
 	end
 
-	def within_function
+	def within_function(contents="")
 		start_function
+		indentation = "\t" * current_indentation
+		@js.write(indentation + contents + "\n")
 		yield if block_given?
 		end_function
 	end
 
+	def indent_more
+		@indent += 1
+	end
+	
+	def indent_less
+		@indent -= 1
+		if @indent < 0
+			@indent = 0
+		end
+	end
+	
 	def current_indentation
 		@indent ||= 0
 	end
@@ -73,20 +82,19 @@ end
 module RubyAi
 	class Game
 		def before_start
-			@output.puts %^rubyai_script = new RubyAiScript(^ 
+			@output.puts %^var rubyai_game = new RubyAiGame(^ 
 			@output.start_function
-			@output.puts %^intro();^
 		end
 		
 		def after_start
 			@output.end_function
 			@output.puts %^);^
+			#@output.puts %^rubyai_game.start( { scene: "intro" } );^
 		end
 		
 		def within_show_element(element)
 			image_url = get_image_url(element, element.context)
 			@output.puts element.show_function(image_url)
-			#@output.puts %^show(#{escape_js element.name}, #{escape_js image_url});^
 		end
 		
 		def get_image_url(element, image_name)
@@ -103,58 +111,62 @@ module RubyAi
 		end
 		
 		def within_hide(element)
-			@output.puts %^hide(#{escape_js element.name});^
+			@output.puts %^function() { hide(#{escape_js element.name}); },^
 		end
 		
 		def within_sound(sound_element)
-			@output.puts %^sound(#{escape_js sound_element.name});^
+			@output.puts %^function() { rubyai_game.sound(#{escape_js sound_element.name}); },^
 		end
 		
 		def within_speak(character, statement)
 			image_url = get_image_url(character, character.context)
-			@output.puts %{speak(#{escape_js character.name}, #{escape_js statement}, #{escape_js image_url});}
+			@output.puts %^function() { rubyai_game.speak(#{escape_js character.name}, #{escape_js statement}, #{escape_js image_url}); },^
 		end
 		
 		def within_action(character, does_thing)
 			image_url = get_image_url(character, character.context)
-			@output.puts %{action(#{escape_js  character.name}, #{escape_js does_thing}, #{escape_js image_url});}
+			@output.puts %^function() { rubyai_game.action(#{escape_js  character.name}, #{escape_js does_thing}, #{escape_js image_url}); },^
 		end
 		
-		def within_game_over(type=nil)
-			case type
-				when :success then @output.puts %^game_over("success");^
-				when :failure then @output.puts %^game_over("failure");^
-				else @output.puts %^game_over("neutral");^
-			end
+		def within_start(starting_scene)
 		end
 		
-		def within_add_scene(scene_alias, &block)
-			@output.puts %^add_scene(#{escape_js scene_alias.to_s},^
-			@output.within_function &block
-			@output.puts %^)^
-			#parse_script { @scenes[scene_alias].run }
+		def within_game_over(type=:neutral)
+			@output.puts %^function() { rubyai_game.gameOver("#{type}"); },^
+		end
+		
+		def within_add_scene(scene_alias)
+			@output.puts %^this.addScene(#{escape_js scene_alias.to_s}, [^
+			@output.indent_more
+			yield
+			@output.indent_less
+			@output.puts %^] );^
 		end
 		
 		def within_run_scene(scene_alias)
-			@output.puts %^run_scene(#{escape_js scene_alias.to_s});^
+			@output.puts %^function() { rubyai_game.runScene(#{escape_js scene_alias.to_s}); },^
 		end
 		
 		def within_narrate(*statements)
 			statements.each do | statement |
-				@output.puts %^narrate(#{escape_js statement});^
+				@output.puts %^function() { rubyai_game.narrate(#{escape_js statement}); },^
 			end
 		end
 		
 		def within_choice(choice_obj)
-			@output.puts %^choose_from( new Choice( [^
+			@output.puts %^function() { rubyai_game.choice( [^
 			
 			choice_obj.options.each do |option_obj|
-				@output.puts %^new Option(#{escape_js option_obj.description},^
-				@output.within_function { option_obj.block.call }
-				@output.puts %^),^
+				@output.indent_more
+				@output.puts %^new Option(#{escape_js option_obj.description}, [^
+				@output.indent_more
+				option_obj.block.call
+				@output.indent_less
+				@output.puts %^] ),^
+				@output.indent_less
 			end
 			
-			@output.puts %^] ) );^
+			@output.puts %^] ) },^
 		end
 		
 		def within_st(string)
@@ -180,7 +192,7 @@ module RubyAi
 		def within_code_block(string)
 			clean_string = string.gsub(/[\n\r]+/, '\\n');
 			clean_string.gsub!(/"/, "&quot;");
-			@output.puts %^code_block(#{escape_js clean_string});^
+			@output.puts %^function() { rubyai_game.codeBlock(#{escape_js clean_string})},^
 		end
 	end
 end
@@ -203,7 +215,7 @@ class NovelElement
 	end
 	
 	def show_function(image_url)
-		"show_#{self.type}(#{escape_js @alias}, #{escape_js @name}, #{escape_js image_url}, #{escape_js @description});"
+		"function() { rubyai_game.show#{self.type.capitalize}(#{escape_js @alias}, #{escape_js @name}, #{escape_js image_url}, #{escape_js @description}); },"
 	end
 end
 

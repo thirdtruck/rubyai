@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ruby'Ai Example</title>
+	<script type="text/javascript" src="../js/jquery-1.4.2.min.js">/* */</script>
+	<script type="text/javascript" src="../lib/rubyai.js">/* */</script>
+	<script type="text/javascript" src="../js/script.js">/* */</script>
+	<script type="text/javascript">
+		$(document).ready( function() {
+			rubyai_game.start( {
+				scene: "intro",
+				predefined_choices: [1,1,2,1]
+			} );
+			var results = rubyai_game.outputAsText();
+			$("#text-output").text(results);
+		} );
+	</script>
+</head>
+<body>
+	<pre id="text-output"></pre>
+</body>
+</html>

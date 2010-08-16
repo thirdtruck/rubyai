@@ -42,6 +42,14 @@ module RubyAi
 			answer = @input.gets "Begin? [y/n]:"
 		end
 		
+		def within_start(starting_scene)
+			if @scenes[starting_scene]
+				run_scene starting_scene 
+			else
+				raise "No such scene found: #{starting_scene}."
+			end
+		end
+		
 		def after_start
 		end
 		

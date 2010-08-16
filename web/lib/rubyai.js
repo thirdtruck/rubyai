@@ -9,13 +9,17 @@ var RubyAiGame = function(contents) {
 	
 	this.start = function(new_args) {
 		new_args = new_args || {};
-		var starting_scene_name = new_args['scene'];
+		var starting_scene_name = new_args.scene;
 		var starting_scene = this.scenes[ starting_scene_name ];
 		this.predefined_choices = new_args.predefined_choices || [];
 		this.running = true;
 		
 		if(starting_scene !== undefined) {
-			this.advanceScript(starting_scene);
+			this.current_crawler = new SceneCrawler();
+			this.current_crawler.crawlScene(starting_scene);
+			if(this.running) {
+				this.gameOver();
+			}
 		} else {
 			throw { message: "Missing scene: " + starting_scene_name };
 		}
@@ -61,7 +65,7 @@ var RubyAiGame = function(contents) {
 	
 	this.runScene = function( scene_name ) {
 		var next_scene = this.scenes[scene_name];
-		this.advanceScript(next_scene);
+		this.current_crawler.crawlScene(next_scene);
 	};
 	
 	this.choice = function( options ) {
@@ -72,10 +76,10 @@ var RubyAiGame = function(contents) {
 			var printed_index = option_index + 1;
 			this.output += "("+(printed_index)+") "+option.name+"\n";
 		}
-		var predefined_choice = this.predefined_choices.pop();
+		var predefined_choice = this.predefined_choices.shift();
 		if(predefined_choice !== undefined) {
 			predefined_choice -= 1;
-			this.advanceScript(options[predefined_choice].contents);
+			this.current_crawler.crawlScene(options[predefined_choice].contents);
 		}
 	}
 			
@@ -87,12 +91,8 @@ var RubyAiGame = function(contents) {
 		} else {
 			this.output += "Game Over!\n";
 		}
+		this.current_crawler.reportGameOver( final_status );
 		this.running = false;
-	}
-	
-	this.advanceScript = function(scene_contents) {
-		this.current_crawler = new SceneCrawler(this, scene_contents);
-		while(this.running && this.current_crawler.advanceScene()) { /* move this into a method on the crawler? */ }
 	};
 	
 	this.outputAsText = function() {
@@ -104,23 +104,41 @@ var RubyAiGame = function(contents) {
 	return this;
 };
 
-var SceneCrawler = function(game, steps) {
-	this.game = game;
-	this.parent_crawler = this.game.current_crawler;
-	
+var SceneCrawler = function(steps) {
 	this.steps = steps;
 	this.step_index = 0;
+	this.running = true;
+	this.child_crawler = null;
+	
+	this.reportGameOver = function(game_over_status) {
+		this.running = false;
+		
+		if(this.child_crawler) {
+			this.child_crawler.reportGameOver(game_over_status);
+		}
+	}
 	
 	this.advanceScene = function() {
 		var next_step = this.steps[this.step_index];
 		
-		if(next_step !== undefined) {
+		if(this.running && next_step !== undefined) {
 			next_step.call();
 			this.step_index += 1;
 			return true;
 		} else {
-			this.game.current_crawler = this.parent_crawler;
 			return false;
+		}
+	};
+	
+	this.crawlScene = function(scene_contents) {
+		var target_crawler;
+		if(scene_contents) {
+			target_crawler = new SceneCrawler(scene_contents);
+			this.child_crawler = target_crawler;
+		} else {
+			target_crawler = this;
+		}
+		while(target_crawler.advanceScene()) {
 		}
 	};
 	
