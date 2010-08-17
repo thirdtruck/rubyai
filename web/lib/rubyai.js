@@ -12,6 +12,7 @@ var RubyAiGame = function(contents) {
 		var starting_scene_name = new_args.scene;
 		var starting_scene = this.scenes[ starting_scene_name ];
 		this.predefined_choices = new_args.predefined_choices || [];
+		this.gui = new_args.gui;
 		this.running = true;
 		
 		if(starting_scene !== undefined) {
@@ -28,35 +29,67 @@ var RubyAiGame = function(contents) {
 	};
 	
 	this.narrate = function( statement ) {
-		this.output += statement + "\n";
+		if(this.gui !== undefined) {
+			this.gui.narrate(statement);
+		} else {
+			this.output += statement + "\n";
+		}
 	};
 	
 	this.speak = function( character, statement ) {
-		this.output += character + ": " + statement + "\n";
+		if(this.gui !== undefined) {
+			this.gui.speak(character, statement);
+		} else {
+			this.output += character + ": " + statement + "\n";
+		}
 	};
 	
 	this.action = function( character, behavior ) {
-		this.output += character + " " + behavior + "\n";
+		if(this.gui !== undefined) {
+			this.gui.action(character, behavior);
+		} else {
+			this.output += character + " " + behavior + "\n";
+		}
 	};
 	
 	this.sound = function( sound_name, sound_description ) {
-		this.output += "*"+sound_description+"*" + "\n";
+		if(this.gui !== undefined) {
+			this.gui.sound(sound_name, sound_description);
+		} else {
+			this.output += "*"+sound_description+"*" + "\n";
+		}
 	};
 	
 	this.showStage = function(alias, title, description) {
-		this.output += "Show stage " + title + " [" + alias + "]: " + description + "\n";
+		if(this.gui !== undefined) {
+			this.gui.showStage(alias, title, description);
+		} else {
+			this.output += "Show stage " + title + " [" + alias + "]: " + description + "\n";
+		}
 	};
 	
 	this.showCharacter = function(alias, name, image) {
-		this.output += "Show character " + name + " [" + alias + "]: " + image + "\n";
+		if(this.gui !== undefined) {
+			this.gui.showCharacter(alias, name, image);
+		} else {
+			this.output += "Show character " + name + " [" + alias + "]: " + image + "\n";
+		}
 	};
 	
 	this.hide = function(alias, name) {
-		this.output += "[Hide " + name + "]" + "\n";
+		if(this.gui !== undefined) {
+			this.gui.hide(alias, name);
+		} else {
+			this.output += "[Hide " + name + "]" + "\n";
+		}
 	};
 	
 	this.codeBlock = function(code) {
-		this.output += "CODE>>>\n"+code+"\n<<<CODE\n";
+		if(this.gui !== undefined) {
+			this.gui.codeBlock(code);
+		} else {
+			this.output += "CODE>>>\n"+code+"\n<<<CODE\n";
+		}
 	};
 	
 	this.addScene = function(name, scene_contents) {
@@ -84,12 +117,18 @@ var RubyAiGame = function(contents) {
 	}
 			
 	this.gameOver = function( final_status ) {
+		var final_output;
 		if(final_status == "success") {
-			this.output += "Game Over: You Win!\n";
+			final_output = "Game Over: You Win!";
 		} else if(final_status == "failure") {
-			this.output += "Game Over: You Lose!\n";
+			final_output = "Game Over: You Lose!";
 		} else {
-			this.output += "Game Over!\n";
+			final_output = "Game Over!";
+		}
+		if(this.gui !== undefined) {
+			this.gui.gameOver(final_status);
+		} else {
+			this.output += final_output + "\n";
 		}
 		this.current_crawler.reportGameOver( final_status );
 		this.running = false;
@@ -98,6 +137,10 @@ var RubyAiGame = function(contents) {
 	this.outputAsText = function() {
 		return this.output;
 	};
+	
+	this.textOutput = function() {
+		this.gui.showAllText(this.outputAsText());
+	}
 	
 	this.contents();
 	
