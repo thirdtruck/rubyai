@@ -19,3 +19,5 @@ function StageElement(name) {
 Move some more of the implicit things (like always running the :intro scene first if provided) into the feature lists.
 
 Consider ways to keep the tutorial script and its final product results DRYer.
+
+Add an end() method to the GUI for cleaning up its workspace.

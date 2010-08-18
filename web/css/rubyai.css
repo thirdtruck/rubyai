@@ -1,0 +1,38 @@
+.rubyai-game {
+	background-color: #FFFFEE;
+}
+
+.rubyai-game .speech, .rubyai-game .action {
+	margin: 0.5em;
+}
+
+.rubyai-game .speech .character, .rubyai-game .action .character {
+	font-weight: bold;
+	color: #222222;
+}
+
+.rubyai-game .speech .character {
+	margin-right: 0.1em;
+}
+
+.rubyai-game .speech .statement {
+	font-style: italic;
+}
+
+.rubyai-game .action {
+	font-weight: bold;
+}
+
+.rubyai-game .code, .rubyai-game .code-block {
+	font-family: courier;
+	color: #444444;
+}
+
+.rubyai-game .choice {
+	margin: 1.5em;
+	color: #440044;
+}
+
+.rubyai-game .choice .option .index {
+	font-weight: bold;
+}

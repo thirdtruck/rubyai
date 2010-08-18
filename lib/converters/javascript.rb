@@ -115,7 +115,7 @@ module RubyAi
 		end
 		
 		def within_sound(sound_element)
-			@output.puts %^function() { rubyai_game.sound(#{escape_js sound_element.name}); },^
+			@output.puts %^function() { rubyai_game.sound(#{escape_js sound_element.alias}, #{escape_js sound_element.name}); },^
 		end
 		
 		def within_speak(character, statement)

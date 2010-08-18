@@ -86,7 +86,7 @@ var RubyAiGame = function(contents) {
 	
 	this.codeBlock = function(code) {
 		if(this.gui !== undefined) {
-			this.gui.codeBlock(code);
+			this.gui.codeBlock(code, name);
 		} else {
 			this.output += "CODE>>>\n"+code+"\n<<<CODE\n";
 		}
@@ -102,12 +102,16 @@ var RubyAiGame = function(contents) {
 	};
 	
 	this.choice = function( options ) {
-		this.output += "Choose:\n";
-		
-		for(var option_index = 0; option_index < options.length; option_index++) {
-			var option = options[option_index];
-			var printed_index = option_index + 1;
-			this.output += "("+(printed_index)+") "+option.name+"\n";
+		if(this.gui !== undefined) {
+			this.gui.choice(options);
+		} else {
+			this.output += "Choose:\n";
+			
+			for(var option_index = 0; option_index < options.length; option_index++) {
+				var option = options[option_index];
+				var printed_index = option_index + 1;
+				this.output += "("+(printed_index)+") "+option.name+"\n";
+			}
 		}
 		var predefined_choice = this.predefined_choices.shift();
 		if(predefined_choice !== undefined) {

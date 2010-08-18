@@ -43,8 +43,8 @@ $(document).ready( function () {
 				
 				rubyai_game.start({ scene: scene_name, gui: rubyai_gui })
 				
-				same(	rubyai_gui.outputAsArray(),
-					expected_output,
+				same(	tracked_elements.$top.html(),
+					expected_output.join(''),
 					"Running the '"+scene_name+"' scene gives the expected GUI output."
 				);
 			} );

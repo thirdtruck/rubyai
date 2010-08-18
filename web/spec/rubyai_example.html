@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Ruby'Ai Example</title>
+	<link rel="stylesheet" href="../css/rubyai.css" type="text/css" media="screen">
 	<script type="text/javascript" src="../js/jquery-1.4.2.min.js">/* */</script>
 	<script type="text/javascript" src="../lib/rubyai.js">/* */</script>
 	<script type="text/javascript" src="../lib/rubyai-gui.js">/* */</script>
@@ -14,12 +15,10 @@
 				gui: rubyai_gui,
 				predefined_choices: [1,1,2,1]
 			} );
-			var results = rubyai_game.textOutput();
-			$("#text-output").text(results);
 		} );
 	</script>
 </head>
 <body>
-	<pre id="text-output"></pre>
+	<pre id="text-output" class="rubyai-game"></pre>
 </body>
 </html>
