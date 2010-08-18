@@ -1,4 +1,8 @@
-Figure out why the last scene, 'first_script', was looping a few times: this appears to stem from looks like the "In the browser" choice adding extra scene-runs or the like.
+Consider refactoring the text output out completely.  Move as much of the static HTML into pre-defined variables and generator functions as possible to make test refactoring easier.
+
+Use the DSL to handle the test scene data where possible.
+
+---
 
 Replace the "game" singleton object with better pre-feature code support instead, if actually preferable.
 
