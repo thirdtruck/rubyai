@@ -25,7 +25,7 @@ $(document).ready( function () {
 		rubyai_gui = null;
 	};
 	
-	function testScript( label, scene_name, contents, output ) {
+	function testScript( label, scene_name, contents, expected_output ) {
 		test(label, function() {
 			tracked_elements.$top = $("#rubyai-game");
 			rubyai_gui = new RubyAiGUI( tracked_elements.$top );
@@ -33,10 +33,32 @@ $(document).ready( function () {
 			
 			rubyai_game.start({ scene: scene_name, gui: rubyai_gui })
 			
-			same(	tracked_elements.$top.html(),
-				output,
-				"Received the expected GUI output"
-			);
+			if (typeof expected_output === "string") {
+				same(	
+					expected_output,
+					tracked_elements.$top.html(),
+					"Received the expected GUI output"
+				);
+			} else {
+				var $total_gui_output = tracked_elements.$top.children();
+				
+				same(
+					expected_output.length,
+					$total_gui_output.length,
+					"The total output of the GUI element has the same element count as the expected output"
+				);
+				
+				for(var output_index = 0; output_index < expected_output.length; output_index += 1) {
+					// TODO: Find a more efficient way of comparing total HTML output
+					var $gui_output = $('<div/>').append( $total_gui_output.eq(output_index).clone() ).html();
+					
+					same(	
+						$gui_output,
+						expected_output[output_index],
+						"Received the expected GUI output for line "+output_index
+					);
+				}
+			}
 		} );
 	};
 	
@@ -51,7 +73,7 @@ $(document).ready( function () {
 					"test scenes/" + set_name,
 					"intro",
 					example.contents,
-					example.gui_output.join('')
+					example.gui_output
 				);
 			})(set_name);
 		};
