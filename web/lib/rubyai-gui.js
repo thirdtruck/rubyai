@@ -1,9 +1,20 @@
-var RubyAiGUI = function($top_element) {
+var RubyAiGUI = function($top_element, settings) {
+	this.settings = {
+		max_rows : 4
+	};
+	$.extend(this.settings, settings);
+	
 	this.$top_element = $top_element;
 	this.$top_element.empty();
 	
 	this.append = function(output) {
 		this.$top_element.append(output);
+		
+		var total_elements = this.$top_element.children().length;
+		while (total_elements > this.settings.max_rows) {
+			this.$top_element.children(":first").remove();
+			total_elements -= 1;
+		}
 	};
 	
 	this.showAllText = function(all_text) {

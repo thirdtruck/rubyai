@@ -122,6 +122,9 @@ var test_data  = {
 			name: "Two scenes deep",
 			description: "returns to all of the outer scenes, in order, after going two scenes deep",
 			starting_scene: "intro",
+			gui_settings: {
+				max_rows : 6
+			},
 			contents: function() {
 				this.addScene( "intro", [
 					function() { rubyai_game.narrate("This is the start of the intro scene"); },
@@ -148,6 +151,29 @@ var test_data  = {
 				"<div class=\"narration\">This is the third scene</div>",
 				"<div class=\"narration\">This is the end of the second scene</div>",
 				"<div class=\"narration\">This is the end of the intro scene</div>",
+				export_data.gui.game_over.neutral
+			]
+		}
+	},
+	limited_output_scenes : {
+		simple_lines : {
+			name: "Limited Output",
+			description: "Restrict the total output visible at any given time",
+			starting_scene: "intro",
+			contents: function() {
+				this.addScene( "intro", [
+					function() { rubyai_game.narrate("First line"); },
+					function() { rubyai_game.narrate("Second line"); },
+					function() { rubyai_game.narrate("Third line"); },
+					function() { rubyai_game.narrate("Fourth line"); },
+					function() { rubyai_game.narrate("Fifth line"); },
+				] );
+			},
+			text_output: "First line\nSecond line\nThird line\nFourth line\nFifth line,Game Over!\n",
+			gui_output: [
+				"<div class=\"narration\">Third line</div>",
+				"<div class=\"narration\">Fourth line</div>",
+				"<div class=\"narration\">Fifth line</div>",
 				export_data.gui.game_over.neutral
 			]
 		}

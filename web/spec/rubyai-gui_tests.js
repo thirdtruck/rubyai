@@ -25,10 +25,10 @@ $(document).ready( function () {
 		rubyai_gui = null;
 	};
 	
-	function testScript( label, scene_name, contents, expected_output ) {
+	function testScript( label, scene_name, contents, expected_output, gui_settings ) {
 		test(label, function() {
 			tracked_elements.$top = $("#rubyai-game");
-			rubyai_gui = new RubyAiGUI( tracked_elements.$top );
+			rubyai_gui = new RubyAiGUI( tracked_elements.$top, gui_settings );
 			rubyai_game = new RubyAiGame( contents );
 			
 			rubyai_game.start({ scene: scene_name, gui: rubyai_gui })
@@ -69,11 +69,13 @@ $(document).ready( function () {
 				
 				var example = examples[set_name];
 				
+				// TODO: make these named parameters
 				testScript(
 					"test scenes/" + set_name,
 					"intro",
 					example.contents,
-					example.gui_output
+					example.gui_output,
+					example.gui_settings
 				);
 			})(set_name);
 		};
@@ -111,6 +113,17 @@ $(document).ready( function () {
 
 	testCommands(test_data.command_examples);
 
+	module("Full Scenes - GUI Output", {
+		setup: basicSetup,
+		teardown: basicTeardown
+	} );
+
 	testScenes(test_data.runScene_examples);
 
+	module("Limited Output - GUI Output", {
+		setup: basicSetup,
+		teardown: basicTeardown
+	} );
+
+	testScenes(test_data.limited_output_scenes);
 });
