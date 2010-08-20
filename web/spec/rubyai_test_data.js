@@ -74,5 +74,82 @@ var test_data  = {
 			text_output: "Choose:\n(1) First Option\nChose the first option.\nGame Over!\n",
 			gui_output: ["<div class=\"choice\">Choose:<div class=\"option\"><span class=\"index\">(1)</span> First Option</div></div>", export_data.gui.game_over.neutral]
 		}
+	},
+	runScene_examples : {
+		simple : {
+			name: "Simple example",
+			description: "runs another scene successfully",
+			starting_scene: "intro",
+			contents: function() {
+				this.addScene( "intro", [
+					function() { rubyai_game.narrate("This is the intro scene"); },
+					function() { rubyai_game.runScene("part2"); }
+				] );
+				this.addScene( "part2", [
+					function() { rubyai_game.narrate("This is the second scene"); },
+				] );
+			},
+			text_output: "This is the intro scene\nThis is the second scene\nGame Over!\n",
+			gui_output: [
+				"<div class=\"narration\">This is the intro scene</div>",
+				"<div class=\"narration\">This is the second scene</div>",
+				export_data.gui.game_over.neutral
+			]
+		},
+		return_to_original : {
+			name: "Return to original",
+			description: "returns to the outer scene after finishing with the inner one",
+			starting_scene: "intro",
+			contents: function() {
+				this.addScene( "intro", [
+					function() { rubyai_game.narrate("This is the start of the intro scene"); },
+					function() { rubyai_game.runScene("part2"); },
+					function() { rubyai_game.narrate("This is the end of the intro scene"); },
+				] );
+				this.addScene( "part2", [
+					function() { rubyai_game.narrate("This is the second scene"); },
+				] );
+			},
+			text_output: "This is the start of the intro scene\nThis is the second scene\nThis is the end of the intro scene\nGame Over!\n",
+			gui_output: [
+				"<div class=\"narration\">This is the start of the intro scene</div>",
+				"<div class=\"narration\">This is the second scene</div>",
+				"<div class=\"narration\">This is the end of the intro scene</div>",
+				export_data.gui.game_over.neutral
+			]
+		},
+		two_deep : {
+			name: "Two scenes deep",
+			description: "returns to all of the outer scenes, in order, after going two scenes deep",
+			starting_scene: "intro",
+			contents: function() {
+				this.addScene( "intro", [
+					function() { rubyai_game.narrate("This is the start of the intro scene"); },
+					function() { rubyai_game.runScene("part2"); },
+					function() { rubyai_game.narrate("This is the end of the intro scene"); },
+				] );
+				this.addScene( "part2", [
+					function() { rubyai_game.narrate("This is the start of the second scene"); },
+					function() { rubyai_game.runScene("part3"); },
+					function() { rubyai_game.narrate("This is the end of the second scene"); },
+				] );
+				this.addScene( "part3", [
+					function() { rubyai_game.narrate("This is the third scene"); },
+				] );
+			},
+			text_output: "This is the start of the intro scene\n"+
+				"This is the start of the second scene\n"+
+				"This is the third scene\n"+
+				"This is the end of the second scene\n"+
+				"This is the end of the intro scene\nGame Over!\n",
+			gui_output: [
+				"<div class=\"narration\">This is the start of the intro scene</div>",
+				"<div class=\"narration\">This is the start of the second scene</div>",
+				"<div class=\"narration\">This is the third scene</div>",
+				"<div class=\"narration\">This is the end of the second scene</div>",
+				"<div class=\"narration\">This is the end of the intro scene</div>",
+				export_data.gui.game_over.neutral
+			]
+		}
 	}
 };
