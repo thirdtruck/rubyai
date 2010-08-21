@@ -31,7 +31,8 @@ $(document).ready( function () {
 			rubyai_gui = new RubyAiGUI( tracked_elements.$top, gui_settings );
 			rubyai_game = new RubyAiGame( contents );
 			
-			rubyai_game.start({ scene: scene_name, gui: rubyai_gui })
+			rubyai_game.start({ scene: scene_name, gui: rubyai_gui });
+			rubyai_game.runAll();
 			
 			if (typeof expected_output === "string") {
 				same(	

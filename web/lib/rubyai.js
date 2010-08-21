@@ -16,11 +16,7 @@ var RubyAiGame = function(contents) {
 		this.running = true;
 		
 		if(starting_scene !== undefined) {
-			this.current_crawler = new SceneCrawler();
-			this.current_crawler.crawlScene(starting_scene);
-			if(this.running) {
-				this.gameOver();
-			}
+			this.current_crawler = new SceneCrawler(starting_scene);
 		} else {
 			throw { message: "Missing scene: " + starting_scene_name };
 		}
@@ -115,7 +111,7 @@ var RubyAiGame = function(contents) {
 		}
 		var predefined_choice = this.predefined_choices.shift();
 		if(predefined_choice !== undefined) {
-			predefined_choice -= 1;
+			predefined_choice -= 1;  // Account for the base-1 index of the display choices vs base-0 arrays
 			this.current_crawler.crawlScene(options[predefined_choice].contents);
 		}
 	}
@@ -146,16 +142,38 @@ var RubyAiGame = function(contents) {
 		this.gui.showAllText(this.outputAsText());
 	}
 	
+	this.advanceGame = function() {
+		var still_going = this.current_crawler.advanceScene();
+		if( (! still_going) && (this.running) ) {
+			// Finish with a "Game Over" automatically if we run out of script
+			this.gameOver();
+		}
+		return still_going;
+	};
+	
+	this.runAll = function() {
+		while(this.advanceGame()) {
+			var crawlers = [this.current_crawler];
+			for(	var this_crawler = this.current_crawler.child_crawler;
+				this_crawler !== undefined;
+				this_crawler = this_crawler.child_crawler ) {
+				crawlers.push(this_crawler);
+			}
+		};
+		this.advanceGame();
+	};
+	
+	// Run the provided script
 	this.contents();
 	
 	return this;
 };
 
 var SceneCrawler = function(steps) {
-	this.steps = steps;
+	this.steps = steps || [];
 	this.step_index = 0;
 	this.running = true;
-	this.child_crawler = null;
+	this.child_crawler = undefined;
 	
 	this.reportGameOver = function(game_over_status) {
 		this.running = false;
@@ -166,14 +184,30 @@ var SceneCrawler = function(steps) {
 	}
 	
 	this.advanceScene = function() {
+		if( ! this.running ) {
+			return false;
+		}
+		
+		if(this.child_crawler !== undefined && this.child_crawler.advanceScene()) {
+			return true;
+		}
+		
 		var next_step = this.steps[this.step_index];
 		
-		if(this.running && next_step !== undefined) {
-			next_step.call();
-			this.step_index += 1;
-			return true;
-		} else {
+		if(next_step === undefined) {
 			return false;
+		}
+		
+		next_step.call();
+		this.step_index += 1;
+		return true;
+	};
+	
+	this.appendCrawler = function(descendant_crawler) {
+		if(this.child_crawler === undefined) {
+			this.child_crawler = descendant_crawler;
+		} else {
+			this.child_crawler.appendCrawler(descendant_crawler);
 		}
 	};
 	
@@ -181,11 +215,9 @@ var SceneCrawler = function(steps) {
 		var target_crawler;
 		if(scene_contents) {
 			target_crawler = new SceneCrawler(scene_contents);
-			this.child_crawler = target_crawler;
+			this.appendCrawler(target_crawler);
 		} else {
 			target_crawler = this;
-		}
-		while(target_crawler.advanceScene()) {
 		}
 	};
 	

@@ -107,6 +107,7 @@ function testCommands( examples ) {
 			} );
 			
 			rubyai_game.start({ scene: scene_name })
+			rubyai_game.runAll();
 			
 			same(	rubyai_game.outputAsText(),
 				expected_output,
@@ -195,6 +196,7 @@ function testFullScript( command_name, examples ) {
 			rubyai_game.start({	scene: example.starting_scene,
 						predefined_choices: example.choices
 			});
+			rubyai_game.runAll();
 			
 			same(	rubyai_game.outputAsText(),
 				example.output,
@@ -360,6 +362,7 @@ test("test command/gameOver (Game Over only ends the game itself)", function() {
 	} );
 	
 	rubyai_game.start( { scene: "intro" } );
+	rubyai_game.runAll();
 	rubyai_game.output += "After game over.\n";
 	
 	same(	rubyai_game.outputAsText(),
@@ -385,6 +388,7 @@ test("test command/gameOver (Game Over only ends the game itself after a choice)
 	} );
 	
 	rubyai_game.start( { scene: "intro", predefined_choices: [1] } );
+	rubyai_game.runAll();
 	rubyai_game.output += "After game over.\n";
 	
 	same(	rubyai_game.outputAsText(),
@@ -404,6 +408,7 @@ test("test command/gameOver (Call a neutral Game Over automatically if we run ou
 	} );
 	
 	rubyai_game.start( { scene: "intro" } );
+	rubyai_game.runAll();
 	
 	same(	rubyai_game.outputAsText(),
 		"Example command.\nGame Over!\n",

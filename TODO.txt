@@ -1,3 +1,5 @@
+De-couple the "unfinished" status reports from the story-advancement methods.
+
 Consider refactoring the text output out completely.  Move as much of the static HTML into pre-defined variables and generator functions as possible to make test refactoring easier.
 
 Use the DSL to handle the test scene data where possible.
