@@ -1,16 +1,24 @@
+require 'rubygems'
 require 'highline/import'
 require 'lib/novel_elements'
 
 module InteractiveInterfaceCommands
+	def initialize
+		@log = File.open("game_log.txt", 'w')
+	end
 	def puts(string)
 		Kernel.print(string)
+		@log.print(string)
 		ask(''){ |q| q.echo = '' }
 		Kernel.puts()
+		@log.print("\n\n")
 	end
 	def gets(query)
 		query = query + " " if query !~ /\s$/
 		answer = ask(query) { |q| q.echo = true }
+		@log.puts(query + answer)
 		Kernel.puts()
+		@log.print("\n\n")
 		answer
 	end
 end

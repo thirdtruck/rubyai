@@ -1,5 +1,6 @@
 #!/usr/bin/ruby1.9
 $LOAD_PATH << File.expand_path('../lib', __FILE__)
+require 'rubygems'
 require 'optparse'
 require 'ostruct'
 require 'lib/rubyai'
