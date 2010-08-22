@@ -10,6 +10,10 @@
 	<script type="text/javascript">
 		$(document).ready( function() {
 			rubyai_gui = new RubyAiGUI($('#text-output'));
+			$('#continue-button').click( function () {
+				rubyai_game.advanceGame();
+				return false;
+			});
 			rubyai_game.start( {
 				scene: "intro",
 				gui: rubyai_gui,
@@ -19,6 +23,7 @@
 	</script>
 </head>
 <body>
+	<a id="continue-button" href="#">Continue</a>
 	<pre id="text-output" class="rubyai-game"></pre>
 </body>
 </html>
