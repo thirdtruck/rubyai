@@ -143,25 +143,27 @@ var RubyAiGame = function(contents) {
 	}
 	
 	this.advanceGame = function() {
-		var still_going = this.current_crawler.advanceScene();
-		if( (! still_going) && (this.running) ) {
+		this.current_crawler.advanceScene();
+		if( (this.current_crawler.scriptFinished()) && (this.running) ) {
 			// Finish with a "Game Over" automatically if we run out of script
 			this.gameOver();
 		}
-		return still_going;
 	};
 	
 	this.runAll = function() {
-		while(this.advanceGame()) {
-			var crawlers = [this.current_crawler];
-			for(	var this_crawler = this.current_crawler.child_crawler;
-				this_crawler !== undefined;
-				this_crawler = this_crawler.child_crawler ) {
-				crawlers.push(this_crawler);
-			}
+		this.advanceGame();
+		while( ! this.current_crawler.scriptFinished() ) {
+			this.advanceGame();
 		};
 		this.advanceGame();
 	};
+	
+	// TODO: prepare unit tests for this functionality before including it.  It means setting a good example for yourself and others.
+	/*
+	this.gameFinished = function() {
+		return this.current_crawler.scriptFinished();
+	};
+	*/
 	
 	// Run the provided script
 	this.contents();
@@ -183,24 +185,38 @@ var SceneCrawler = function(steps) {
 		}
 	}
 	
-	this.advanceScene = function() {
+	this.scriptFinished = function() {
 		if( ! this.running ) {
-			return false;
+			return true;
 		}
 		
-		if(this.child_crawler !== undefined && this.child_crawler.advanceScene()) {
-			return true;
+		var child_finished = true;
+		if(this.child_crawler !== undefined) {
+			child_finished = this.child_crawler.scriptFinished();
+		}
+		
+		var out_of_steps = (this.steps[this.step_index] === undefined);
+		
+		return child_finished && out_of_steps;
+	};
+	
+	this.advanceScene = function() {
+		if(this.scriptFinished()) {
+			return;
+		}
+		
+		if(this.child_crawler !== undefined) {
+			this.child_crawler.advanceScene();
+			if(this.child_crawler.scriptFinished()) {
+				this.child_crawler = undefined;
+			}
+			return;
 		}
 		
 		var next_step = this.steps[this.step_index];
 		
-		if(next_step === undefined) {
-			return false;
-		}
-		
 		next_step.call();
 		this.step_index += 1;
-		return true;
 	};
 	
 	this.appendCrawler = function(descendant_crawler) {

@@ -25,14 +25,20 @@ $(document).ready( function () {
 		rubyai_gui = null;
 	};
 	
-	function testScript( label, scene_name, contents, expected_output, gui_settings ) {
+	function testScript( example_data, label, scene_name, contents, expected_output, gui_settings ) {
 		test(label, function() {
+			example_data = example_data || {};
+			
 			tracked_elements.$top = $("#rubyai-game");
 			rubyai_gui = new RubyAiGUI( tracked_elements.$top, gui_settings );
 			rubyai_game = new RubyAiGame( contents );
 			
 			rubyai_game.start({ scene: scene_name, gui: rubyai_gui });
-			rubyai_game.runAll();
+			if(example_data.manual_input) {
+				example_data.manual_input.call();
+			} else {
+				rubyai_game.runAll();
+			}
 			
 			if (typeof expected_output === "string") {
 				same(	
@@ -72,6 +78,7 @@ $(document).ready( function () {
 				
 				// TODO: make these named parameters
 				testScript(
+					example,
 					"test scenes/" + set_name,
 					"intro",
 					example.contents,
@@ -91,6 +98,7 @@ $(document).ready( function () {
 			var expected_output = example.gui_output.join('');
 			
 			testScript(
+				null,
 				"test command/"+scene_name,
 				scene_name,
 				function () {
@@ -127,4 +135,11 @@ $(document).ready( function () {
 	} );
 
 	testScenes(test_data.limited_output_scenes);
+	
+	module("GUI - Manual Input", {
+		setup: basicSetup,
+		teardown: basicTeardown
+	} );
+	
+	testScenes(test_data.manual_input_scenes);
 });

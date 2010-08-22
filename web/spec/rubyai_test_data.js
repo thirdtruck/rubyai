@@ -177,5 +177,90 @@ var test_data  = {
 				export_data.gui.game_over.neutral
 			]
 		}
+	},
+	manual_input_scenes : {
+		/*
+		advanceGame : {
+			name: "Advance the Game",
+			description: "RubyAiGame.advanceGame() actually advances the progress of the script",
+			starting_scene: "intro",
+			contents: function() {
+				this.addScene( "intro", [
+					function() { rubyai_game.narrate("First line"); },
+					function() { rubyai_game.narrate("Second line"); },
+					function() { rubyai_game.narrate("Third line"); },
+					function() { rubyai_game.narrate("Fourth line"); },
+					function() { rubyai_game.narrate("Fifth line"); },
+				] );
+			},
+			text_output: "First line\nSecond line\nThird line\nFourth line\nFifth line,Game Over!\n",
+			gui_output: [
+				"<div class=\"narration\">Third line</div>",
+				"<div class=\"narration\">Fourth line</div>",
+				"<div class=\"narration\">Fifth line</div>",
+				export_data.gui.game_over.neutral
+			]
+		},
+		*/
+		advanceGame_once : {
+			name: "Advance the Game Once",
+			description: "RubyAiGame.advanceGame() actually advances the progress of the script",
+			starting_scene: "intro",
+			contents: function() {
+				this.addScene( "intro", [
+					function() { rubyai_game.narrate("First line"); },
+					function() { rubyai_game.narrate("Second line"); }
+				] );
+			},
+			manual_input : function() {
+				rubyai_game.advanceGame();
+			},
+			text_output: "First line\n",
+			gui_output: [
+				"<div class=\"narration\">First line</div>"
+			]
+		},
+		advanceGame_twice : {
+			name: "Advance the Game Twice",
+			description: "RubyAiGame.advanceGame() actually advances the progress of the script",
+			starting_scene: "intro",
+			contents: function() {
+				this.addScene( "intro", [
+					function() { rubyai_game.narrate("First line"); },
+					function() { rubyai_game.narrate("Second line"); },
+					function() { rubyai_game.narrate("Third line"); }
+				] );
+			},
+			manual_input : function() {
+				rubyai_game.advanceGame();
+				rubyai_game.advanceGame();
+			},
+			text_output: "First line\nSecond line",
+			gui_output: [
+				"<div class=\"narration\">First line</div>",
+				"<div class=\"narration\">Second line</div>"
+			]
+		},
+		advanceGame_to_completion : {
+			name: "Advance the Game to Completion",
+			description: "Using RubyAiGame.advanceGame() up to the last step of the script automatically advances it to a \"Game Over\".",
+			starting_scene: "intro",
+			contents: function() {
+				this.addScene( "intro", [
+					function() { rubyai_game.narrate("First line"); },
+					function() { rubyai_game.narrate("Second line"); }
+				] );
+			},
+			manual_input : function() {
+				rubyai_game.advanceGame();
+				rubyai_game.advanceGame();
+			},
+			text_output: "First line\nSecond line\nGame Over!\n",
+			gui_output: [
+				"<div class=\"narration\">First line</div>",
+				"<div class=\"narration\">Second line</div>",
+				export_data.gui.game_over.neutral
+			]
+		}
 	}
 };
