@@ -262,5 +262,99 @@ var test_data  = {
 				export_data.gui.game_over.neutral
 			]
 		}
+	},
+	follow_up_steps : {
+		follow_up_once : {
+			name: "Execute One Follow-Up Step",
+			description: "Automatically execute any \"follow-up\" steps that come immediately after each step",
+			starting_scene: "intro",
+			contents: function() {
+				this.addScene( "intro", [
+					function() { rubyai_game.narrate("First line"); },
+					{
+						type : "follow-up",
+						content : function() {
+							rubyai_game.narrate("Follow-up line");
+						}
+					},
+					function() { rubyai_game.narrate("Second line"); }
+				] );
+			},
+			text_output: "First line\nFollow-Up line\nSecond line\nGame Over!\n",
+			gui_output: [
+				"<div class=\"narration\">First line</div>",
+				"<div class=\"narration\">Follow-up line</div>",
+				"<div class=\"narration\">Second line</div>",
+				export_data.gui.game_over.neutral
+			]
+		},
+		follow_up_twice : {
+			name: "Execute Two Follow-Up Steps",
+			description: "Automatically execute any \"follow-up\" steps that come immediately after each step",
+			starting_scene: "intro",
+			gui_settings: {
+				max_rows : 5
+			},
+			contents: function() {
+				this.addScene( "intro", [
+					function() { rubyai_game.narrate("First line"); },
+					{
+						type : "follow-up",
+						content : function() {
+							rubyai_game.narrate("First follow-up line");
+						}
+					},
+					{
+						type : "follow-up",
+						content : function() {
+							rubyai_game.narrate("Second follow-up line");
+						}
+					},
+					function() { rubyai_game.narrate("Second line"); }
+				] );
+			},
+			text_output: "First line\nFirst follow-Up line\nSecond follow-up line\nSecond line\nGame Over!\n",
+			gui_output: [
+				"<div class=\"narration\">First line</div>",
+				"<div class=\"narration\">First follow-up line</div>",
+				"<div class=\"narration\">Second follow-up line</div>",
+				"<div class=\"narration\">Second line</div>",
+				export_data.gui.game_over.neutral
+			]
+		},
+		follow_up_two_sets : {
+			name: "Execute Two Sets of Follow-Up Steps",
+			description: "Automatically execute any \"follow-up\" steps that come immediately after each step",
+			starting_scene: "intro",
+			gui_settings: {
+				max_rows : 5
+			},
+			contents: function() {
+				this.addScene( "intro", [
+					function() { rubyai_game.narrate("First line"); },
+					{
+						type : "follow-up",
+						content : function() {
+							rubyai_game.narrate("First follow-up line");
+						}
+					},
+					function() { rubyai_game.narrate("Second line"); },
+					{
+						type : "follow-up",
+						content : function() {
+							rubyai_game.narrate("Second follow-up line");
+						}
+					}
+				] );
+			},
+			text_output: "First line\nFirst follow-Up line\nSecond line\nSecond follow-up line\nGame Over!\n",
+			gui_output: [
+				"<div class=\"narration\">First line</div>",
+				"<div class=\"narration\">First follow-up line</div>",
+				"<div class=\"narration\">Second line</div>",
+				"<div class=\"narration\">Second follow-up line</div>",
+				export_data.gui.game_over.neutral
+			]
+		}
 	}
 };

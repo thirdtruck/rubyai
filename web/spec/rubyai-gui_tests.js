@@ -142,4 +142,11 @@ $(document).ready( function () {
 	} );
 	
 	testScenes(test_data.manual_input_scenes);
+	
+	module("GUI - Follow-Up Steps", {
+		setup: basicSetup,
+		teardown: basicTeardown
+	} );
+	
+	testScenes(test_data.follow_up_steps);
 });

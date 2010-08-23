@@ -214,8 +214,15 @@ var SceneCrawler = function(steps) {
 		}
 		
 		var next_step = this.steps[this.step_index];
-		
 		next_step.call();
+		
+		var peek_ahead_step = this.steps[this.step_index+1];
+		while(peek_ahead_step !== undefined && peek_ahead_step.type && peek_ahead_step.type === "follow-up") {
+			peek_ahead_step.content.call();
+			this.step_index += 1;
+			peek_ahead_step = this.steps[this.step_index+1]
+		}
+		
 		this.step_index += 1;
 	};
 	
