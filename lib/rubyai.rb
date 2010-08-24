@@ -1,6 +1,7 @@
 require 'delegate'
 require 'lib/novel_elements'
 require 'lib/scene'
+require 'ostruct'
 
 # Class Macros
 module CallbackWrapper
@@ -75,6 +76,7 @@ module RubyAi
 		include CallbackWrapper
 		
 		def initialize(input, output, target_script=nil)
+			@vars = OpenStruct.new
 			@settings = {
 				:urls => {}
 			}
@@ -327,7 +329,25 @@ module RubyAi
 			within_code_block(string)
 		end
 		
-		wrap_callbacks_around :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene, :st, :em, :url, :code, :code_block
+		def set_var(args)
+			# TODO: Add support for setting multiple variables at once
+			variable_alias = args.keys[0]
+			value = args.values[0]
+			
+			within_set_var(variable_alias, value)
+			@vars.send((variable_alias.to_s + "=").to_sym, value)
+		end
+		
+		def get_var(variable_alias)
+			@vars.send(variable_alias)
+		end
+		
+		def embed_var(variable_alias)
+			value = @vars.send(variable_alias)
+			within_embed_var(variable_alias) || value
+		end
+		
+		wrap_callbacks_around :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene, :st, :em, :url, :code, :code_block, :set_var, :get_var
 	end
 
 	class GameWorkspace < DelegateClass(Game)

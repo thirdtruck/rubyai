@@ -118,26 +118,26 @@ add_scene :choose_os do
 	# TODO: Set some variables here so that we can give OS-specific commands later
 	choice do
 		option "Linux" do
-			@os = "linux"
+			set_var :os => "linux"
 			run_scene :install_linux
 		end
 		option "Windows" do
-			@os = "windows"
+			set_var :os => "windows"
 			run_scene :install_windows
 		end
 		option "Mac OS X" do
-			@os = "osx"
+			set_var :os => "osx"
 			run_scene :install_osx
 		end
 		option "In the Browser" do
-			@os = "browser"
+			set_var :os => "browser"
 			run_scene :install_browser
 		end
 	end
 	
 	narrate "With a little help from the #{url :message_boards, 'message boards'}, #{lucy} and the #{fairy} soon have the #{em 'Ruby\'Ai'} software up and running."
 	
-	if @os == "browser"
+	if get_var(:os) == "browser"
 		typing_fairy "And now we go to the #{url :create_game, 'Create a Game'} page!"
 		
 		run_scene :initialize_in_browser
@@ -202,7 +202,7 @@ add_scene :directory_media do
 	show terrified_fairy
 	terrified_lucy "It's a picture of #{em 'me'}!  I'm looking at a picture of me, looking at a picture of me, of me, of me..."
 	narrate "#{lucy}'s universe segfaults from the recursive loop and implodes."
-	@doom = true
+	set_var :doom => true
 	
 	choice do
 		option "Try that again?" do run_scene :command_line_setup end
@@ -229,9 +229,9 @@ add_scene :directory_scripts do
 	confused_lucy "It's empty."
 	
 	default_fairy "Oh, we just need to run the script setup command!"
-	if @os == "linux" or @os == "osx"
+	if get_var(:os) == "linux" or get_var(:os) == "osx"
 		fairy "Type in #{code 'ruby bin/new_script.rb my_first_renai'}."
-	elsif @os == "windows"
+	elsif get_var(:os) == "windows"
 		fairy "Type in #{code 'ruby.exe bin\\new_script.rb my_first_renai'}"
 	end
 	
@@ -262,13 +262,13 @@ end
 add_scene :first_script do
 	worried_lucy "So what do I do now?"
 	
-	if @os == "windows"
-		@first_script_directory = "scripts\\my_first_renai\\scenes.rb"
+	if get_var(:os) == "windows"
+		set_var :first_script_directory => "scripts\\my_first_renai\\scenes.rb"
 	else
-		@first_script_directory = "scripts/my_first_renai/scenes.rb"
+		set_var :first_script_directory => "scripts/my_first_renai/scenes.rb"
 	end
 	
-	bespectacled_fairy "Now we open up the #{@first_script_directory} file!"
+	bespectacled_fairy "Now we open up the #{embed_var :first_script_directory} file!"
 	worried_lucy "Okay...",
 		"It says:"
 	code_block %{
@@ -419,17 +419,17 @@ add_scene :contexts do
 	show computer_desk
 	concerned_lucy "It makes me glad to finally have a visual novel that's, well, #{em 'visual'}, but where did we get these pictures of #{marcus} and #{jen}?"
 	
-	if @os == "windows"
-		@character_image_directory = "media\\characters\\"
+	if get_var(:os) == "windows"
+		set_var :character_image_directory => "media\\characters\\"
 	else
-		@character_image_directory = "media/characters/"
+		set_var :character_image_directory => "media/characters/"
 	end
-	bespectacled_fairy "How very astute of you!  You can take a look inside of the \"#{@character_image_directory}\" directory."
+	bespectacled_fairy "How very astute of you!  You can take a look inside of the \"#{embed_var :character_image_directory}\" directory."
 	typing_lucy "clicks a few times."
 	confused_lucy "I see \"marcus_waving.png\", \"marcus_smiling.png\", \"jen_concerned.png\" and several more."
 	worried_lucy "Wait, what's this \"lucy_worried.png\" image about..."
 	terrified_fairy "snatches the keyboard away!"
-	if @doom
+	if get_var :doom
 		terrified_fairy "Not again!"
 	end
 	worried_lucy "What?"
@@ -466,12 +466,12 @@ add_scene :stages do
 	excited_fairy "That they did!"
 	tired_lucy "Phew."
 	
-	if @os == "windows"
-		@stage_image_directory = "media\\stages\\"
+	if get_var(:os) == "windows"
+		set_var :stage_image_directory => "media\\stages\\"
 	else
-		@stage_image_directory = "media/stages/"
+		set_var :stage_image_directory => "media/stages/"
 	end
-	bespectacled_fairy "Check the \"#{@stage_image_directory}\" directory."
+	bespectacled_fairy "Check the \"#{embed_var :stage_image_directory}\" directory."
 	excited_lucy "Neat."
 	typing_lucy "Oh, they have a \"castle.png\" image."
 	# TODO: offer a multiple choice or fill-in-the-blank prompt here, allowing the player to guess first.
@@ -480,12 +480,12 @@ add_scene :stages do
 	excited_lucy "And it works!"
 	
 	concerned_lucy "But what if I want to add a new stage?  I remember these panoramas from Wikipedia..."
-	if @os == "windows"
-		@stage_script_directory = "scripts\\my_first_renai\\stages.rb\\"
+	if get_var(:os) == "windows"
+		set_var :stage_script_directory => "scripts\\my_first_renai\\stages.rb\\"
 	else
-		@stage_script_directory = "scripts/my_first_renai/stages.rb"
+		set_var :stage_script_directory => "scripts/my_first_renai/stages.rb"
 	end
-	bespectacled_fairy "Just open up \"#{@stage_script_directory}\"!"
+	bespectacled_fairy "Just open up \"#{embed_var :stage_script_directory}\"!"
 	code_block %{
 		add :castle, "Castle" do
 			describe_as "A European castle."
@@ -494,7 +494,7 @@ add_scene :stages do
 	concerned_lucy "So I just write another one of these \"add\" chunks of code, using the new image's name and title, and then give it a description?"
 	excited_fairy  "nods emphatically."
 	typing_lucy "opens a browser window and copies a few images into the directory."
-		"then writes more of \"#{@stage_script_directory}\"."
+		"then writes more of \"#{embed_var :stage_script_directory}\"."
 	excited_lucy "And now I can add #{code 'show garden'} and #{code 'show farm'} and -"
 	frantic_fairy "Whoa, whoa, whoa!  Give your poor characters a chance to rest!"
 	tired_fairy "You'll tire out the players with all that movement, too."
@@ -534,7 +534,7 @@ add_scene :choices do
 	concerned_lucy "So how does this \"choice\" command work?"
 	typing_fairy "It's the most complicated command so far, so let me show you a complete example:"
 	sound keyboard
-	@example_choice = %{
+	set_var :example_choice => %{
 		choice do
 			option "Wave back at #{marcus}" do jen "waves back!" end
 			option "Hide behind a tree" do jen "hides behind a tree"; jen "I'll surprise him!" end
@@ -545,7 +545,7 @@ add_scene :choices do
 			end
 		end
 	}
-	code_block @example_choice
+	code_block get_var :example_choice
 	terrified_lucy "So much.. code.. vision.. blurring.."
 	concerned_fairy "unsheathes her Let's Refocus!(TM)-branded mini-taser."
 	sound taser
@@ -560,7 +560,7 @@ add_scene :choices do
 		"The semi-colon there just stands in for the linebreak that we normally use to separate commands."
 	curious_lucy "Gotcha..."
 	excited_fairy "Why not try the choice out?"
-	eval @example_choice
+	eval get_var :example_choice
 	excited_lucy "Awesome!"
 	
 	run_scene :running_scenes

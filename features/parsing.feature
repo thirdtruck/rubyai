@@ -79,3 +79,31 @@ Feature: parsing
 				character "I say y."
 			<<<CODE
 			"""
+	
+	# TODO: Add support for adding multiple values at once
+	Scenario: set a variable
+		Given an :intro scene
+		When I add `set_var :my_var => "My Value"` to scene :intro
+		And I run scene :intro
+		Then variable :my_var should equal "My Value"
+	
+	Scenario: set a variable again
+		Given an :intro scene
+		When I add the following to scene :intro:
+			"""
+			set_var :my_var => "My Value"
+			set_var :my_var => "My Other Value"
+			"""
+		And I run scene :intro
+		Then variable :my_var should equal "My Other Value"
+	
+	Scenario: include a variable
+		Given an :intro scene
+		When I add the following to scene :intro:
+			"""
+			set_var :location => "the Tropics"
+			narrate "And so we traveled to #{get_var :location}."
+			"""
+		And I run scene :intro
+		Then I should see "And so we traveled to the Tropics."
+	

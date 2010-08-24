@@ -1,6 +1,7 @@
 var debug_scenes;
 
 var RubyAiGame = function(contents) {
+	this.variables = { };
 	this.contents = contents;
 	this.scenes = { };
 	this.output = "";
@@ -25,6 +26,7 @@ var RubyAiGame = function(contents) {
 	};
 	
 	this.narrate = function( statement ) {
+		statement = this.interpolatedSubstitution(statement);
 		if(this.gui !== undefined) {
 			this.gui.narrate(statement);
 		} else {
@@ -33,6 +35,7 @@ var RubyAiGame = function(contents) {
 	};
 	
 	this.speak = function( character, statement ) {
+		statement = this.interpolatedSubstitution(statement);
 		if(this.gui !== undefined) {
 			this.gui.speak(character, statement);
 		} else {
@@ -41,6 +44,7 @@ var RubyAiGame = function(contents) {
 	};
 	
 	this.action = function( character, behavior ) {
+		behavior = this.interpolatedSubstitution(behavior);
 		if(this.gui !== undefined) {
 			this.gui.action(character, behavior);
 		} else {
@@ -81,6 +85,7 @@ var RubyAiGame = function(contents) {
 	};
 	
 	this.codeBlock = function(code) {
+		code = this.interpolatedSubstitution(code);
 		if(this.gui !== undefined) {
 			this.gui.codeBlock(code, name);
 		} else {
@@ -158,6 +163,34 @@ var RubyAiGame = function(contents) {
 		this.advanceGame();
 	};
 	
+	this.setVar = function(name, value) {
+		this.variables[name] = value;
+	};
+	
+	this.getVar = function(name) {
+		return this.variables[name];
+	};
+	
+	// TODO: prepare unit tests for this functionality before including it.  It means setting a good example for yourself and others.
+	this.interpolatedSubstitution = function(text) {
+		var re_pattern = /%%\[(\w+: \w+)\]%%/;
+		var matches = text.match(re_pattern, 'g');
+		
+		if(matches === null) {
+			return text;
+		}
+		
+		for(var i =  1; i < matches.length; i += 1) {
+			var interpolation_parts = matches[i].split(': ');
+			var interpolation_type = interpolation_parts[0];
+			var subject = interpolation_parts[1];
+			var value = this.variables[subject] === undefined ? "[undefined variable: " + subject + "]" : this.variables[subject];
+			text = text.replace(re_pattern, value);
+		} 
+		
+		return text;
+	};
+	
 	// TODO: prepare unit tests for this functionality before including it.  It means setting a good example for yourself and others.
 	/*
 	this.gameFinished = function() {
@@ -214,7 +247,10 @@ var SceneCrawler = function(steps) {
 		}
 		
 		var next_step = this.steps[this.step_index];
-		next_step.call();
+		if(next_step.content === undefined) {
+			console.log("Next Step: ", next_step);
+		}
+		next_step.content.call();
 		
 		var peek_ahead_step = this.steps[this.step_index+1];
 		while(peek_ahead_step !== undefined && peek_ahead_step.type && peek_ahead_step.type === "follow-up") {

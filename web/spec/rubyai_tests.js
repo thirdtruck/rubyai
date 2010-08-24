@@ -21,46 +21,46 @@ var basicTeardown = function() {
 
 var example_scenes = {
 	empty: [],
-	one_step: [function() { }],
-	one_command: [function() { rubyai_game.narrate("Stuff happens"); }],
+	one_step: [ { type: "command", content: function() { } } ],
+	one_command: [ { type: "command", content: function() { rubyai_game.narrate("Stuff happens"); } } ],
 	two_commands: [
-		function() { rubyai_game.narrate("Stuff happens"); },
-		function() { rubyai_game.narrate("More stuff happens"); }
+		{ type: "command", content: function() { rubyai_game.narrate("Stuff happens"); } },
+		{ type: "command", content: function() { rubyai_game.narrate("More stuff happens"); } }
 	]
 };
 
 var command_examples = {
-	narrate: { contents: [function() { rubyai_game.narrate("Stuff happens"); }],
+	narrate: { contents: [{ type: "command", content: function() { rubyai_game.narrate("Stuff happens"); } }],
 		output: "Stuff happens\nGame Over!\n"
 	},
-	speak: { contents: [function() { rubyai_game.speak("Lucy", "I have something to say.") }],
+	speak: { contents: [{ type: "command", content: function() { rubyai_game.speak("Lucy", "I have something to say.") }}],
 		output: "Lucy: I have something to say.\nGame Over!\n"
 	},
-	action: { contents: [function() { rubyai_game.action("Lucy", "does something.") }],
+	action: { contents: [{ type: "command", content: function() { rubyai_game.action("Lucy", "does something.") }}],
 		output: "Lucy does something.\nGame Over!\n"
 	},
-	sound: { contents: [function() { rubyai_game.sound("bang", "Bang") }],
+	sound: { contents: [{ type: "command", content: function() { rubyai_game.sound("bang", "Bang") }}],
 		output: "*Bang*\nGame Over!\n"
 	},
-	showStage: { contents: [function() { rubyai_game.showStage("outdoors", "Outdoors", "The outdoors, where they keep all of the trees.") }],
+	showStage: { contents: [{ type: "command", content: function() { rubyai_game.showStage("outdoors", "Outdoors", "The outdoors, where they keep all of the trees.") }}],
 		output: "Show stage Outdoors [outdoors]: The outdoors, where they keep all of the trees.\nGame Over!\n"
 	},
-	showCharacter: { contents: [function() { rubyai_game.showCharacter("lucy", "Lucy", "lucy_default.png") }],
+	showCharacter: { contents: [{ type: "command", content: function() { rubyai_game.showCharacter("lucy", "Lucy", "lucy_default.png") }}],
 		output: "Show character Lucy [lucy]: lucy_default.png\nGame Over!\n"
 	},
-	hide: { contents: [function() { rubyai_game.hide("lucy", "Lucy") }],
+	hide: { contents: [{ type: "command", content: function() { rubyai_game.hide("lucy", "Lucy") }}],
 		output: "[Hide Lucy]\nGame Over!\n"
 	},
-	codeBlock: { contents: [function() { rubyai_game.codeBlock("\tline_one();\n\tline_two();") }],
+	codeBlock: { contents: [{ type: "command", content: function() { rubyai_game.codeBlock("\tline_one();\n\tline_two();") }}],
 		output: "CODE>>>\n\tline_one();\n\tline_two();\n<<<CODE\nGame Over!\n"
 	},
-	gameOver_neutral: { contents: [function() { rubyai_game.gameOver() }],
+	gameOver_neutral: { contents: [{ type: "command", content: function() { rubyai_game.gameOver() }}],
 		output: "Game Over!\n"
 	},
-	gameOver_success: { contents: [function() { rubyai_game.gameOver("success") }],
+	gameOver_success: { contents: [{ type: "command", content: function() { rubyai_game.gameOver("success") }}],
 		output: "Game Over: You Win!\n"
 	},
-	gameOver_failure: { contents: [function() { rubyai_game.gameOver("failure") }],
+	gameOver_failure: { contents: [{ type: "command", content: function() { rubyai_game.gameOver("failure") }}],
 		output: "Game Over: You Lose!\n"
 	},
 };
@@ -132,11 +132,11 @@ var runScene_examples = [
 		starting_scene: "intro",
 		contents: function() {
 			this.addScene( "intro", [
-				function() { rubyai_game.narrate("This is the intro scene"); },
-				function() { rubyai_game.runScene("part2"); }
+				{ type: "command", content: function() { rubyai_game.narrate("This is the intro scene"); } },
+				{ type: "command", content: function() { rubyai_game.runScene("part2"); } }
 			] );
 			this.addScene( "part2", [
-				function() { rubyai_game.narrate("This is the second scene"); },
+				{ type: "command", content: function() { rubyai_game.narrate("This is the second scene"); } },
 			] );
 		},
 		output: "This is the intro scene\nThis is the second scene\nGame Over!\n"
@@ -147,12 +147,12 @@ var runScene_examples = [
 		starting_scene: "intro",
 		contents: function() {
 			this.addScene( "intro", [
-				function() { rubyai_game.narrate("This is the start of the intro scene"); },
-				function() { rubyai_game.runScene("part2"); },
-				function() { rubyai_game.narrate("This is the end of the intro scene"); },
+				{ type: "command", content: function() { rubyai_game.narrate("This is the start of the intro scene"); } },
+				{ type: "command", content: function() { rubyai_game.runScene("part2"); } },
+				{ type: "command", content: function() { rubyai_game.narrate("This is the end of the intro scene"); } },
 			] );
 			this.addScene( "part2", [
-				function() { rubyai_game.narrate("This is the second scene"); },
+				{ type: "command", content: function() { rubyai_game.narrate("This is the second scene"); } },
 			] );
 		},
 		output: "This is the start of the intro scene\nThis is the second scene\nThis is the end of the intro scene\nGame Over!\n"
@@ -163,17 +163,17 @@ var runScene_examples = [
 		starting_scene: "intro",
 		contents: function() {
 			this.addScene( "intro", [
-				function() { rubyai_game.narrate("This is the start of the intro scene"); },
-				function() { rubyai_game.runScene("part2"); },
-				function() { rubyai_game.narrate("This is the end of the intro scene"); },
+				{ type: "command", content: function() { rubyai_game.narrate("This is the start of the intro scene"); } },
+				{ type: "command", content: function() { rubyai_game.runScene("part2"); } },
+				{ type: "command", content: function() { rubyai_game.narrate("This is the end of the intro scene"); } },
 			] );
 			this.addScene( "part2", [
-				function() { rubyai_game.narrate("This is the start of the second scene"); },
-				function() { rubyai_game.runScene("part3"); },
-				function() { rubyai_game.narrate("This is the end of the second scene"); },
+				{ type: "command", content: function() { rubyai_game.narrate("This is the start of the second scene"); } },
+				{ type: "command", content: function() { rubyai_game.runScene("part3"); } },
+				{ type: "command", content: function() { rubyai_game.narrate("This is the end of the second scene"); } },
 			] );
 			this.addScene( "part3", [
-				function() { rubyai_game.narrate("This is the third scene"); },
+				{ type: "command", content: function() { rubyai_game.narrate("This is the third scene"); } },
 			] );
 		},
 		output: "This is the start of the intro scene\n"+
@@ -216,13 +216,13 @@ var choice_examples = [
 		starting_scene: "intro",
 		contents: function() {
 			this.addScene( "intro", [
-				function() {
+				{ type: "command", content: function() {
 					rubyai_game.choice( [
 						new Option("First Choice", [
-							function() { rubyai_game.narrate("Chose First Choice") }
+							{ type: "command", content: function() { rubyai_game.narrate("Chose First Choice") } }
 						])
 					] );
-				}
+				} }
 			] );
 		},
 		output:	"Choose:\n"+
@@ -235,13 +235,13 @@ var choice_examples = [
 		choices: [1],
 		contents: function() {
 			this.addScene( "intro", [
-				function() {
+				{ type: "command", content: function() {
 					rubyai_game.choice( [
 						new Option("First Option", [
-							function() { rubyai_game.narrate("Chose First Option") }
+							{ type: "command", content: function() { rubyai_game.narrate("Chose First Option") } }
 						])
 					] );
-				}
+				} }
 			] );
 		},
 		output:	"Choose:\n"+
@@ -255,16 +255,16 @@ var choice_examples = [
 		choices: [2],
 		contents: function() {
 			this.addScene( "intro", [
-				function() {
+				{ type: "command", content: function() {
 					rubyai_game.choice( [
 						new Option("First Option", [
-							function() { rubyai_game.narrate("Chose First Option") }
+							{ type: "command", content: function() { rubyai_game.narrate("Chose First Option") } }
 						]),
 						new Option("Second Option", [
-							function() { rubyai_game.narrate("Chose Second Option") }
+							{ type: "command", content: function() { rubyai_game.narrate("Chose Second Option") } }
 						])
 					] );
-				}
+				} }
 			] );
 		},
 		output:	"Choose:\n"+
@@ -279,20 +279,20 @@ var choice_examples = [
 		choices: [1, 1],
 		contents: function() {
 			this.addScene( "intro", [
-				function() {
+				{ type: "command", content: function() {
 					rubyai_game.choice( [
 						new Option("First Option", [
-							function() { rubyai_game.narrate("Chose First Option") }
+							{ type: "command", content: function() { rubyai_game.narrate("Chose First Option") } }
 						])
 					] );
-				},
-				function() {
+				} },
+				{ type: "command", content: function() {
 					rubyai_game.choice( [
 						new Option("Another First Option", [
-							function() { rubyai_game.narrate("Chose First Option Again") }
+							{ type: "command", content: function() { rubyai_game.narrate("Chose First Option Again") } }
 						])
 					] );
-				}
+				} }
 			] );
 		},
 		output:	"Choose:\n"+
@@ -314,9 +314,9 @@ var gameOver_examples = [
 		starting_scene: "intro",
 		contents: function() {
 			this.addScene( "intro", [
-				function() { rubyai_game.narrate("Before we end."); },
-				function() { rubyai_game.gameOver(); },
-				function() { rubyai_game.narrate("After we end."); },
+				{ type: "command", content: function() { rubyai_game.narrate("Before we end."); }, },
+				{ type: "command", content: function() { rubyai_game.gameOver(); }, },
+				{ type: "command", content: function() { rubyai_game.narrate("After we end."); }, }
 			] );
 		},
 		output:	"Before we end.\nGame Over!\n"
@@ -327,9 +327,9 @@ var gameOver_examples = [
 		starting_scene: "intro",
 		contents: function() {
 			this.addScene( "intro", [
-				function() { rubyai_game.narrate("Before we end."); },
-				function() { rubyai_game.gameOver("success"); },
-				function() { rubyai_game.narrate("After we end."); },
+				{ type: "command", content: function() { rubyai_game.narrate("Before we end."); }, },
+				{ type: "command", content: function() { rubyai_game.gameOver("success"); }, },
+				{ type: "command", content: function() { rubyai_game.narrate("After we end."); }, }
 			] );
 		},
 		output:	"Before we end.\nGame Over: You Win!\n"
@@ -340,9 +340,9 @@ var gameOver_examples = [
 		starting_scene: "intro",
 		contents: function() {
 			this.addScene( "intro", [
-				function() { rubyai_game.narrate("Before we end."); },
-				function() { rubyai_game.gameOver("failure"); },
-				function() { rubyai_game.narrate("After we end."); },
+				{ type: "command", content: function() { rubyai_game.narrate("Before we end."); }, },
+				{ type: "command", content: function() { rubyai_game.gameOver("failure"); }, },
+				{ type: "command", content: function() { rubyai_game.narrate("After we end."); }, }
 			] );
 		},
 		output:	"Before we end.\nGame Over: You Lose!\n"
@@ -356,8 +356,8 @@ test("test command/gameOver (Game Over only ends the game itself)", function() {
 	
 	rubyai_game = new RubyAiGame( function() {
 		this.addScene( "intro", [
-			function() { rubyai_game.narrate("Before game over."); },
-			function() { rubyai_game.gameOver(); }
+			{ type: "command", content: function() { rubyai_game.narrate("Before game over."); }, },
+			{ type: "command", content: function() { rubyai_game.gameOver(); } }
 		] )
 	} );
 	
@@ -376,14 +376,14 @@ test("test command/gameOver (Game Over only ends the game itself after a choice)
 	
 	rubyai_game = new RubyAiGame( function() {
 		this.addScene( "intro", [
-			function() { rubyai_game.narrate("Before game over."); },
-			function() { rubyai_game.choice( [
+			{ type: "command", content: function() { rubyai_game.narrate("Before game over."); } },
+			{ type: "command", content: function() { rubyai_game.choice( [
 				new Option( 
 					"First Option",
-					[function() { rubyai_game.narrate("Chose the first option."); }]
+					[{ type: "command", content: function() { rubyai_game.narrate("Chose the first option."); }}]
 				),
-			] ) },
-			function() { rubyai_game.gameOver(); }
+			] ) } },
+			{ type: "command", content: function() { rubyai_game.gameOver(); } }
 		] )
 	} );
 	
@@ -402,7 +402,7 @@ test("test command/gameOver (Call a neutral Game Over automatically if we run ou
 	
 	rubyai_game = new RubyAiGame( function() {
 		this.addScene( "intro", [
-			function() { rubyai_game.narrate("Example command."); },
+			{ type: "command", content: function() { rubyai_game.narrate("Example command."); }, }
 			// The intentionally-removed command: function() { rubyai_game.gameOver(); }
 		] )
 	} );
