@@ -1,40 +1,33 @@
+<!DOCTYPE html>
 <html>
 <head>
-<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="js/rubyai.js"></script>
-<script type="text/javascript" src="js/script.js"></script>
-<script type="text/javascript">
-	$(document).ready( function() {
-		game = new RubyAiGame( $("#game-output"), rubyai_script );
-		game.start();
-	} );
-</script>
-<style type="text/css">
-	#display {
-		width: 500px;
-		height: 210px;
-	}
-	#character {
-		display: none;
-		float: left;
-	}
-	pre.code, span.code {
-		font-family: courier, arial;
-		background-color: #EEEEEE;
-	}
-	span.code {
-	}
-</style>
+	<title>Ruby'Ai Example</title>
+	<link rel="stylesheet" href="css/rubyai.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="css/tutorial.css" type="text/css" media="screen">
+	<script type="text/javascript" src="js/jquery-1.4.2.min.js">/* */</script>
+	<script type="text/javascript" src="lib/rubyai.js">/* */</script>
+	<script type="text/javascript" src="lib/rubyai-gui.js">/* */</script>
+	<script type="text/javascript" src="js/script.js">/* */</script>
+	<script type="text/javascript">
+		$(document).ready( function() {
+			rubyai_gui = new RubyAiGUI($('#rubyai-gui'));
+			$('#continue').click( function () {
+				rubyai_game.advanceGame();
+				return false;
+			});
+			rubyai_game.start( {
+				scene: "intro",
+				gui: rubyai_gui,
+				predefined_choices: [1,1,2,1]
+			} );
+		} );
+	</script>
 </head>
 <body>
-<h1>Welcome to the Ruby'Ai Tutorial!</h1>
-<div id="display">
-<img id="character" />
-</div>
-<div id="game-output">
-</div>
-<p id="controls">
-<a href="javascript:advance_story();">Continue</a> (or press the space bar)
-</p>
+	<div id="content-wrapper">
+		<h1>Ruby'Ai Tutorial</h1>
+		<div id="controls"><a id="continue" href="#">Continue</a></div>
+		<div id="rubyai-gui"></div>
+	</div>
 </body>
 </html>

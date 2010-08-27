@@ -7,18 +7,26 @@ var RubyAiGUI = function($top_element, settings) {
 	this.$top_element = $top_element;
 	this.$top_element.empty();
 	
+	this.$stage_element = $("<div class=\"stage\"/>");
+	this.$stage_background = $("<img class=\"background\"/>");
+	this.$stage_element.append(this.$stage_background);
+	this.$top_element.append(this.$stage_element);
+	
+	this.$output_element = $("<div class=\"output\"/>");
+	this.$top_element.append(this.$output_element);
+	
 	this.append = function(output) {
-		this.$top_element.append(output);
+		this.$output_element.append(output);
 		
-		var total_elements = this.$top_element.children().length;
+		var total_elements = this.$output_element.children().length;
 		while (total_elements > this.settings.max_rows) {
-			this.$top_element.children(":first").remove();
+			this.$output_element.children(":first").remove();
 			total_elements -= 1;
 		}
 	};
 	
 	this.showAllText = function(all_text) {
-		this.$top_element.text(all_text);
+		this.$output_element.text(all_text);
 	};
 	
 	this.addContent = function(new_content) {
@@ -43,6 +51,7 @@ var RubyAiGUI = function($top_element, settings) {
 	
 	this.showStage = function(alias, title, description) {
 		this.append( "<div class=\"stage-title\">" + title + "</div><div class=\"stage-description\">" + description + "</div>");
+		this.$stage_background.attr('src', description);
 	};
 	
 	this.showCharacter = function(alias, name, image) {
