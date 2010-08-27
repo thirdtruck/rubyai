@@ -70,21 +70,46 @@ var RubyAiGUI = function($top_element, settings) {
 		this.append( "<div class=\"game-over " + final_status + "\">"+statement+"</div>");
 	};
 	
-	this.choice = function(options) {
-		var results = "<div class=\"choice\">Choose:";
+	this.choice = function(optionProcessorCallback, options) {
+		var $results = $("<div class=\"choice\">Choose:</div>");
 
 		for(var option_index = 0; option_index < options.length; option_index++) {
 			var option = options[option_index];
 			var printed_index = (option_index + 1)+"";
-			results += "<div class=\"option\">";
-			results += "<span class=\"index\">("+(printed_index)+")</span> ";
-			results += option.name;
-			results += "</div>";
+			
+			var $link_element = $(
+				"<a href=\"#\"><span class=\"index\">(" +
+				printed_index +
+				")</span> " + 
+				option.name +
+				"</a>"
+			);
+
+			var $option_element = $("<div class=\"option\" />");
+			
+			var $chosen_option_element = $("<div class=\"chosen-option\">" +
+				"<span class=\"index\">(" +
+				printed_index +
+				")</span> " + 
+				option.name +
+				"</div>"
+			);
+
+			var optionClickCallback = (function () {
+				var target_option = option;
+				var $replacement_content = $chosen_option_element;
+				return function () {
+					$results.replaceWith($replacement_content);
+					optionProcessorCallback.call(undefined, target_option);  // TODO: Figure out what happens to the first argument such that we have to put the one intended argument in the second slot
+				}
+			})();
+			$link_element.click(optionClickCallback);
+			
+			$option_element.append($link_element);
+			$results.append($option_element);
 		}
 		
-		results += "</div>";
-		
-		this.append( results );
+		this.append( $results );
 	};
 	
 	this.outputAsArray = function() {

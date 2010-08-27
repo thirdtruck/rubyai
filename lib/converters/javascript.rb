@@ -15,8 +15,8 @@ end
 # Javascript-escaping implemention borrowed from Ruby on Rails's JavaScriptHelper
 JS_ESCAPE_MAP = { '\\' => '\\\\', '</' => '<\/', "\r\n" => '\n', "\n" => '\n', "\r" =>  '\n', '"' => '\\"', "'" => "\\'" }
 
-def start_command_wrapper
-	%^{ type : "command", content : function (){ ^
+def start_command_wrapper(type="command")
+	%^{ type : "#{type}", content : function (){ ^
 end
 
 def end_command_wrapper
@@ -123,7 +123,7 @@ module RubyAi
 		end
 		
 		def within_hide(element)
-			@output.puts command_wrapper %^hide(#{escape_js element.name});^
+			@output.puts command_wrapper %^rubyai_game.hide(#{escape_js element.name});^
 		end
 		
 		def within_sound(sound_element)
@@ -166,7 +166,7 @@ module RubyAi
 		end
 		
 		def within_choice(choice_obj)
-			@output.puts start_command_wrapper + %^rubyai_game.choice( [^
+			@output.puts start_command_wrapper("choice") + %^rubyai_game.choice( [^
 			
 			choice_obj.options.each do |option_obj|
 				@output.indent_more
