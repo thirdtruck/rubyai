@@ -40,9 +40,9 @@ var test_data  = {
 			text_output: "*Bang*\nGame Over!\n",
 			gui_output: ["<div class=\"sound\">Bang</div>", export_data.gui.game_over.neutral]
 		},
-		showStage: { contents: [{ type: "command", content: function() { rubyai_game.showStage("outdoors", "Outdoors", "The outdoors, where they keep all of the trees.") } }],
+		showStage: { contents: [{ type: "command", content: function() { rubyai_game.showStage("outdoors", "Outdoors", "images/stages/outdoors_default.png", "The outdoors, where they keep all of the trees.") } }],
 			text_output: "Show stage Outdoors [outdoors]: The outdoors, where they keep all of the trees.\nGame Over!\n",
-			gui_output: ["<div class=\"stage-title\">Outdoors</div><div class=\"stage-description\">The outdoors, where they keep all of the trees.</div>", export_data.gui.game_over.neutral]
+			gui_output: ["<div class=\"stage-summary\"><div class=\"stage-title\">Outdoors</div><div class=\"stage-description\">The outdoors, where they keep all of the trees.</div></div>", export_data.gui.game_over.neutral]
 		},
 		showCharacter: { contents: [{ type: "command", content: function() { rubyai_game.showCharacter("lucy", "Lucy", "lucy_default.png") } }],
 			text_output: "Show character Lucy [lucy]: lucy_default.png\nGame Over!\n",
@@ -559,6 +559,48 @@ var test_data  = {
 			text_output: "CODE>>>\nset_var ice_cream_flavor => \"Mint Chip Cookie Dough\"\n<<<CODE\nGame Over!\n",
 			gui_output: [
 				"<pre class=\"code-block\">set_var ice_cream_flavor =&gt; \"Mint Chip Cookie Dough\"</pre>",
+				export_data.gui.game_over.neutral
+			]
+		},
+	},
+	stage_states : {
+		initial_stage : {
+			name: "Set the initial state of the stage",
+			description: "Start off by building the stage and adding a background image",
+			starting_scene: "intro",
+			contents: function() {
+				this.addScene( "intro", [
+					{
+						type : "command",
+						content : function () {
+							rubyai_game.showStage("park", "Public Park", "images/stages/park_default.png", "A heavily-forested park near downtown.");
+						}
+					},
+					{
+						type : "command",
+						content : function () {
+							rubyai_game.narrate("Show the background.");
+						}
+					},
+				] );
+			},
+			stage_states: [
+				{
+					selector : ".background",
+					attributes : {
+						"class" : "background",
+						"src" : "images/stages/park_default.png",
+						"alt" : "Public Park: A heavily-forested park near downtown."
+					}
+				}
+			],
+			gui_output: [
+				("<div class=\"stage-summary\">" +
+					"<div class=\"stage-title\">Public Park</div>" +
+					"<div class=\"stage-description\">A heavily-forested park near downtown.</div>" +
+					"</div>"
+				),
+				"<div class=\"narration\">Show the background.</div>",
 				export_data.gui.game_over.neutral
 			]
 		},

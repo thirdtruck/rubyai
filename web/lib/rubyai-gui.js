@@ -49,9 +49,10 @@ var RubyAiGUI = function($top_element, settings) {
 		this.append( "<div class=\"sound\">" + sound_description + "</div>");
 	};
 	
-	this.showStage = function(alias, title, description) {
-		this.append( "<div class=\"stage-title\">" + title + "</div><div class=\"stage-description\">" + description + "</div>");
-		this.$stage_background.attr('src', description);
+	this.showStage = function(alias, title, image_url, description) {
+		this.append( "<div class=\"stage-summary\"><div class=\"stage-title\">" + title + "</div><div class=\"stage-description\">" + description + "</div></div>");
+		this.$stage_background.attr('alt', (title + ": " + description));
+		this.$stage_background.attr('src', image_url);
 	};
 	
 	this.showCharacter = function(alias, name, image) {

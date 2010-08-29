@@ -61,9 +61,9 @@ var RubyAiGame = function(contents) {
 		}
 	};
 	
-	this.showStage = function(alias, title, description) {
+	this.showStage = function(alias, title, image_url, description) {
 		if(this.gui !== undefined) {
-			this.gui.showStage(alias, title, description);
+			this.gui.showStage(alias, title, image_url, description);
 		} else {
 			this.output += "Show stage " + title + " [" + alias + "]: " + description + "\n";
 		}

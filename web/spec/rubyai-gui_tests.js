@@ -25,7 +25,19 @@ $(document).ready( function () {
 		rubyai_gui = null;
 	};
 	
-	function testScript( example_data, label, scene_name, contents, expected_output, gui_settings ) {
+	function testGUIElementAttributes(label, $element, attributes) {
+		for(var key in attributes) { // TODO: Replace this with a proper iterator
+			var value= attributes[key];
+			
+			same(
+				$element.attr(key),
+				attributes[key],
+				"Attribute \"" + key + "\" matches on the \"" + label + "\" element"
+			);
+		}
+	}
+	
+	function testScript( example_data, label, scene_name, contents, expected_gui_output, gui_settings, expected_stage_states ) {
 		test(label, function() {
 			example_data = example_data || {};
 			
@@ -40,31 +52,71 @@ $(document).ready( function () {
 				rubyai_game.runAll();
 			}
 			
-			if (typeof expected_output === "string") {
+			if (typeof expected_gui_output === "string") {
 				same(	
-					expected_output,
-					tracked_elements.$top.html(),
+					expected_gui_output,
+					tracked_elements.$top.find(".output").html(),
 					"Received the expected GUI output"
 				);
-			} else {
-				var $total_gui_output = tracked_elements.$top.children();
+			} else if (expected_gui_output !== undefined) {
+				// TODO: Update the tests to account for the stage layout and make this stage-excluding limitation on the output check more explicit
+				// Consider renaming this function to testScriptFinalOutput() and then adding one that checks the game-state on a per-step basis,
+				// i.e. confirming a specific (sometimes changing) background on each advancement
+				var $total_gui_output = tracked_elements.$top.find(".output").children();
 				
 				same(
-					expected_output.length,
+					expected_gui_output.length,
 					$total_gui_output.length,
 					"The total output of the GUI element has the same element count as the expected output"
 				);
 				
-				for(var output_index = 0; output_index < expected_output.length; output_index += 1) {
+				for(var output_index = 0; output_index < expected_gui_output.length; output_index += 1) {
 					// TODO: Find a more efficient way of comparing total HTML output
 					var $gui_output = $('<div/>').append( $total_gui_output.eq(output_index).clone() ).html();
 					
 					same(	
 						$gui_output,
-						expected_output[output_index],
+						expected_gui_output[output_index],
 						"Received the expected GUI output for line "+output_index
 					);
 				}
+				
+			}
+			
+			// Stage states check
+			if (typeof expected_stage_stages === "string") {
+				same(	
+					expected_stage_states,
+					tracked_elements.$top.find(".stage").html(),
+					"Stage was in the expected state"
+				);
+			} else if (expected_stage_states !== undefined) {
+				var $total_stage_state = tracked_elements.$top.find(".stage").children();
+				
+				same(
+					expected_stage_states.length,
+					$total_stage_state.length,
+					"The total output of the stage element has the same element count as the expected output"
+				);
+				
+				for(var i = 0; i < expected_stage_states.length; i += 1) {
+					var selector = expected_stage_states[i].selector;
+					var $checked_element = tracked_elements.$top.find(selector);
+					testGUIElementAttributes(selector, $checked_element, expected_stage_states[i].attributes);
+				}
+				
+				/*
+				for(var output_index = 0; output_index < expected_stage_states.length; output_index += 1) {
+					// TODO: Find a more efficient way of comparing total HTML output
+					var $stage_state = $('<div/>').append( $total_stage_state.eq(output_index).clone() ).html();
+					
+					same(	
+						$stage_state,
+						expected_stage_states[output_index],
+						"Received the expected stage state for line "+output_index
+					);
+				}
+				*/
 			}
 		} );
 	};
@@ -83,7 +135,8 @@ $(document).ready( function () {
 					"intro",
 					example.contents,
 					example.gui_output,
-					example.gui_settings
+					example.gui_settings,
+					example.stage_states
 				);
 			})(set_name);
 		};
@@ -156,4 +209,11 @@ $(document).ready( function () {
 	} );
 	
 	testScenes(test_data.variables);
+	
+	module("GUI - Stage States", {
+		setup: basicSetup,
+		teardown: basicTeardown
+	} );
+	
+	testScenes(test_data.stage_states);
 });

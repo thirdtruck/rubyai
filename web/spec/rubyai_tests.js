@@ -42,7 +42,7 @@ var command_examples = {
 	sound: { contents: [{ type: "command", content: function() { rubyai_game.sound("bang", "Bang") }}],
 		output: "*Bang*\nGame Over!\n"
 	},
-	showStage: { contents: [{ type: "command", content: function() { rubyai_game.showStage("outdoors", "Outdoors", "The outdoors, where they keep all of the trees.") }}],
+	showStage: { contents: [{ type: "command", content: function() { rubyai_game.showStage("outdoors", "Outdoors", "images/stages/outdoors_default.png", "The outdoors, where they keep all of the trees.") }}],
 		output: "Show stage Outdoors [outdoors]: The outdoors, where they keep all of the trees.\nGame Over!\n"
 	},
 	showCharacter: { contents: [{ type: "command", content: function() { rubyai_game.showCharacter("lucy", "Lucy", "lucy_default.png") }}],
