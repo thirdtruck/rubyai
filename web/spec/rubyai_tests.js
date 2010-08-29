@@ -226,7 +226,7 @@ var choice_examples = [
 			] );
 		},
 		output:	"Choose:\n"+
-			"(1) First Choice\nGame Over!\n"
+			"(1) First Choice\n"
 	},
 	{
 		name: "Choose first",
@@ -246,7 +246,8 @@ var choice_examples = [
 		},
 		output:	"Choose:\n"+
 			"(1) First Option\n"+
-			"Chose First Option\nGame Over!\n"
+			"Chose First Option\n"+
+			"Game Over!\n"
 	},
 	{
 		name: "Choose second",
@@ -270,7 +271,8 @@ var choice_examples = [
 		output:	"Choose:\n"+
 			"(1) First Option\n"+
 			"(2) Second Option\n"+
-			"Chose Second Option\nGame Over!\n"
+			"Chose Second Option\n"+
+			"Game Over!\n"
 	},
 	{
 		name: "Choose twice",
@@ -300,7 +302,8 @@ var choice_examples = [
 			"Chose First Option\n"+
 			"Choose:\n"+
 			"(1) Another First Option\n"+
-			"Chose First Option Again\nGame Over!\n"
+			"Chose First Option Again\n"+
+			"Game Over!\n"
 			
 	},
 ];

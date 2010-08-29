@@ -9,6 +9,10 @@ var export_data = {
 	
 };
 
+var getOptionLink = function(link_index) {
+	return $('#rubyai-game').find(".option:eq(" + (link_index) + ") a");
+};
+
 var test_data  = {
 	example_scenes : {
 		empty: [],
@@ -64,16 +68,45 @@ var test_data  = {
 			text_output: "Game Over: You Lose!\n",
 			gui_output: [export_data.gui.game_over.failure]
 		},
-		single_option: { contents: [{ type: "command", content: function() {
+		single_option: { contents: [{ type: "choice", content: function() {
 				rubyai_game.choice( [
 					new Option("First Option", { type: "command", content: function() {
 						rubyai_game.narrate("Chose the first option.");
 					}})
 				] );
 			}}],
-			text_output: "Choose:\n(1) First Option\nChose the first option.\nGame Over!\n",
-			gui_output: ["<div class=\"choice\">Choose:<div class=\"option\"><span class=\"index\">(1)</span> First Option</div></div>", export_data.gui.game_over.neutral]
-		}
+			text_output: "Choose:\n(1) First Option\n",
+			gui_output: [
+				"<div class=\"choice\">Choose:<div class=\"option\"><a href=\"#\"><span class=\"index\">(1)</span> First Option</a></div></div>"
+				// Note the *lack* of a "Game Over" result
+			]
+		},
+		two_options: { contents: [{ type: "choice", content: function() {
+				rubyai_game.choice( [
+					new Option("First Option", {
+						type: "command",
+						content: function() {
+							rubyai_game.narrate("Chose the first option.");
+						}
+					}),
+					new Option("Second Option", {
+						type: "command",
+						content: function() {
+							rubyai_game.narrate("Chose the second option.");
+						}
+					}),
+				] );
+			}}],
+			text_output: "Choose:\n(1) First Option\n(1) Second Option\n",
+			gui_output: [
+				"<div class=\"choice\">Choose:" +
+					"<div class=\"option\"><a href=\"#\"><span class=\"index\">(1)</span> First Option</a></div>" +
+					"<div class=\"option\"><a href=\"#\"><span class=\"index\">(2)</span> Second Option</a></div>" +
+					"</div>"
+				// Note the *lack* of a "Game Over" result
+			]
+		},
+			//text_output: "Choose:\n(1) First Option\nChose the first option.\n",
 	},
 	runScene_examples : {
 		simple : {
@@ -259,6 +292,72 @@ var test_data  = {
 			gui_output: [
 				"<div class=\"narration\">First line</div>",
 				"<div class=\"narration\">Second line</div>",
+				export_data.gui.game_over.neutral
+			]
+		},
+		choice_choose_first : {
+			name: "Choose the first option",
+			description: "Choose the first option out of a choice via the GUI callback.",
+			starting_scene: "intro",
+			contents: function() {
+				this.addScene( "intro", [
+					{ type: "choice", content: function() {
+						rubyai_game.choice( [
+							new Option("First Option", [
+								{ type: "command", content: function() { rubyai_game.narrate("Chose the first option."); } }
+							]),
+							new Option("Second Option", [
+								{ type: "command", content: function() { rubyai_game.narrate("Chose the second option."); } }
+							]),
+							new Option("Third Option", [
+								{ type: "command", content: function() { rubyai_game.narrate("Chose the third option."); } }
+							])
+						] );
+					} }
+				] );
+			},
+			manual_input : function() {
+				rubyai_game.advanceGame();
+				var $option_link = getOptionLink(0);
+				$option_link.click();
+			},
+			text_output: "Choose:\n(1) First Option\n(1) Second Option\nChose: (1) First Option\nChose the first option\nGame Over!",
+			gui_output: [
+				"<div class=\"chosen-option\"><span class=\"index\">(1)</span> First Option</div>",
+				"<div class=\"narration\">Chose the first option.</div>",
+				export_data.gui.game_over.neutral
+			]
+		},
+		choice_choose_second : {
+			name: "Choose the second option",
+			description: "Choose the seoncd option out of a choice via the GUI callback.",
+			starting_scene: "intro",
+			contents: function() {
+				this.addScene( "intro", [
+					{ type: "choice", content: function() {
+						rubyai_game.choice( [
+							new Option("First Option", [
+								{ type: "command", content: function() { rubyai_game.narrate("Chose the first option."); } }
+							]),
+							new Option("Second Option", [
+								{ type: "command", content: function() { rubyai_game.narrate("Chose the second option."); } }
+							]),
+							new Option("Third Option", [
+								{ type: "command", content: function() { rubyai_game.narrate("Chose the third option."); } }
+							])
+						] );
+					} }
+				] );
+			},
+			manual_input : function() {
+				rubyai_game.advanceGame();
+				var $option_link = getOptionLink(1);
+				$option_link.click();
+			},
+			text_output: "Choose:\n(1) First Option\n(1) Second Option\nChose: (1) Second Option\nChose the second option\nGame Over!",
+			gui_output: [
+				"<div class=\"chosen-option\"><span class=\"index\">(2)</span> Second Option</div>",
+				"<div class=\"narration\">Chose the second option.</div>",
 				export_data.gui.game_over.neutral
 			]
 		}

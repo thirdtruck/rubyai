@@ -7,6 +7,7 @@ var RubyAiGame = function(contents) {
 	this.output = "";
 	this.current_crawler = null;
 	this.running = false;
+	this.pending_choice = false;
 	
 	this.start = function(new_args) {
 		new_args = new_args || {};
@@ -103,21 +104,34 @@ var RubyAiGame = function(contents) {
 	};
 	
 	this.choice = function( options ) {
-		if(this.gui !== undefined) {
-			this.gui.choice(options);
+		var game = this;
+		game.pending_choice = true;
+		
+		if(game.gui !== undefined) {
+			game.gui.choice(
+				function (option) {
+					game.pending_choice = false;
+					game.current_crawler.crawlScene(option.contents);
+					game.advanceGame();
+					// TODO: remove the need for this second advance
+					game.advanceGame();
+				},
+				options
+			);
 		} else {
-			this.output += "Choose:\n";
+			game.output += "Choose:\n";
 			
 			for(var option_index = 0; option_index < options.length; option_index++) {
 				var option = options[option_index];
 				var printed_index = option_index + 1;
-				this.output += "("+(printed_index)+") "+option.name+"\n";
+				game.output += "("+(printed_index)+") "+option.name+"\n";
 			}
 		}
-		var predefined_choice = this.predefined_choices.shift();
+		var predefined_choice = game.predefined_choices.shift();
 		if(predefined_choice !== undefined) {
 			predefined_choice -= 1;  // Account for the base-1 index of the display choices vs base-0 arrays
-			this.current_crawler.crawlScene(options[predefined_choice].contents);
+			game.pending_choice = false;
+			game.current_crawler.crawlScene(options[predefined_choice].contents);
 		}
 	}
 			
@@ -148,8 +162,12 @@ var RubyAiGame = function(contents) {
 	}
 	
 	this.advanceGame = function() {
+		if( this.pending_choice ) {
+			return;
+		}
+		
 		this.current_crawler.advanceScene();
-		if( (this.current_crawler.scriptFinished()) && (this.running) ) {
+		if( (this.current_crawler.scriptFinished()) && (this.running) && ( ! this.pending_choice ) ) {
 			// Finish with a "Game Over" automatically if we run out of script
 			this.gameOver();
 		}
@@ -158,6 +176,10 @@ var RubyAiGame = function(contents) {
 	this.runAll = function() {
 		this.advanceGame();
 		while( ! this.current_crawler.scriptFinished() ) {
+			if( this.pending_choice && this.predefined_choices.length === 0 ) {
+				return;
+			}
+			
 			this.advanceGame();
 		};
 		this.advanceGame();
@@ -248,8 +270,13 @@ var SceneCrawler = function(steps) {
 		
 		var next_step = this.steps[this.step_index];
 		if(next_step.content === undefined) {
-			console.log("Next Step: ", next_step);
+			//console.log("Next Step: ", next_step);
 		}
+		
+		if(next_step.type === "choice") {
+			this.pending_choice = true;
+		}
+		
 		next_step.content.call();
 		
 		var peek_ahead_step = this.steps[this.step_index+1];
