@@ -1,4 +1,5 @@
 add_scene :intro do
+	show computer_desk
 	narrate "Available example scenes:"
 	choice do
 		option "Basic Commands" do
