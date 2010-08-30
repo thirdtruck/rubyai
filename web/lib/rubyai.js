@@ -69,9 +69,9 @@ var RubyAiGame = function(contents) {
 		}
 	};
 	
-	this.showCharacter = function(alias, name, image) {
+	this.showCharacter = function(alias, name, image, description) {
 		if(this.gui !== undefined) {
-			this.gui.showCharacter(alias, name, image);
+			this.gui.showCharacter(alias, name, image, description);
 		} else {
 			this.output += "Show character " + name + " [" + alias + "]: " + image + "\n";
 		}

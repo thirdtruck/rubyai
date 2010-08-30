@@ -54,6 +54,15 @@ h1 {
 }
 
 #rubyai-gui .stage {
+	position: relative;
+	height: 210px;
+	margin-bottom: 5px;
+}
+
+#rubyai-gui .stage .character {
+	position: absolute;
+	bottom: 0;
+	left: 0;
 }
 
 #rubyai-gui .output {
@@ -65,6 +74,6 @@ h1 {
 	margin-bottom: 1em;
 }
 
-#rubyai-gui .output .stage-summary {
+#rubyai-gui .output .stage-summary, #rubyai-gui .output .character-summary {
 	display: none;
 }

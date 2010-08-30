@@ -42,11 +42,11 @@ var test_data  = {
 		},
 		showStage: { contents: [{ type: "command", content: function() { rubyai_game.showStage("outdoors", "Outdoors", "images/stages/outdoors_default.png", "The outdoors, where they keep all of the trees.") } }],
 			text_output: "Show stage Outdoors [outdoors]: The outdoors, where they keep all of the trees.\nGame Over!\n",
-			gui_output: ["<div class=\"stage-summary\"><div class=\"stage-title\">Outdoors</div><div class=\"stage-description\">The outdoors, where they keep all of the trees.</div></div>", export_data.gui.game_over.neutral]
+			gui_output: ["<div class=\"stage-summary\"><div class=\"title\">Outdoors</div><div class=\"description\">The outdoors, where they keep all of the trees.</div></div>", export_data.gui.game_over.neutral]
 		},
-		showCharacter: { contents: [{ type: "command", content: function() { rubyai_game.showCharacter("lucy", "Lucy", "lucy_default.png") } }],
+		showCharacter: { contents: [{ type: "command", content: function() { rubyai_game.showCharacter("lucy", "Lucy", "lucy_default.png", "Our protagonist") } }],
 			text_output: "Show character Lucy [lucy]: lucy_default.png\nGame Over!\n",
-			gui_output: ["<div class=\"character-name\">Lucy</div><div class=\"character-image\">lucy_default.png</div>", export_data.gui.game_over.neutral]
+			gui_output: ["<div class=\"character-summary\"><div class=\"name\">Lucy</div><div class=\"description\">Our protagonist</div></div>", export_data.gui.game_over.neutral]
 		},
 		hide: { contents: [{ type: "command", content: function() { rubyai_game.hide("lucy", "Lucy") } }],
 			text_output: "[Hide Lucy]\nGame Over!\n",
@@ -592,15 +592,73 @@ var test_data  = {
 						"src" : "images/stages/park_default.png",
 						"alt" : "Public Park: A heavily-forested park near downtown."
 					}
+				},
+				{
+					selector : ".character",
+					attributes : {
+						"class" : "character",
+						"src" : undefined,
+						"alt" : ""
+					}
 				}
 			],
 			gui_output: [
 				("<div class=\"stage-summary\">" +
-					"<div class=\"stage-title\">Public Park</div>" +
-					"<div class=\"stage-description\">A heavily-forested park near downtown.</div>" +
+					"<div class=\"title\">Public Park</div>" +
+					"<div class=\"description\">A heavily-forested park near downtown.</div>" +
 					"</div>"
 				),
 				"<div class=\"narration\">Show the background.</div>",
+				export_data.gui.game_over.neutral
+			]
+		},
+	},
+	show_characters : {
+		show_one : {
+			name: "Show a character on the stage",
+			description: "Add the first \"character\" image to the stage and set its image",
+			starting_scene: "intro",
+			contents: function() {
+				this.addScene( "intro", [
+					{
+						type : "command",
+						content : function () {
+							rubyai_game.showCharacter("marcus", "Prince Marcus", "images/characters/marcus_default.png", "The royal heir");
+						}
+					},
+					{
+						type : "command",
+						content : function () {
+							rubyai_game.narrate("Show the character.");
+						}
+					},
+				] );
+			},
+			stage_states: [
+				{
+					selector : ".character",
+					attributes : {
+						"class" : "character",
+						"src" : "images/characters/marcus_default.png",
+						"alt" : "Prince Marcus: The royal heir"
+					}
+				},
+				{
+					selector : ".background",
+					attributes : {
+						"class" : "background",
+						"src" : undefined,
+						"alt" : ""
+					}
+				}
+			],
+			gui_output: [
+				("<div class=\"character-summary\">" +
+					"<div class=\"name\">Prince Marcus</div>" +
+					"<div class=\"description\">The royal heir</div>" +
+					"</div>"
+				),
+				"<div class=\"narration\">Show the character.</div>",
 				export_data.gui.game_over.neutral
 			]
 		},

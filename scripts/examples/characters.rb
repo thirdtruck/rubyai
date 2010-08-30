@@ -8,7 +8,7 @@ add :fairy, "Ruby'Ai Fairy" do
 	# pseudonym :hidden_fairy, "????"
 end
 
-add :marcus, "Prince Marcus"
+add :marcus, "Prince Marcus", "The royal heir"
 
 add :jen, "Jennifer"
 

@@ -195,8 +195,8 @@ module RubyAi
 		end
 		
 		def for_characters
-			def add(character_alias, character_name)
-				@characters[character_alias] = Character.new(character_alias, character_name)
+			def add(character_alias, character_name, description="")
+				@characters[character_alias] = Character.new(character_alias, character_name, description)
 				
 				self.class.class_eval do
 					eval "def #{character_alias.to_s}(*commands); dynamic_character(:#{character_alias.to_s}, *commands); end"

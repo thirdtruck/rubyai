@@ -9,7 +9,9 @@ var RubyAiGUI = function($top_element, settings) {
 	
 	this.$stage_element = $("<div class=\"stage\"/>");
 	this.$stage_background = $("<img class=\"background\"/>");
+	this.$character = $("<img class=\"character\"/>");
 	this.$stage_element.append(this.$stage_background);
+	this.$stage_element.append(this.$character);
 	this.$top_element.append(this.$stage_element);
 	
 	this.$output_element = $("<div class=\"output\"/>");
@@ -50,13 +52,15 @@ var RubyAiGUI = function($top_element, settings) {
 	};
 	
 	this.showStage = function(alias, title, image_url, description) {
-		this.append( "<div class=\"stage-summary\"><div class=\"stage-title\">" + title + "</div><div class=\"stage-description\">" + description + "</div></div>");
+		this.append( "<div class=\"stage-summary\"><div class=\"title\">" + title + "</div><div class=\"description\">" + description + "</div></div>");
 		this.$stage_background.attr('alt', (title + ": " + description));
 		this.$stage_background.attr('src', image_url);
 	};
 	
-	this.showCharacter = function(alias, name, image) {
-		this.append( "<div class=\"character-name\">" + name + "</div><div class=\"character-image\">" + image + "</div>");
+	this.showCharacter = function(alias, name, image_url, description) {
+		this.append( "<div class=\"character-summary\"><div class=\"name\">" + name + "</div><div class=\"description\">" + description + "</div></div>");
+		this.$character.attr('alt', (name + ": " + description));
+		this.$character.attr('src', image_url);
 	};
 	
 	this.hide = function(alias, name) {

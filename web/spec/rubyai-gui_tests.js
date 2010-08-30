@@ -216,4 +216,11 @@ $(document).ready( function () {
 	} );
 	
 	testScenes(test_data.stage_states);
+	
+	module("GUI - Show Characters on the Stage", {
+		setup: basicSetup,
+		teardown: basicTeardown
+	} );
+	
+	testScenes(test_data.show_characters);
 });
