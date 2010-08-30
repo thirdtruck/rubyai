@@ -1,3 +1,10 @@
+Add tests for only adding character summaries to the output when they differ from before.
+Also refactor the character summaries into "character display" output or the like.
+
+Refactor the test data for reuse.
+
+Update speak() and action() in the JS to include character descriptions or refactor to use character objects that reference them.
+
 Refactor for a consistent usage of "content" versus "contents".
 
 Make the picture change a separate command (not part of, e.g., speak()) inlined by the exporter).

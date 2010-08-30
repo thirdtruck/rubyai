@@ -30,11 +30,19 @@ var test_data  = {
 		},
 		speak: { contents: [{ type: "command", content: function() { rubyai_game.speak("Lucy", "I have something to say.") } }],
 			text_output: "Lucy: I have something to say.\nGame Over!\n",
-			gui_output: ["<div class=\"speech\"><span class=\"character\">Lucy:</span><span class=\"statement\">I have something to say.</span></div>", export_data.gui.game_over.neutral]
+			gui_output: [
+				"<div class=\"character-summary\"><div class=\"name\">Lucy</div><div class=\"description\"></div></div>",
+				"<div class=\"speech\"><span class=\"character\">Lucy:</span><span class=\"statement\">I have something to say.</span></div>",
+				export_data.gui.game_over.neutral
+			]
 		},
 		action: { contents: [{ type: "command", content: function() { rubyai_game.action("Lucy", "does something.") } }],
 			text_output: "Lucy does something.\nGame Over!\n",
-			gui_output: ["<div class=\"action\"><span class=\"character\">Lucy</span> <span class=\"behavior\">does something.</span></div>", export_data.gui.game_over.neutral]
+			gui_output: [
+				"<div class=\"character-summary\"><div class=\"name\">Lucy</div><div class=\"description\"></div></div>",
+				"<div class=\"action\"><span class=\"character\">Lucy</span> <span class=\"behavior\">does something.</span></div>",
+				export_data.gui.game_over.neutral
+			]
 		},
 		sound: { contents: [{ type: "command", content: function() { rubyai_game.sound("bang", "Bang") } }],
 			text_output: "*Bang*\nGame Over!\n",
@@ -516,6 +524,11 @@ var test_data  = {
 			},
 			text_output: "Lucy: I could eat Mint Chip Cookie Dough ice cream forever.\nGame Over!\n",
 			gui_output: [
+				("<div class=\"character-summary\">" +
+					"<div class=\"name\">Lucy</div>" +
+					"<div class=\"description\"></div>" +
+					"</div>"
+				),
 				"<div class=\"speech\"><span class=\"character\">Lucy:</span><span class=\"statement\">I could eat Mint Chip Cookie Dough ice cream forever.</span></div>",
 				export_data.gui.game_over.neutral
 			]
@@ -537,6 +550,11 @@ var test_data  = {
 			},
 			text_output: "Lucy tried to eat Mint Chip Cookie Dough ice cream forever.\nGame Over!\n",
 			gui_output: [
+				("<div class=\"character-summary\">" +
+					"<div class=\"name\">Lucy</div>" +
+					"<div class=\"description\"></div>" +
+					"</div>"
+				),
 				"<div class=\"action\"><span class=\"character\">Lucy</span> <span class=\"behavior\">tried to eat Mint Chip Cookie Dough ice cream forever.</span></div>",
 				export_data.gui.game_over.neutral
 			]
@@ -659,6 +677,105 @@ var test_data  = {
 					"</div>"
 				),
 				"<div class=\"narration\">Show the character.</div>",
+				export_data.gui.game_over.neutral
+			]
+		},
+		show_one_speaking : {
+			name: "Show a character on the stage when they speak",
+			description: "Automatically show a character on the stage when they speak",
+			starting_scene: "intro",
+			contents: function() {
+				this.addScene( "intro", [
+					{
+						type : "command",
+						content : function () {
+							rubyai_game.speak("Prince Marcus", "Good morning!", "images/characters/marcus_default.png");
+						}
+					},
+				] );
+			},
+			stage_states: [
+				{
+					selector : ".character",
+					attributes : {
+						"class" : "character",
+						"src" : "images/characters/marcus_default.png",
+						"alt" : "Prince Marcus: "
+					}
+				},
+				{
+					selector : ".background",
+					attributes : {
+						"class" : "background",
+						"src" : undefined,
+						"alt" : ""
+					}
+				}
+			],
+			gui_output: [
+				("<div class=\"character-summary\">" +
+					"<div class=\"name\">Prince Marcus</div>" +
+					"<div class=\"description\"></div>" +
+					"</div>"
+				),
+				"<div class=\"speech\"><span class=\"character\">Prince Marcus:</span><span class=\"statement\">Good morning!</span></div>",
+				export_data.gui.game_over.neutral
+			]
+		},
+		show_two_speaking : {
+			name: "Show each character on the stage when they speak",
+			description: "Automatically show each on the stage when they speak, replacing any character already there",
+			starting_scene: "intro",
+			gui_settings: {
+				max_rows : 5
+			},
+			contents: function() {
+				this.addScene( "intro", [
+					{
+						type : "command",
+						content : function () {
+							rubyai_game.speak("Prince Marcus", "Good morning!", "images/characters/marcus_default.png");
+						}
+					},
+					{
+						type : "command",
+						content : function () {
+							rubyai_game.speak("Lucy", "Good morning to you, too!", "images/characters/lucy_default.png");
+						}
+					},
+				] );
+			},
+			stage_states: [
+				{
+					selector : ".character",
+					attributes : {
+						"class" : "character",
+						"src" : "images/characters/lucy_default.png",
+						"alt" : "Lucy: "
+					}
+				},
+				{
+					selector : ".background",
+					attributes : {
+						"class" : "background",
+						"src" : undefined,
+						"alt" : ""
+					}
+				}
+			],
+			gui_output: [
+				("<div class=\"character-summary\">" +
+					"<div class=\"name\">Prince Marcus</div>" +
+					"<div class=\"description\"></div>" +
+					"</div>"
+				),
+				"<div class=\"speech\"><span class=\"character\">Prince Marcus:</span><span class=\"statement\">Good morning!</span></div>",
+				("<div class=\"character-summary\">" +
+					"<div class=\"name\">Lucy</div>" +
+					"<div class=\"description\"></div>" +
+					"</div>"
+				),
+				"<div class=\"speech\"><span class=\"character\">Lucy:</span><span class=\"statement\">Good morning to you, too!</span></div>",
 				export_data.gui.game_over.neutral
 			]
 		},

@@ -35,19 +35,19 @@ var RubyAiGame = function(contents) {
 		}
 	};
 	
-	this.speak = function( character, statement ) {
+	this.speak = function( character, statement, image_url ) {
 		statement = this.interpolatedSubstitution(statement);
 		if(this.gui !== undefined) {
-			this.gui.speak(character, statement);
+			this.gui.speak(character, statement, image_url);
 		} else {
 			this.output += character + ": " + statement + "\n";
 		}
 	};
 	
-	this.action = function( character, behavior ) {
+	this.action = function( character, behavior, image_url ) {
 		behavior = this.interpolatedSubstitution(behavior);
 		if(this.gui !== undefined) {
-			this.gui.action(character, behavior);
+			this.gui.action(character, behavior, image_url);
 		} else {
 			this.output += character + " " + behavior + "\n";
 		}

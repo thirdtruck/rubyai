@@ -39,11 +39,13 @@ var RubyAiGUI = function($top_element, settings) {
 		this.append("<div class=\"narration\">"+statement+"</div>");
 	};
 	
-	this.speak = function(character, statement) {
+	this.speak = function(character, statement, image_url) {
+		this.showCharacter('', character, image_url, '');
 		this.append( "<div class=\"speech\"><span class=\"character\">" + character + ":</span><span class=\"statement\">" + statement + "</span></div>");
 	};
 	
-	this.action = function(character, behavior) {
+	this.action = function(character, behavior, image_url) {
+		this.showCharacter('', character, image_url, '');
 		this.append( "<div class=\"action\"><span class=\"character\">" + character + "</span> <span class=\"behavior\">" + behavior + "</span></div>");
 	};
 	
