@@ -146,6 +146,30 @@ module RubyAi
 			end
 			@output.puts "CODE>>>\n#{trimmed_string}\n<<<CODE"
 		end
+		
+		def within_compare_var(variable_alias, &block)
+			# TODO: Move these instance variables into a single object, or set up a special module to handle all these states
+			@compare_to = variable_alias
+			@default = nil
+			@ran_any = false
+			instance_eval &block
+			unless @ran_any
+				puts @default
+				instance_eval &@default if @default != nil
+			end
+			@compare_to = nil
+		end
+		
+		def within_on(value, &block)
+			if(@compare_to != nil and get_var(@compare_to) == value)
+				instance_eval &block
+				@ran_any = true
+			end
+		end
+		
+		def within_default(&block)
+			@default = block
+		end
 	end
 end
 

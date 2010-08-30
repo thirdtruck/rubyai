@@ -207,12 +207,71 @@ module RubyAi
 			@output.puts command_wrapper %^rubyai_game.codeBlock(#{escape_js clean_string})^
 		end
 		
+		def within_set_var(variable_name, value)
+			@output.puts start_command_wrapper "follow-up"
+			@output.indent_more
+			@output.puts %^rubyai_game.setVar(#{escape_js variable_name}, #{escape_js value});^ # TODO: Add number- and object-specifc, etc. value-setting output
+			@output.indent_less
+			@output.puts end_command_wrapper
+		end
+		
 		def within_get_var(variable_name)
 			this.vars.send(variable_name.to_sym)
 		end
 		
 		def within_embed_var(variable_name)
 			%^%%[variable: #{variable_name}]%%^
+		end
+		
+		def within_compare_var(variable_alias, &block)
+			@output.puts start_command_wrapper("command")
+			@output.indent_more
+			@output.puts %^rubyai_game.conditional({^
+			
+			@output.indent_more
+			
+			@output.puts %^compare_to : function () { return rubyai_game.getVar(#{escape_js variable_alias}); },^
+			
+			@conditions = []
+			instance_eval &block
+			
+			if @conditions.length > 0
+				@output.puts %^conditions : {^
+				
+				@output.indent_more
+				for condition in @conditions
+					@output.puts %^#{escape_js condition[:value]} : [^
+					instance_eval &condition[:block]
+					@output.puts %^],^
+				end
+				@output.indent_less
+				
+				@output.puts %^}^
+			end
+			
+			@output.indent_less
+			
+			@output.puts %^});^
+			@output.indent_less
+			
+			@output.puts end_command_wrapper
+		end
+		
+		def within_default(&block)
+			@output.puts %^default_result : [^
+			@output.indent_more
+			instance_eval &block
+			@output.indent_less
+			@output.puts %^],^
+		end
+		
+		def on(value, &block)
+			@conditions.push({ :value => value, :block => block })
+			#@output.puts %^default_result : [^
+			#@output.indent_more
+			#instance_eval &block
+			#@output.indent_less
+			#@output.puts %^],^
 		end
 	end
 end

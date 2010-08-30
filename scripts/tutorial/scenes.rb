@@ -137,25 +137,28 @@ add_scene :choose_os do
 	
 	narrate "With a little help from the #{url :message_boards, 'message boards'}, #{lucy} and the #{fairy} soon have the #{em 'Ruby\'Ai'} software up and running."
 	
-	if get_var(:os) == "browser"
-		typing_fairy "And now we go to the #{url :create_game, 'Create a Game'} page!"
-		
-		run_scene :initialize_in_browser
-	else
-		typing_fairy "And now we go to the project directory we made... \"my_first_renai\"..."
-		worried_lucy "Did everything work?"
-		excited_fairy "It sure did!"
-		
-		terried_lucy "Egads!  Look at all those directories!",
-				"\"bin\", \"lib\", \"web\", what does it all #{em 'meeeeeean!?'}"
-		soulless_lucy "..."
-		frantic_fairy "Don't die on me now!"
-		terrified_lucy "Get away from me with those paddles!"
-		show apologetic_fairy
-		
-		tired_lucy "types away at the computer, one key at a time."
-		
-		run_scene :command_line_setup
+	compare_var :os do
+		on "browser" do 
+			typing_fairy "And now we go to the #{url :create_game, 'Create a Game'} page!"
+			
+			run_scene :initialize_in_browser
+		end
+		default do
+			typing_fairy "And now we go to the project directory we made... \"my_first_renai\"..."
+			worried_lucy "Did everything work?"
+			excited_fairy "It sure did!"
+			
+			terried_lucy "Egads!  Look at all those directories!",
+					"\"bin\", \"lib\", \"web\", what does it all #{em 'meeeeeean!?'}"
+			soulless_lucy "..."
+			frantic_fairy "Don't die on me now!"
+			terrified_lucy "Get away from me with those paddles!"
+			show apologetic_fairy
+			
+			tired_lucy "types away at the computer, one key at a time."
+			
+			run_scene :command_line_setup
+		end
 	end
 	
 	run_scene :first_script
@@ -202,7 +205,7 @@ add_scene :directory_media do
 	show terrified_fairy
 	terrified_lucy "It's a picture of #{em 'me'}!  I'm looking at a picture of me, looking at a picture of me, of me, of me..."
 	narrate "#{lucy}'s universe segfaults from the recursive loop and implodes."
-	set_var :doom => true
+	set_var :doom => "true"
 	
 	choice do
 		option "Try that again?" do run_scene :command_line_setup end
@@ -229,10 +232,13 @@ add_scene :directory_scripts do
 	confused_lucy "It's empty."
 	
 	default_fairy "Oh, we just need to run the script setup command!"
-	if get_var(:os) == "linux" or get_var(:os) == "osx"
-		fairy "Type in #{code 'ruby bin/new_script.rb my_first_renai'}."
-	elsif get_var(:os) == "windows"
-		fairy "Type in #{code 'ruby.exe bin\\new_script.rb my_first_renai'}"
+	compare_var :os do
+		on "windows" do
+			fairy "Type in #{code 'ruby.exe bin\\new_script.rb my_first_renai'}"
+		end
+		default do
+			fairy "Type in #{code 'ruby bin/new_script.rb my_first_renai'}."
+		end
 	end
 	
 	worried_lucy "I have to type all of that out correctly..."
@@ -262,10 +268,13 @@ end
 add_scene :first_script do
 	worried_lucy "So what do I do now?"
 	
-	if get_var(:os) == "windows"
-		set_var :first_script_directory => "scripts\\my_first_renai\\scenes.rb"
-	else
-		set_var :first_script_directory => "scripts/my_first_renai/scenes.rb"
+	compare_var :os do
+		on "windows" do
+			set_var :first_script_directory => "scripts\\my_first_renai\\scenes.rb"
+		end
+		default do
+			set_var :first_script_directory => "scripts/my_first_renai/scenes.rb"
+		end
 	end
 	
 	bespectacled_fairy "Now we open up the #{embed_var :first_script_directory} file!"
@@ -419,19 +428,27 @@ add_scene :contexts do
 	show computer_desk
 	concerned_lucy "It makes me glad to finally have a visual novel that's, well, #{em 'visual'}, but where did we get these pictures of #{marcus} and #{jen}?"
 	
-	if get_var(:os) == "windows"
-		set_var :character_image_directory => "media\\characters\\"
-	else
-		set_var :character_image_directory => "media/characters/"
+	compare_var :os do
+		on "windows" do
+			set_var :character_image_directory => "media\\characters\\"
+		end
+		default do
+			set_var :character_image_directory => "media/characters/"
+		end
 	end
+	
 	bespectacled_fairy "How very astute of you!  You can take a look inside of the \"#{embed_var :character_image_directory}\" directory."
 	typing_lucy "clicks a few times."
 	confused_lucy "I see \"marcus_waving.png\", \"marcus_smiling.png\", \"jen_concerned.png\" and several more."
 	worried_lucy "Wait, what's this \"lucy_worried.png\" image about..."
 	terrified_fairy "snatches the keyboard away!"
-	if get_var :doom
-		terrified_fairy "Not again!"
+	
+	compare_var :doom do
+		on "true" do
+			terrified_fairy "Not again!"
+		end
 	end
+	
 	worried_lucy "What?"
 	terrified_fairy "Never mind!"
 	bespectacled_fairy "Anyways, those images come with #{em 'Ruby\'Ai'} for you to use in your own games!  You get them under a Creative Commons license, too, so you already have permission for it!"
@@ -466,11 +483,15 @@ add_scene :stages do
 	excited_fairy "That they did!"
 	tired_lucy "Phew."
 	
-	if get_var(:os) == "windows"
-		set_var :stage_image_directory => "media\\stages\\"
-	else
-		set_var :stage_image_directory => "media/stages/"
+	compare_var :os do
+		on "windows" do
+			set_var :stage_image_directory => "media\\stages\\"
+		end
+		default do
+			set_var :stage_image_directory => "media/stages/"
+		end
 	end
+	
 	bespectacled_fairy "Check the \"#{embed_var :stage_image_directory}\" directory."
 	excited_lucy "Neat."
 	typing_lucy "Oh, they have a \"castle.png\" image."
@@ -480,11 +501,16 @@ add_scene :stages do
 	excited_lucy "And it works!"
 	
 	concerned_lucy "But what if I want to add a new stage?  I remember these panoramas from Wikipedia..."
-	if get_var(:os) == "windows"
-		set_var :stage_script_directory => "scripts\\my_first_renai\\stages.rb\\"
-	else
-		set_var :stage_script_directory => "scripts/my_first_renai/stages.rb"
+	
+	compare_var :os do
+		on "windows" do
+			set_var :stage_script_directory => "scripts\\my_first_renai\\stages.rb\\"
+		end
+		default do
+			set_var :stage_script_directory => "scripts/my_first_renai/stages.rb"
+		end
 	end
+	
 	bespectacled_fairy "Just open up \"#{embed_var :stage_script_directory}\"!"
 	code_block %{
 		add :castle, "Castle" do

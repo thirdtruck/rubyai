@@ -347,7 +347,20 @@ module RubyAi
 			within_embed_var(variable_alias) || value
 		end
 		
-		wrap_callbacks_around :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene, :st, :em, :url, :code, :code_block, :set_var, :get_var
+		def compare_var(variable_alias, &block)
+			within_compare_var(variable_alias, &block)
+		end
+		
+		# TODO: might try moving "on" and "default" to their own modules if that lets us restrict them to only within compare_var (compare_var might have to do its work within a special context object)
+		def on(value, &on_block)
+			within_on(value, &on_block)
+		end
+		
+		def default(&block)
+			within_default(&block)
+		end
+		
+		wrap_callbacks_around :start, :sound, :hide, :speak, :action, :show_element, :run_scene, :choice, :game_over, :narrate, :add_scene, :st, :em, :url, :code, :code_block, :set_var, :get_var, :embed_var, :compare_var, :on, :default
 	end
 
 	class GameWorkspace < DelegateClass(Game)

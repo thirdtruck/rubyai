@@ -193,6 +193,17 @@ var RubyAiGame = function(contents) {
 		return this.variables[name];
 	};
 	
+	this.conditional = function(conditional_args) {
+		var game = this;
+		
+		var current_conditional = new Conditional(conditional_args);
+		
+		var content_to_run = current_conditional.getChosenContent();
+		
+		game.current_crawler.crawlScene(content_to_run);
+		game.advanceGame();
+	};
+	
 	// TODO: prepare unit tests for this functionality before including it.  It means setting a good example for yourself and others.
 	this.interpolatedSubstitution = function(text) {
 		var re_pattern = /%%\[(\w+: \w+)\]%%/;
@@ -273,11 +284,25 @@ var SceneCrawler = function(steps) {
 			//console.log("Next Step: ", next_step);
 		}
 		
+		// TODO: Replace these if's with a table of callbacks
+		var content_to_run = undefined;
 		if(next_step.type === "choice") {
 			this.pending_choice = true;
+			content_to_run = next_step.content;
+		} else if(next_step.type === "command") {
+			content_to_run = next_step.content;
+		} else {
+			// TODO: log these unaccounted-for types
+			content_to_run = next_step.content;
+			// Error-logging goes here.  Find a way to address "console" being undefined.
+			/*
+			content_to_run = function () {
+				console.log("Unrecognized command type: " + next_step.type);
+			};
+			*/
 		}
+		content_to_run.call();
 		
-		next_step.content.call();
 		
 		var peek_ahead_step = this.steps[this.step_index+1];
 		while(peek_ahead_step !== undefined && peek_ahead_step.type && peek_ahead_step.type === "follow-up") {
@@ -313,6 +338,21 @@ var SceneCrawler = function(steps) {
 var Option = function(name, contents) {
 	this.name = name;
 	this.contents = contents;
+	
+	return this;
+};
+
+var Conditional = function(args) {
+	this.compare_to = args.compare_to;
+	this.default_result = args.default_result || function () {
+		/* null function */
+	};
+	this.conditions = args.conditions || {};
+	
+	this.getChosenContent = function () {
+		var chosen_content = this.conditions[this.compare_to.call()];
+		return (chosen_content !== undefined ? chosen_content : this.default_result);
+	};
 	
 	return this;
 };

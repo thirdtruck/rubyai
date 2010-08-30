@@ -223,4 +223,11 @@ $(document).ready( function () {
 	} );
 	
 	testScenes(test_data.show_characters);
+	
+	module("GUI - Conditional Commands", {
+		setup: basicSetup,
+		teardown: basicTeardown
+	} );
+	
+	testScenes(test_data.conditionals);
 });

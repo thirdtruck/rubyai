@@ -779,5 +779,137 @@ var test_data  = {
 				export_data.gui.game_over.neutral
 			]
 		},
+	},
+	conditionals : {
+		compareVar_match_first: {
+			name: "Take action based on a variable's value; match the first condition",
+			description: "Compare an in-game variable's value against a table of potential values and run the commands behind the matching one; match the first condition",
+			starting_scene: "intro",
+			contents: function () {
+				this.addScene( "intro", [
+					{
+						type : "follow-up",
+						content : function () { rubyai_game.setVar("foo", "bar"); }
+					},
+					{
+						type : "command",
+						content : function () {
+							rubyai_game.conditional({
+								compare_to : function () {
+									return rubyai_game.getVar("foo");
+								},
+								default_result : [ { type: "command", content: function () { rubyai_game.narrate("Default.") } } ],
+								conditions : {
+									"bar" : [ { type: "command", content: function () { rubyai_game.narrate("Decided on Bar.") } } ],
+									"bin" : [ { type: "command", content: function () { rubyai_game.narrate("Decided on Bin.") } } ],
+								}
+							})
+						}
+					},
+				] );
+			},
+			text_output: "Decided on Bar.\nGame Over!\n",
+			gui_output: [
+				"<div class=\"narration\">Decided on Bar.</div>",
+				export_data.gui.game_over.neutral
+			]
+		},
+		compareVar_match_second: {
+			name: "Take action based on a variable's value; match the second condition",
+			description: "Compare an in-game variable's value against a table of potential values and run the commands behind the matching one; match the second condition",
+			starting_scene: "intro",
+			contents: function () {
+				this.addScene( "intro", [
+					{
+						type : "follow-up",
+						content : function () { rubyai_game.setVar("foo", "bin"); }
+					},
+					{
+						type : "command",
+						content : function () {
+							rubyai_game.conditional({
+								compare_to : function () {
+									return rubyai_game.getVar("foo");
+								},
+								default_result : [ { type: "command", content: function () { rubyai_game.narrate("Default.") } } ],
+								conditions : {
+									"bar" : [ { type: "command", content: function () { rubyai_game.narrate("Decided on Bar.") } } ],
+									"bin" : [ { type: "command", content: function () { rubyai_game.narrate("Decided on Bin.") } } ],
+								}
+							})
+						}
+					},
+				] );
+			},
+			text_output: "Decided on Bin.\nGame Over!\n",
+			gui_output: [
+				"<div class=\"narration\">Decided on Bin.</div>",
+				export_data.gui.game_over.neutral
+			]
+		},
+		compareVar_match_explicit_default: {
+			name: "Take action based on a variable's value; fall back on an explicit default",
+			description: "Compare an in-game variable's value against a table of potential values and run the commands behind the matching one; fall back to an explicit default",
+			starting_scene: "intro",
+			contents: function () {
+				this.addScene( "intro", [
+					{
+						type : "follow-up",
+						content : function () { rubyai_game.setVar("foo", "fizzle"); }
+					},
+					{
+						type : "command",
+						content : function () {
+							rubyai_game.conditional({
+								compare_to : function () {
+									return rubyai_game.getVar("foo");
+								},
+								default_result : [ { type: "command", content: function () { rubyai_game.narrate("Default.") } } ],
+								conditions : {
+									"bar" : [ { type: "command", content: function () { rubyai_game.narrate("Decided on Bar.") } } ],
+									"bin" : [ { type: "command", content: function () { rubyai_game.narrate("Decided on Bin.") } } ],
+								}
+							})
+						}
+					},
+				] );
+			},
+			text_output: "Default.\nGame Over!\n",
+			gui_output: [
+				"<div class=\"narration\">Default.</div>",
+				export_data.gui.game_over.neutral
+			]
+		},
+		compareVar_match_no_match: {
+			name: "Take action based on a variable's value; match none",
+			description: "Compare an in-game variable's value against a table of potential values and run the commands behind the matching one; match none",
+			contents: function () {
+				this.addScene( "intro", [
+					{
+						type : "follow-up",
+						content : function () { rubyai_game.setVar("foo", "fizzle"); }
+					},
+					{
+						type : "command",
+						content : function () {
+							rubyai_game.conditional({
+								compare_to : function () {
+									return rubyai_game.getVar("foo");
+								},
+								conditions : {
+									"bar" : [ { type: "command", content: function () { rubyai_game.narrate("Decided on Bar.") } } ],
+									"bin" : [ { type: "command", content: function () { rubyai_game.narrate("Decided on Bin.") } } ],
+								}
+							})
+						}
+					},
+				] );
+			},
+			text_output: "Default.\nGame Over!\n",
+			gui_output: [
+				/* No explicit output expected */
+				export_data.gui.game_over.neutral
+			]
+		},
 	}
 };
