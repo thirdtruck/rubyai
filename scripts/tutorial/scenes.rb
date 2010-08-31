@@ -549,7 +549,7 @@ add_scene :choices do
 
 	excited_fairy "Wonderful!  Let me introduce you to the \"choice\" command."
 	concerned_lucy "Another command?"
-	excited_fairy "The second-to-last one for tonight?"
+	excited_fairy "The third-to-last one for tonight?"
 	concerned_lucy "Wait, for #{em 'tonight'}?"
 	excited_fairy "There's always tomorrow, after all!"
 	amused_fairy "If I play my cards right, I could stay assigned to you for the rest of your writing career!"

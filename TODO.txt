@@ -1,3 +1,9 @@
+Don't trim the GUI text output unnecessarily when removing already-hidden elements.
+
+The pre-formatted code examples can stretch beyond the text area's reach.  Consider applying jQuery that lets the user expand it with a click.
+
+--
+
 Add tests for only adding character summaries to the output when they differ from before.
 Also refactor the character summaries into "character display" output or the like.
 

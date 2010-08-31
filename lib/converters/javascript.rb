@@ -29,7 +29,9 @@ end
 
 def escape_js_no_quotes(string)
 	string = string.to_s
-	string.gsub(/(['"])/) { JS_ESCAPE_MAP[$1] }
+	string = string.gsub(/(['"])/) { JS_ESCAPE_MAP[$1] }
+	string = string.gsub(/([^\\])\\$/) { "#{$1}\\\\" }
+	string = string.gsub(/\\([^nt'"\\])/) { "\\\\#{$1}" }
 end
 
 def escape_js(string)
@@ -208,9 +210,12 @@ module RubyAi
 		end
 		
 		def within_set_var(variable_name, value)
+			clean_value = value.gsub(/[\n\r]+/, '\\n');
+			clean_value.gsub!(/"/, "&quot;");
+			
 			@output.puts start_command_wrapper "follow-up"
 			@output.indent_more
-			@output.puts %^rubyai_game.setVar(#{escape_js variable_name}, #{escape_js value});^ # TODO: Add number- and object-specifc, etc. value-setting output
+			@output.puts %^rubyai_game.setVar(#{escape_js variable_name}, #{escape_js clean_value});^ # TODO: Add number- and object-specifc, etc. value-setting output
 			@output.indent_less
 			@output.puts end_command_wrapper
 		end
