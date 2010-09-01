@@ -72,16 +72,110 @@ h1 {
 
 #rubyai-gui .output > div {
 	margin-bottom: 1em;
+	color: #333333;
 }
 
 #rubyai-gui .output .stage-summary, #rubyai-gui .output .character-summary {
 	display: none;
 }
 
+#rubyai-gui .output .sound {
+	font-weight: bold;
+	background-color: #FFFFEE;
+	display: inline;
+	padding: 0.2em;
+	margin: 0.2em;
+	
+	border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+}
+
+#rubyai-gui .output .sound:before, #rubyai-gui .output .sound:after {
+	content: " * ";
+}
+#rubyai-gui .output .speech {
+}
+
+#rubyai-gui .output .statement {
+}
+
+#rubyai-gui .output .behavior {
+}
+
+#rubyai-gui .output .action {
+}
+
+#rubyai-gui .output .character {
+	font-weight: bold;
+}
+
+#rubyai-gui .output .speech .character {
+	margin-right: 0.1em;
+}
+
 #rubyai-gui .output .code, #rubyai-gui .output .code-block {
 	padding: 2px 5px 3px 5px;
-	font-family: courier;
+	font-family: courier,arial;
 	background-color: #BBBBFF;
+	
+	border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+}
+
+#rubyai-gui .output .choice {
+	padding: 0.2em;
+	background-color: #CCFFCC;
+	
+	border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	
+	-moz-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px;
+	-webkit-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px;
+}
+
+#rubyai-gui .output .choice .option {
+	padding: 0.2em;
+	margin: 0.2em 0.2em 0.5em 0.2em;
+	background-color: #88CC88;
+	
+	border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-top-right-radius: 5px;
+	-webkit-border-top-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+	
+	text-shadow: rgba(0, 0, 0, 0.4) 1px 1px 1px;
+	
+	-moz-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px;
+	-webkit-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 1px;
+}
+
+#rubyai-gui .output .choice .option a {
+	color: black;
+	text-decoration: none;
+}
+
+#rubyai-gui .output .choice .option a .index {
+}
+
+#rubyai-gui .output .chosen-option {
+	padding: 0.2em;
+	margin: 0.2em;
+	color: #444444;
+	background-color: #CCFFCC;
 	
 	border-radius: 5px 5px 5px 5px;
 	-moz-border-radius: 5px 5px 5px 5px;
