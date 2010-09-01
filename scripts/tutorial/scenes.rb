@@ -148,7 +148,7 @@ add_scene :choose_os do
 			worried_lucy "Did everything work?"
 			excited_fairy "It sure did!"
 			
-			terried_lucy "Egads!  Look at all those directories!",
+			terrified_lucy "Egads!  Look at all those directories!",
 					"\"bin\", \"lib\", \"web\", what does it all #{em 'meeeeeean!?'}"
 			soulless_lucy "..."
 			frantic_fairy "Don't die on me now!"
@@ -347,7 +347,7 @@ add_scene :first_changes do
 	excited_lucy "cheers!"
 	narrate "A woman shouts from downstairs."
 	mom "#{lucy}, is everything alright up there?"
-	whispering_lucy "We woke her!",
+	surprised_lucy "We woke her!",
 		"stuffs a pillow over a scrambling #{fairy}."
 	worried_lucy "Everything is just hunky-dory up here, mom!  I just, um, got some good grades back online?"
 	mom "Wonderful, dear.  Remember to rest enough before your classes tomorrow, please!  Good night!"
@@ -359,7 +359,7 @@ end
 
 add_scene :second_character do
 	terrified_fairy "You nearly killed me!"
-	whispering_lucy "Shh!"
+	surprised_lucy "Shh!"
 	terrified_fairy "Don't you know that We fairies have #{em 'obnoxiously'} small lungs?"
 	worried_lucy "And if I had choked you, I would never finish this visual novel, so that leaves me stuck with you..."
 	show soulless_lucy
@@ -418,7 +418,7 @@ add_scene :exporting do
 	excited_lucy "It works!  I think.  It says to open \"index.html\" in my browser."
 	show excited_fairy
 	excited_lucy "Success!"
-	whispering_lucy "covers her mouth.", "Oh, I mean 'success'."
+	surprised_lucy "covers her mouth.", "Oh, I mean 'success'."
 	excited_fairy "gives #{lucy} a high-five."
 	
 	run_scene :contexts
@@ -479,7 +479,7 @@ add_scene :stages do
 	show terrified_lucy
 	concerned_fairy "What's the matter?"
 	terrified_lucy "I just had horrible flashbacks to my landscape painting attempts from back at the beginning of this darn art class."
-	worrid_lucy "Tell me that the #{em 'Ruby\'Ai'} people lent some backgrounds, too."
+	worried_lucy "Tell me that the #{em 'Ruby\'Ai'} people lent some backgrounds, too."
 	excited_fairy "That they did!"
 	tired_lucy "Phew."
 	
