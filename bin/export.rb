@@ -52,6 +52,11 @@ option_parser = OptionParser.new do |opts|
 		show_known_exporters
 		exit
 	end
+	
+	opts.on( '--no-overwrite-images', "Do not overwrite existing images" ) do
+		options[:overwrite_images] = false
+		exit
+	end
 end
 
 option_parser.parse!
@@ -61,7 +66,7 @@ require "lib/converters/#{exporter_name}" or fail_with "Missing or non-functiona
 
 script_to_export = ARGV[1] or fail_with "Script to export required"
 
-exporter = Exporter.new
+exporter = Exporter.new(options)
 
 game_environment = RubyAi::Game.new(exporter, exporter, script_to_export)
 game = RubyAi::GameWorkspace.new(game_environment)

@@ -179,4 +179,8 @@ class Exporter
 	def self.description
 		"Runs the script directly with a plain-text, command-line interface."
 	end
+	
+	def initialize(options={})
+		super(options)
+	end
 end

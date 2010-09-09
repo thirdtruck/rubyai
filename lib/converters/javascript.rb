@@ -44,7 +44,11 @@ class Exporter
 		"Exports a web-based version that runs via Javascript.  Requires images."
 	end
 
-	def initialize
+	def initialize(options={})
+		default_options = {
+			:overwrite_images => true
+		}
+		@options = default_options.merge(options)
 		destination_dir = "web"
 		destination_file = destination_dir + "/js/script.js"
 		log "Exporting files to \"#{destination_dir}\"..."
@@ -115,11 +119,16 @@ module RubyAi
 			default_image_source = "media/#{element.type_plural}/#{element.alias}.png"
 			specific_image_source = "media/#{element.type_plural}/#{element.alias}_#{image_name}.png"
 			image_url = "#{element.resource_url}_#{image_name}.png"
+			new_image_destination = "web/"+image_url
 			if(FileTest.exists? specific_image_source)
-				cp(specific_image_source, "web/"+image_url)
+				unless options[:overwrite_images] && FileTest.exists? new_image_destination
+					cp(specific_image_source, new_image_destination)
+				end
 			else
 				log_once("Image missing: #{specific_image_source}.  Using default.")
-				cp(default_image_source, "web/"+image_url)
+				unless options[:overwrite_images] && FileTest.exists? new_image_destination
+					cp(default_image_source, new_image_destination)
+				end
 			end
 			image_url
 		end
