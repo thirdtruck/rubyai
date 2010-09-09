@@ -2,7 +2,7 @@ add_scene :intro do
 	show bedroom
 	
 	# By default, `sound <id>` will try to play an audio file named "<id>.ogg" and display the text as "*<sound.name>*"
-	sound click
+	sound door
 	
 	# The command `<character> "string"` makes the character say or do something, depending on the
 	# capitalization of the first letter (uppercase -> statement, lowercase -> action).

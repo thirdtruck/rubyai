@@ -20,6 +20,11 @@ var RubyAiGUI = function($top_element, settings) {
 	this.append = function(output) {
 		this.$output_element.append(output);
 		
+		/* Move this "if-hidden" removal-shifting code into a callback outside of rubyai-gui.js */
+		if( this.$output_element.children(":last").css("display") === "none") {
+			this.$output_element.children(":last").remove();
+		}
+		
 		var total_elements = this.$output_element.children().length;
 		while (total_elements > this.settings.max_rows) {
 			this.$output_element.children(":first").remove();
@@ -50,7 +55,7 @@ var RubyAiGUI = function($top_element, settings) {
 	};
 	
 	this.sound = function(sound_name, sound_description) {
-		this.append( "<div class=\"sound\">" + sound_description + "</div>");
+		this.append( "<div class=\"sound-wrapper\"><div class=\"sound\">" + sound_description + "</div></div>");
 	};
 	
 	this.showStage = function(alias, title, image_url, description) {
