@@ -46,7 +46,7 @@ var test_data  = {
 		},
 		sound: { contents: [{ type: "command", content: function() { rubyai_game.sound("bang", "Bang") } }],
 			text_output: "*Bang*\nGame Over!\n",
-			gui_output: ["<div class=\"sound\">Bang</div>", export_data.gui.game_over.neutral]
+			gui_output: ["<div class=\"sound-wrapper\"><div class=\"sound\">Bang</div></div>", export_data.gui.game_over.neutral]
 		},
 		showStage: { contents: [{ type: "command", content: function() { rubyai_game.showStage("outdoors", "Outdoors", "images/stages/outdoors_default.png", "The outdoors, where they keep all of the trees.") } }],
 			text_output: "Show stage Outdoors [outdoors]: The outdoors, where they keep all of the trees.\nGame Over!\n",
